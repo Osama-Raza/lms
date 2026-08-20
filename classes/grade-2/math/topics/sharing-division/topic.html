@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sharing Equally — Interactive Worksheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Noto+Nastaliq+Urdu:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crust:#7a4a2b;
+    --crust-dark:#563018;
+    --berry:#e85d75;
+    --berry-dark:#c33f57;
+    --berry-light:#ffc9d4;
+    --butter:#ffd166;
+    --butter-deep:#e8a930;
+    --mint:#8fd9c4;
+    --mint-deep:#3fae8c;
+    --paper:#fff7ec;
+    --paper-2:#ffe9d1;
+    --ink:#3a2b1f;
+    --ink-soft:#8a7360;
+    --coral:#ef7a5c;
+    --white:#ffffff;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 10% 0%, #ffe9d1 0%, transparent 45%),
+      radial-gradient(circle at 90% 10%, #ffe3ea 0%, transparent 40%),
+      var(--paper);
+    font-family:'Nunito', sans-serif;
+    color:var(--ink);
+    padding-bottom:60px;
+  }
+  h1,h2,h3, .display{ font-family:'Fredoka', sans-serif; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background: linear-gradient(180deg, #d9486a 0%, var(--berry) 55%, #ef7690 100%);
+    color:white;
+    padding:34px 20px 26px;
+    border-radius:0 0 32px 32px;
+    box-shadow:0 8px 24px rgba(200,63,87,0.25);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:0; height:26px;
+    background: repeating-linear-gradient(90deg, var(--crust) 0 18px, var(--crust-dark) 18px 20px);
+    opacity:0.9;
+  }
+  .hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:2;}
+  .eyebrow{
+    font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+    background:rgba(255,255,255,0.18); display:inline-block;
+    padding:4px 12px;border-radius:999px;margin-bottom:10px;font-weight:700;
+  }
+  h1.title{font-size:28px;margin:0 0 6px;font-weight:700;}
+  .subtitle{font-size:15px;opacity:.92;margin:0 0 22px;font-weight:600;}
+
+  /* growth tracker */
+  .stem-wrap{display:flex;align-items:center;flex:1;}
+  .node{
+    width:40px;height:40px;border-radius:50%;
+    background:rgba(255,255,255,0.25); border:3px solid rgba(255,255,255,0.6);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px; flex-shrink:0; transition:all .4s ease;
+  }
+  .node.done{background:var(--butter); border-color:#fff; color:var(--crust-dark); transform:scale(1.08);}
+  .stem{height:4px;flex:1;background:rgba(255,255,255,0.3);position:relative;overflow:hidden;}
+  .stem-fill{height:100%;width:0%;background:var(--butter);transition:width .5s ease;}
+  .tracker-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;font-weight:700;opacity:.85;}
+  .tracker-labels span{width:60px;text-align:center;}
+
+  /* ---------- LAYOUT ---------- */
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px;}
+  .meta-strip{display:flex;flex-wrap:wrap;gap:10px;margin:-14px 0 26px;position:relative;z-index:3;}
+  .meta-chip{
+    background:var(--white); border:2px solid var(--paper-2);
+    border-radius:14px; padding:8px 14px; font-size:13px; font-weight:700;
+    color:var(--ink-soft); box-shadow:0 4px 10px rgba(0,0,0,0.05);
+  }
+  .meta-chip b{color:var(--berry-dark);}
+
+  .card{
+    background:var(--white); border-radius:var(--radius); padding:24px 22px; margin-bottom:24px;
+    box-shadow:0 6px 18px rgba(122,74,43,0.08); border:2px solid #fbeedd;
+  }
+  .card h2{font-size:20px;margin:0 0 4px;color:var(--berry-dark);display:flex;align-items:center;gap:10px;}
+  .card h2 .num{
+    background:var(--berry); color:white; width:30px;height:30px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+  }
+  .instructions{font-size:14px;color:var(--ink-soft);margin:0 0 18px;font-weight:600;}
+  .tag{
+    display:inline-block;font-size:11px;font-weight:800;letter-spacing:.03em;
+    background:#fff3e0;color:#b3690b;padding:2px 9px;border-radius:999px;margin-left:8px;
+    vertical-align:middle;text-transform:uppercase;
+  }
+
+  /* ---------- DRAG & DROP (equation parts) ---------- */
+  .eq-display{
+    font-family:'Fredoka'; font-size:30px; font-weight:700; text-align:center; color:var(--crust-dark);
+    margin-bottom:18px;
+  }
+  .eq-display .op{color:var(--berry);}
+  .stages{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;margin-bottom:22px;}
+  .slot{
+    flex:1; min-width:140px;
+    background:var(--paper); border:3px dashed #e0c9a6; border-radius:16px;
+    padding:14px 10px; text-align:center; min-height:100px;
+    display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+    transition:all .2s ease; position:relative;
+  }
+  .slot .icon{font-size:30px;margin-bottom:6px;}
+  .slot .placed{
+    background:var(--mint); border:2px solid var(--mint-deep);
+    border-radius:10px; padding:6px 8px; font-size:12.5px; font-weight:800; color:var(--mint-deep);
+    width:100%;
+  }
+  .slot.over{border-color:var(--berry); background:#fff0f2;}
+  .slot.correct{border-style:solid; border-color:var(--mint-deep);}
+  .slot.wrong .placed{background:#ffd9d0;border-color:var(--coral);color:#a13c22;}
+
+  .word-bank{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .tile{
+    background:var(--butter); color:var(--crust-dark); font-weight:800; font-size:13.5px;
+    padding:10px 16px; border-radius:12px; cursor:grab; user-select:none;
+    box-shadow:0 3px 0 var(--butter-deep); touch-action:none;
+  }
+  .tile.dragging{opacity:.4;}
+  .tile.used{visibility:hidden;}
+
+  /* ---------- FILL IN BLANK ---------- */
+  .fib-line{font-size:16px;line-height:2.4;font-weight:600;margin-bottom:6px;}
+  .blank{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:70px; padding:4px 10px; border-bottom:3px solid var(--crust);
+    font-weight:800; color:var(--berry-dark); cursor:pointer; margin:0 4px;
+  }
+  .blank.empty{color:#c9b9a4;}
+  .fib-bank{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+  .chip{
+    background:var(--mint); color:#0a4a3a; font-weight:800; font-size:14px;
+    padding:9px 15px; border-radius:12px; cursor:pointer; box-shadow:0 3px 0 var(--mint-deep);
+    border:none;
+  }
+  .chip:active{transform:translateY(2px);box-shadow:none;}
+  .chip.used{opacity:.35;pointer-events:none;}
+
+  /* ---------- MATCHING ---------- */
+  .match-wrap{display:flex;gap:18px;position:relative;}
+  .match-col{flex:1;display:flex;flex-direction:column;gap:10px;}
+  .match-item{
+    background:var(--paper); border:2px solid #ecdcc4; border-radius:12px;
+    padding:12px 14px; font-weight:700; font-size:14px; cursor:pointer; text-align:left;
+    transition:all .15s ease;
+  }
+  .match-item.selected{border-color:var(--mint-deep);background:#eafaf4;}
+  .match-item.matched{border-color:var(--berry);background:#ffeef1;color:var(--berry-dark);cursor:default;}
+  .match-item.wrong{animation:shake .3s;border-color:var(--coral);}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+
+  /* ---------- MCQ ---------- */
+  .q-block{margin-bottom:22px;}
+  .q-text{font-weight:800;font-size:15px;margin-bottom:10px;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(max-width:480px){.opts{grid-template-columns:1fr;}}
+  .opt{
+    background:var(--paper); border:2px solid #ecdcc4; border-radius:12px;
+    padding:11px 14px; font-weight:700; font-size:14px; text-align:left; cursor:pointer;
+  }
+  .opt.selected{border-color:var(--mint-deep);background:#eafaf4;}
+  .opt.correct{border-color:var(--mint-deep);background:#e2f6ea;color:var(--mint-deep);}
+  .opt.incorrect{border-color:var(--coral);background:#ffe3da;color:#a13c22;}
+  .opt[disabled]{cursor:default;}
+
+  .btn{
+    background:var(--berry); color:white; border:none; font-weight:800; font-size:15px;
+    padding:13px 24px; border-radius:14px; cursor:pointer; box-shadow:0 4px 0 var(--berry-dark);
+    font-family:'Fredoka',sans-serif;
+  }
+  .btn:active{transform:translateY(3px);box-shadow:none;}
+  .btn.secondary{background:var(--white);color:var(--berry-dark);border:2px solid var(--berry);box-shadow:none;font-size:13px;padding:9px 16px;}
+  .btn:disabled{background:#e3d5c2;box-shadow:none;cursor:not-allowed;}
+
+  .feedback{margin-top:14px;padding:12px 16px;border-radius:12px;font-weight:700;font-size:14px;display:none;}
+  .feedback.show{display:block;}
+  .feedback.good{background:#e2f6ea;color:var(--mint-deep);}
+  .feedback.bad{background:#ffe3da;color:#a13c22;}
+
+  .score-card{
+    text-align:center;padding:28px 20px;border-radius:20px;
+    background:linear-gradient(135deg,#fff3e0,#ffe6c2);
+    border:2px solid var(--butter); display:none;
+  }
+  .score-card.show{display:block;}
+  .score-num{font-family:'Fredoka';font-size:44px;font-weight:700;color:var(--crust-dark);}
+  .score-msg{font-weight:700;color:var(--ink-soft);margin-top:6px;}
+
+  .footer-note{text-align:center;font-size:12px;color:#c1ab90;margin-top:30px;font-weight:600;}
+
+  /* ---------- EXPLAINER (story) ---------- */
+  .explainer-card{ border:2px solid var(--butter); background:linear-gradient(180deg,#fffaf0,var(--white)); }
+  .explain-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+  .explain-dots{display:flex;gap:6px;}
+  .explain-dot{width:8px;height:8px;border-radius:50%;background:#f0e0c9;transition:all .3s;}
+  .explain-dot.active{background:var(--berry);width:20px;border-radius:5px;}
+  .explain-actions{display:flex; gap:8px; align-items:center;}
+  .read-btn{
+    background:var(--paper); border:2px solid var(--paper-2); border-radius:999px;
+    padding:6px 13px; font-weight:800; font-size:12px; color:var(--berry-dark); cursor:pointer;
+  }
+  .read-btn.speaking{background:var(--berry); color:white; border-color:var(--berry-dark);}
+  .lang-toggle{
+    background:var(--paper); border:2px solid var(--paper-2); border-radius:999px;
+    padding:6px 4px; font-weight:800; font-size:12px; color:var(--berry-dark); cursor:pointer;
+    display:flex; gap:2px;
+  }
+  .lang-toggle span{padding:4px 10px; border-radius:999px;}
+  .lang-toggle span.active{background:var(--berry); color:white;}
+
+  .new-word{
+    display:inline-flex; align-items:center; gap:6px; background:#fff3e0; color:#b3690b;
+    font-weight:800; font-size:12.5px; padding:6px 12px; border-radius:999px; margin:8px auto 0;
+  }
+
+  .explain-scene{ text-align:center; padding:14px 4px 6px; min-height:260px; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  .explain-visual{font-size:60px; margin-bottom:8px; line-height:1;}
+  .explain-headline{font-size:19px; margin:0 0 6px; color:var(--berry-dark);}
+  .explain-caption{font-size:14.5px; color:var(--ink-soft); font-weight:600; line-height:1.55; max-width:440px; margin:0 auto;}
+  .explain-caption.urdu-text{direction:rtl; font-family:'Noto Nastaliq Urdu', serif; font-size:17px; line-height:2;}
+
+  .cast{display:flex; gap:18px; justify-content:center; margin:10px 0 4px;}
+  .kid{font-size:44px;}
+  .kid-label{font-size:11px; font-weight:800; color:var(--ink-soft); margin-top:2px;}
+
+  .cookie-pool{
+    display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
+    background:#fff2df; border-radius:16px; padding:12px; margin:14px 0; min-height:56px; width:100%;
+  }
+  .cookie{ font-size:32px; cursor:grab; touch-action:none; user-select:none; }
+  .cookie.gone{visibility:hidden;}
+  .plates{display:flex; gap:18px; justify-content:center; width:100%;}
+  .plate{
+    flex:1; background:#eafaf4; border:3px dashed var(--mint-deep);
+    border-radius:16px; padding:10px 6px 6px; min-height:88px;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .plate .face{font-size:26px;}
+  .plate .pname{font-size:11px; font-weight:800; color:var(--mint-deep); margin:2px 0 6px;}
+  .plate .held{display:flex; flex-wrap:wrap; gap:2px; justify-content:center;}
+  .plate .held span{font-size:20px;}
+  .plate.over{background:#d4f2e6;}
+  .plate.correct{border-style:solid; border-color:var(--mint-deep); background:#e2f6ea;}
+  .plate.wrong{border-color:var(--coral); background:#ffe9e3;}
+  .count-badge{
+    font-family:'Fredoka'; font-weight:700; font-size:12px; color:var(--mint-deep);
+    background:white; border-radius:10px; padding:2px 8px; margin-top:4px;
+  }
+  .tap-hint{font-size:11px;font-weight:800;color:#c9b394;margin-top:10px;}
+
+  .explain-nav{
+    display:flex; justify-content:space-between; align-items:center; margin-top:18px;
+    padding-top:14px; border-top:2px solid #fbeedd;
+  }
+  .explain-nav .nav-btn{
+    font-family:'Fredoka',sans-serif; font-weight:700; font-size:14px;
+    padding:10px 20px; border-radius:12px; border:none; cursor:pointer;
+  }
+  .explain-nav .nav-btn.primary{background:var(--berry); color:white; box-shadow:0 4px 0 var(--berry-dark);}
+  .explain-nav .nav-btn.primary:active{transform:translateY(3px);box-shadow:none;}
+  .explain-nav .nav-btn.primary:disabled{background:#e3d5c2; box-shadow:none; cursor:not-allowed;}
+  .explain-nav .nav-btn.ghost{background:none; color:#c9b394;}
+  .explain-nav .nav-btn.ghost:disabled{opacity:.3;}
+
+  /* activities lock */
+  .lock-banner{
+    display:flex; align-items:center; gap:10px; background:#ffe9d1; border:2px dashed #e0c9a6;
+    border-radius:16px; padding:14px 16px; font-weight:800; font-size:13.5px; color:#a3804f;
+    margin-bottom:20px;
+  }
+  #activitiesSection.locked .card{opacity:0.4; filter:grayscale(0.5); pointer-events:none;}
+  #activitiesSection.locked .lock-banner{display:flex;}
+  #activitiesSection:not(.locked) .lock-banner{display:none;}
+  #activitiesSection{transition:opacity .5s ease;}
+</style>
+</head>
+<body>
+
+<div style="padding:10px 18px;"><a href="../../subject.html" style="font-family:'Fredoka';font-weight:700;font-size:14px;color:#c33f57;text-decoration:none;">← Back to subjects</a></div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">🍪 Learning App· Grade 2 Math</span>
+    <h1 class="title">Sharing Equally</h1>
+    <p class="subtitle">Learn to divide by sharing — one cookie, one balloon, one sweet at a time!</p>
+    <div class="stem-wrap">
+      <div class="node" id="node-explain">📖</div>
+      <div class="stem"><div class="stem-fill" id="fill-explain"></div></div>
+      <div class="node" id="node-0">🍪</div>
+      <div class="stem"><div class="stem-fill" id="fill-0"></div></div>
+      <div class="node" id="node-1">🔢</div>
+      <div class="stem"><div class="stem-fill" id="fill-1"></div></div>
+      <div class="node" id="node-2">🔗</div>
+      <div class="stem"><div class="stem-fill" id="fill-2"></div></div>
+      <div class="node" id="node-3">🎯</div>
+    </div>
+    <div class="tracker-labels">
+      <span>Learn it</span><span>Share it</span><span>Fill blanks</span><span>Match it</span><span>Quiz</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="meta-strip">
+    <div class="meta-chip">Topic Code: <b>SB-MATH-G2-U5-T1</b></div>
+    <div class="meta-chip">Time: <b>~15 min</b></div>
+    <div class="meta-chip">Type: <b>Interactive</b></div>
+  </div>
+
+  <!-- VIDEO LESSON -->
+  <div class="card">
+    <h2><span class="num">🎥</span>Watch & Learn<span class="tag">Video</span></h2>
+    <p class="instructions">Watch this short video first. Then try the story below.</p>
+    <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:14px; overflow:hidden;">
+      <iframe src="https://www.youtube.com/embed/Bytiiq6jNoI"
+        style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+        title="Sharing Equally video lesson" allowfullscreen
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+    </div>
+  </div>
+
+  <!-- STORY EXPLAINER -->
+  <div class="card explainer-card" id="explainerCard">
+    <div class="explain-top">
+      <div class="explain-dots" id="explainDots"></div>
+      <div class="explain-actions">
+        <div class="lang-toggle" id="langToggle">
+          <span class="active" onclick="setLang('en')">EN</span><span onclick="setLang('ur')">اردو</span>
+        </div>
+        <button class="read-btn" id="explainReadBtn" onclick="toggleExplainRead()">🔊 Read to me</button>
+      </div>
+    </div>
+    <div class="explain-scene" id="explainScene"></div>
+    <div class="explain-nav">
+      <button class="nav-btn ghost" id="explainBack" onclick="explainGo(-1)">← Back</button>
+      <button class="nav-btn primary" id="explainNext" onclick="explainGo(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- ACTIVITIES (unlocks after the story) -->
+  <div id="activitiesSection" class="locked">
+  <div class="lock-banner">🔒 Finish the story above first — then these activities will unlock!</div>
+
+  <!-- ACTIVITY 1: DRAG AND DROP -->
+  <div class="card">
+    <h2><span class="num">1</span>Share the Balloons<span class="tag">Drag & Drop</span></h2>
+    <p class="instructions">9 balloons. 3 friends. Give everyone the same amount.</p>
+    <div class="cookie-pool" id="a1-pool"></div>
+    <div class="plates">
+      <div class="plate" id="a1-plate-a" data-name="a">
+        <div class="face">👧</div><div class="pname">Aisha</div>
+        <div class="held" id="a1-held-a"></div>
+        <div class="count-badge" id="a1-count-a">0</div>
+      </div>
+      <div class="plate" id="a1-plate-b" data-name="b">
+        <div class="face">👦</div><div class="pname">Bilal</div>
+        <div class="held" id="a1-held-b"></div>
+        <div class="count-badge" id="a1-count-b">0</div>
+      </div>
+      <div class="plate" id="a1-plate-c" data-name="c">
+        <div class="face">👧</div><div class="pname">Zara</div>
+        <div class="held" id="a1-held-c"></div>
+        <div class="count-badge" id="a1-count-c">0</div>
+      </div>
+    </div>
+    <div class="feedback" id="dndFeedback"></div>
+    <div style="margin-top:14px;"><button class="btn secondary" onclick="resetDnD()">Reset activity</button></div>
+  </div>
+
+  <!-- ACTIVITY 2: FILL IN THE BLANK -->
+  <div class="card">
+    <h2><span class="num">2</span>Fill in the Blanks<span class="tag">Tap to fill</span></h2>
+    <p class="instructions">Tap a number. Then tap the blank.</p>
+
+    <p class="fib-line">a) 10 mangoes shared between 2 friends = <span class="blank empty" data-index="0" data-answer="5">___</span> each.</p>
+    <p class="fib-line">b) 8 stars shared between 4 kids = <span class="blank empty" data-index="1" data-answer="2">___</span> each.</p>
+    <p class="fib-line">c) 9 pencils shared between 3 kids = <span class="blank empty" data-index="2" data-answer="3">___</span> each.</p>
+    <p class="fib-line">d) 12 sweets shared between 2 kids = <span class="blank empty" data-index="3" data-answer="6">___</span> each.</p>
+
+    <div class="fib-bank" id="fibBank">
+      <button class="chip" data-value="6">6</button>
+      <button class="chip" data-value="3">3</button>
+      <button class="chip" data-value="5">5</button>
+      <button class="chip" data-value="2">2</button>
+    </div>
+    <div class="feedback" id="fibFeedback"></div>
+    <div style="margin-top:14px;"><button class="btn secondary" onclick="resetFIB()">Reset activity</button></div>
+  </div>
+
+  <!-- ACTIVITY 3: MATCHING -->
+  <div class="card">
+    <h2><span class="num">3</span>Match the Pairs<span class="tag">Tap to connect</span></h2>
+    <p class="instructions">Tap one card. Then tap its match.</p>
+    <div class="match-wrap">
+      <div class="match-col" id="matchLeft"></div>
+      <div class="match-col" id="matchRight"></div>
+    </div>
+    <div class="feedback" id="matchFeedback"></div>
+    <div style="margin-top:14px;"><button class="btn secondary" onclick="resetMatch()">Reset activity</button></div>
+  </div>
+
+  <!-- ACTIVITY 4: QUIZ -->
+  <div class="card">
+    <h2><span class="num">4</span>Quick Quiz<span class="tag">Auto-graded</span></h2>
+    <p class="instructions">Pick the best answer. Then tap the check button.</p>
+    <div id="quiz"></div>
+    <button class="btn" id="submitQuiz" onclick="gradeQuiz()">Check my answers ✓</button>
+    <div class="score-card" id="scoreCard">
+      <div class="score-num" id="scoreNum">0/5</div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <button class="btn secondary" style="margin-top:14px;" onclick="resetQuiz()">Try again</button>
+    </div>
+  </div>
+
+  <-- <p class="footer-note">🍪 Prototype interactive worksheet — built to preview how PDF worksheets can become live, auto-checked activities in the LMS.</p> -->
+  </div><!-- /activitiesSection -->
+</div>
+
+<script>
+/* ================= STORY EXPLAINER ================= */
+const explainSteps = [
+  {
+    headline:"Sara's Cookie Jar",
+    visual:"🍪🍪🍪🍪🍪🍪🍪🍪",
+    caption:"Sara has 8 cookies. She has 2 friends: Ali and Mina.",
+    captionUr:"سارہ کے پاس 8 بسکٹ ہیں۔ اس کے 2 دوست ہیں: علی اور مینا۔",
+    newWord:null,
+    interactive:false
+  },
+  {
+    headline:"Share Them Equally!",
+    visual:"",
+    caption:"Drag cookies onto the plates. Give both friends the same amount.",
+    captionUr:"بسکٹ پلیٹوں پر گھسیٹیں۔ دونوں دوستوں کو برابر مقدار دیں۔",
+    newWord:{en:"Equally = the same amount for everyone", ur:"برابر = ہر ایک کے لیے یکساں مقدار"},
+    interactive:"share"
+  },
+  {
+    headline:"Great Sharing!",
+    visual:"🎉",
+    caption:"Ali and Mina both got 4 cookies each. That is sharing equally!",
+    captionUr:"علی اور مینا دونوں کو 4 بسکٹ ملے۔ اسے برابر بانٹنا کہتے ہیں!",
+    newWord:{en:"Share = give out to more than one person", ur:"بانٹنا = ایک سے زیادہ لوگوں میں دینا"},
+    interactive:false
+  },
+  {
+    headline:"The Big Idea",
+    visual:"",
+    caption:"8 cookies shared by 2 friends equals 4 each.",
+    captionUr:"8 بسکٹ 2 دوستوں میں بانٹے تو ہر ایک کو 4 ملتے ہیں۔",
+    newWord:{en:"Divide (÷) = split into equal groups", ur:"تقسیم (÷) = برابر گروپوں میں بانٹنا"},
+    interactive:"equation"
+  }
+];
+let explainStep = 0;
+let currentLang = 'en';
+let sharePlaced = { ali:0, mina:0 };
+let shareCookiesLeft = 8;
+
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll('#langToggle span').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('#langToggle span')[lang==='en'?0:1].classList.add('active');
+  stopExplainRead();
+  renderExplainScene();
+}
+
+function renderExplainDots(){
+  const el = document.getElementById('explainDots');
+  el.innerHTML='';
+  explainSteps.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className = 'explain-dot' + (i===explainStep ? ' active':'');
+    el.appendChild(d);
+  });
+}
+
+function renderExplainScene(){
+  const s = explainSteps[explainStep];
+  const scene = document.getElementById('explainScene');
+  const isUr = currentLang === 'ur';
+  const capClass = 'explain-caption' + (isUr ? ' urdu-text' : '');
+  const newWordHtml = s.newWord ? `<div class="new-word">🆕 ${isUr ? s.newWord.ur : s.newWord.en}</div>` : '';
+
+  if(s.interactive === 'share' && !(sharePlaced.ali===4 && sharePlaced.mina===4)){
+    scene.innerHTML = `
+      <h3 class="explain-headline display">${s.headline}</h3>
+      <p class="${capClass}">${isUr ? s.captionUr : s.caption}</p>
+      <div class="cookie-pool" id="pool"></div>
+      <div class="plates">
+        <div class="plate" id="plate-ali" data-name="ali">
+          <div class="face">👧</div><div class="pname">Ali</div>
+          <div class="held" id="held-ali"></div>
+          <div class="count-badge" id="count-ali">0</div>
+        </div>
+        <div class="plate" id="plate-mina" data-name="mina">
+          <div class="face">👦</div><div class="pname">Mina</div>
+          <div class="held" id="held-mina"></div>
+          <div class="count-badge" id="count-mina">0</div>
+        </div>
+      </div>
+      ${newWordHtml}
+      <p class="tap-hint">${isUr ? 'ایک ایک بسکٹ پلیٹ پر گھسیٹیں' : 'Drag one cookie at a time onto a plate'}</p>
+    `;
+    buildSharePool();
+    setupShareDrag();
+  } else if(s.interactive === 'equation'){
+    scene.innerHTML = `
+      <h3 class="explain-headline display">${s.headline}</h3>
+      <div class="eq-display" style="margin:6px 0;">8 <span class="op">÷</span> 2 <span class="op">=</span> 4</div>
+      <p class="${capClass}">${isUr ? s.captionUr : s.caption}</p>
+      ${newWordHtml}
+    `;
+  } else {
+    scene.innerHTML = `
+      <div class="explain-visual">${s.visual}</div>
+      <h3 class="explain-headline display">${s.headline}</h3>
+      <p class="${capClass}">${isUr ? s.captionUr : s.caption}</p>
+      ${newWordHtml}
+    `;
+  }
+  renderExplainDots();
+  updateExplainNav();
+}
+
+function buildSharePool(){
+  const pool = document.getElementById('pool');
+  if(!pool) return;
+  pool.innerHTML='';
+  shareCookiesLeft = 8; sharePlaced = {ali:0, mina:0};
+  for(let i=0;i<8;i++){
+    const c = document.createElement('div');
+    c.className='cookie'; c.textContent='🍪'; c.dataset.id=i;
+    pool.appendChild(c);
+  }
+  const heldAli = document.getElementById('held-ali');
+  const heldMina = document.getElementById('held-mina');
+  if(heldAli) heldAli.innerHTML='';
+  if(heldMina) heldMina.innerHTML='';
+  const cAli = document.getElementById('count-ali');
+  const cMina = document.getElementById('count-mina');
+  if(cAli) cAli.textContent='0';
+  if(cMina) cMina.textContent='0';
+}
+
+function setupShareDrag(){
+  const cookies = document.querySelectorAll('#pool .cookie');
+  const plates = document.querySelectorAll('.plate');
+  let dragEl=null;
+  cookies.forEach(c=>{
+    c.addEventListener('pointerdown', e=>{
+      if(c.classList.contains('gone')) return;
+      dragEl = c; c.setPointerCapture(e.pointerId);
+    });
+    c.addEventListener('pointerup', e=>{
+      if(dragEl!==c) return;
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const plate = el ? el.closest('.plate') : null;
+      plates.forEach(p=>p.classList.remove('over'));
+      if(plate){
+        const name = plate.dataset.name;
+        sharePlaced[name]++;
+        shareCookiesLeft--;
+        c.classList.add('gone');
+        const held = document.getElementById('held-'+name);
+        const span = document.createElement('span'); span.textContent='🍪';
+        held.appendChild(span);
+        document.getElementById('count-'+name).textContent = sharePlaced[name];
+        if(shareCookiesLeft===0){
+          if(sharePlaced.ali===4 && sharePlaced.mina===4){
+            setTimeout(()=>{ renderExplainScene(); }, 500);
+          } else {
+            setTimeout(()=>{ buildSharePool(); setupShareDrag(); }, 1200);
+          }
+        }
+      }
+      dragEl=null;
+    });
+  });
+}
+
+function updateExplainNav(){
+  const back = document.getElementById('explainBack');
+  const next = document.getElementById('explainNext');
+  back.disabled = explainStep===0;
+  const s = explainSteps[explainStep];
+  const blocked = s.interactive==='share' && !(sharePlaced.ali===4 && sharePlaced.mina===4);
+  next.disabled = blocked;
+  next.textContent = explainStep===explainSteps.length-1 ? 'Start the Activities! 🌟' : 'Next →';
+}
+
+function explainGo(dir){
+  stopExplainRead();
+  const target = explainStep + dir;
+  if(target < 0) return;
+  if(target >= explainSteps.length){ finishExplainer(); return; }
+  explainStep = target;
+  renderExplainScene();
+}
+
+function finishExplainer(){
+  document.getElementById('node-explain').classList.add('done');
+  document.getElementById('fill-explain').style.width='100%';
+  const section = document.getElementById('activitiesSection');
+  section.classList.remove('locked');
+  section.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+let explainSpeaking=false;
+function toggleExplainRead(){
+  const btn = document.getElementById('explainReadBtn');
+  if(explainSpeaking){ stopExplainRead(); return; }
+  if(!('speechSynthesis' in window)){ alert('Read-aloud is not supported in this browser.'); return; }
+  const s = explainSteps[explainStep];
+  const isUr = currentLang === 'ur';
+  const text = isUr ? s.captionUr : s.caption;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = 0.88; utter.pitch = 1.08;
+  if(isUr){
+    utter.lang = 'ur-PK';
+    const voices = speechSynthesis.getVoices();
+    const urVoice = voices.find(v=>v.lang && v.lang.toLowerCase().startsWith('ur'));
+    if(urVoice) utter.voice = urVoice;
+  } else { utter.lang = 'en-US'; }
+  utter.onend = ()=>{ explainSpeaking=false; btn.classList.remove('speaking'); };
+  speechSynthesis.speak(utter);
+  explainSpeaking = true; btn.classList.add('speaking');
+}
+function stopExplainRead(){
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  explainSpeaking=false;
+  const btn = document.getElementById('explainReadBtn');
+  if(btn) btn.classList.remove('speaking');
+}
+
+renderExplainScene();
+
+/* ---------------- PROGRESS TRACKER ---------------- */
+const progress = [false,false,false,false];
+function updateTracker(){
+  document.getElementById('node-0').classList.toggle('done', progress[0]);
+  document.getElementById('node-1').classList.toggle('done', progress[1]);
+  document.getElementById('node-2').classList.toggle('done', progress[2]);
+  document.getElementById('node-3').classList.toggle('done', progress[3]);
+  document.getElementById('fill-0').style.width = progress[0] ? '100%' : '0%';
+  document.getElementById('fill-1').style.width = progress[1] ? '100%' : '0%';
+  document.getElementById('fill-2').style.width = progress[2] ? '100%' : '0%';
+}
+
+/* ---------------- ACTIVITY 1: DRAG & DROP (share the balloons) ---------------- */
+const a1Names = ['a','b','c'];
+let a1Placed = {a:0, b:0, c:0};
+let a1Left = 9;
+
+function buildA1Pool(){
+  const pool = document.getElementById('a1-pool');
+  pool.innerHTML='';
+  a1Left = 9; a1Placed = {a:0, b:0, c:0};
+  for(let i=0;i<9;i++){
+    const b = document.createElement('div');
+    b.className='cookie'; b.textContent='🎈'; b.dataset.id=i;
+    pool.appendChild(b);
+  }
+  a1Names.forEach(n=>{
+    document.getElementById('a1-held-'+n).innerHTML='';
+    document.getElementById('a1-count-'+n).textContent='0';
+    document.getElementById('a1-plate-'+n).classList.remove('correct','wrong');
+  });
+}
+
+function setupDnD(){
+  buildA1Pool();
+  const balloons = document.querySelectorAll('#a1-pool .cookie');
+  let dragEl=null;
+  balloons.forEach(b=>{
+    b.addEventListener('pointerdown', e=>{
+      if(b.classList.contains('gone')) return;
+      dragEl = b; b.setPointerCapture(e.pointerId);
+    });
+    b.addEventListener('pointerup', e=>{
+      if(dragEl!==b) return;
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const plate = el ? el.closest('#a1-plate-a, #a1-plate-b, #a1-plate-c') : null;
+      if(plate){
+        const name = plate.dataset.name;
+        a1Placed[name]++;
+        a1Left--;
+        b.classList.add('gone');
+        const held = document.getElementById('a1-held-'+name);
+        const span = document.createElement('span'); span.textContent='🎈';
+        held.appendChild(span);
+        document.getElementById('a1-count-'+name).textContent = a1Placed[name];
+        if(a1Left===0) checkDnDComplete();
+      }
+      dragEl=null;
+    });
+  });
+}
+
+function checkDnDComplete(){
+  const vals = a1Names.map(n=>a1Placed[n]);
+  const allEqual = vals.every(v=>v===vals[0]);
+  const fb = document.getElementById('dndFeedback');
+  fb.classList.add('show');
+  a1Names.forEach(n=>{
+    const plate = document.getElementById('a1-plate-'+n);
+    plate.classList.toggle('correct', allEqual);
+    plate.classList.toggle('wrong', !allEqual);
+  });
+  if(allEqual){
+    fb.className='feedback show good';
+    fb.textContent='🎉 Great sharing! Everyone got the same number of balloons.';
+    progress[0]=true; updateTracker();
+  } else {
+    fb.className='feedback show bad';
+    fb.textContent='Not quite equal yet — tap "Reset activity" and try again.';
+  }
+}
+function resetDnD(){
+  document.getElementById('dndFeedback').className='feedback';
+  buildA1Pool();
+  progress[0]=false; updateTracker();
+}
+setupDnD();
+
+/* ---------------- ACTIVITY 2: FILL IN THE BLANK ---------------- */
+let fibSelectedChip = null;
+function setupFIB(){
+  document.querySelectorAll('#fibBank .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      if(chip.classList.contains('used')) return;
+      document.querySelectorAll('#fibBank .chip').forEach(c=>c.style.outline='none');
+      fibSelectedChip = chip;
+      chip.style.outline='3px solid '+getComputedStyle(document.documentElement).getPropertyValue('--crust');
+    });
+  });
+  document.querySelectorAll('.blank').forEach(blank=>{
+    blank.addEventListener('click', ()=>{
+      if(!blank.classList.contains('empty')){
+        const usedChip = [...document.querySelectorAll('#fibBank .chip')].find(c=>c.dataset.value===blank.dataset.filled && c.classList.contains('used'));
+        if(usedChip) usedChip.classList.remove('used');
+        blank.textContent='___';
+        blank.classList.add('empty');
+        blank.removeAttribute('data-filled');
+        blank.style.color='';
+        return;
+      }
+      if(!fibSelectedChip) return;
+      blank.textContent = fibSelectedChip.dataset.value;
+      blank.dataset.filled = fibSelectedChip.dataset.value;
+      blank.classList.remove('empty');
+      fibSelectedChip.classList.add('used');
+      fibSelectedChip.style.outline='none';
+      fibSelectedChip=null;
+      checkFIBComplete();
+    });
+  });
+}
+function checkFIBComplete(){
+  const blanks = document.querySelectorAll('.blank');
+  const allFilled = [...blanks].every(b=>!b.classList.contains('empty'));
+  if(!allFilled) return;
+  let allCorrect=true;
+  blanks.forEach(b=>{
+    const correct = b.dataset.filled === b.dataset.answer;
+    b.style.color = correct ? '#3fae8c' : '#a13c22';
+    if(!correct) allCorrect=false;
+  });
+  const fb = document.getElementById('fibFeedback');
+  fb.classList.add('show');
+  if(allCorrect){
+    fb.className='feedback show good';
+    fb.textContent='🌟 Perfect! Every blank is correct.';
+    progress[1]=true; updateTracker();
+  } else {
+    fb.className='feedback show bad';
+    fb.textContent='Some numbers are in the wrong spot — tap a blank to clear it and retry.';
+  }
+}
+function resetFIB(){
+  document.querySelectorAll('.blank').forEach(b=>{
+    b.textContent='___'; b.classList.add('empty'); b.removeAttribute('data-filled'); b.style.color='';
+  });
+  document.querySelectorAll('#fibBank .chip').forEach(c=>{c.classList.remove('used'); c.style.outline='none';});
+  document.getElementById('fibFeedback').className='feedback';
+  fibSelectedChip=null;
+  progress[1]=false; updateTracker();
+}
+setupFIB();
+
+/* ---------------- ACTIVITY 3: MATCHING ---------------- */
+const pairs = [
+  {id:'p1', left:'4 cookies, 2 friends', right:'2 each'},
+  {id:'p2', left:'9 cookies, 3 friends', right:'3 each'},
+  {id:'p3', left:'8 cookies, 2 friends', right:'4 each'},
+  {id:'p4', left:'10 cookies, 2 friends', right:'5 each'},
+  {id:'p5', left:'12 cookies, 2 friends', right:'6 each'},
+];
+let matchLeftSel=null, matchedCount=0;
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-0.5); }
+function setupMatch(){
+  const leftCol = document.getElementById('matchLeft');
+  const rightCol = document.getElementById('matchRight');
+  leftCol.innerHTML=''; rightCol.innerHTML='';
+  shuffle(pairs).forEach(p=>{
+    const el = document.createElement('div');
+    el.className='match-item'; el.textContent=p.left; el.dataset.id=p.id;
+    el.addEventListener('click', ()=> selectLeft(el, p.id));
+    leftCol.appendChild(el);
+  });
+  shuffle(pairs).forEach(p=>{
+    const el = document.createElement('div');
+    el.className='match-item'; el.textContent=p.right; el.dataset.id=p.id;
+    el.addEventListener('click', ()=> selectRight(el, p.id));
+    rightCol.appendChild(el);
+  });
+  matchLeftSel=null; matchedCount=0;
+}
+function selectLeft(el, id){
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll('#matchLeft .match-item').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  matchLeftSel = {el, id};
+}
+function selectRight(el, id){
+  if(el.classList.contains('matched') || !matchLeftSel) return;
+  if(matchLeftSel.id === id){
+    matchLeftSel.el.classList.remove('selected');
+    matchLeftSel.el.classList.add('matched');
+    el.classList.add('matched');
+    matchLeftSel=null;
+    matchedCount++;
+    if(matchedCount === pairs.length){
+      const fb = document.getElementById('matchFeedback');
+      fb.className='feedback show good';
+      fb.textContent='🔗 All matched! You know your sharing facts well.';
+      progress[2]=true; updateTracker();
+    }
+  } else {
+    el.classList.add('wrong');
+    matchLeftSel.el.classList.add('wrong');
+    setTimeout(()=>{
+      el.classList.remove('wrong');
+      matchLeftSel && matchLeftSel.el.classList.remove('wrong','selected');
+      matchLeftSel=null;
+    }, 350);
+  }
+}
+function resetMatch(){
+  document.getElementById('matchFeedback').className='feedback';
+  setupMatch();
+  progress[2]=false; updateTracker();
+}
+setupMatch();
+
+/* ---------------- ACTIVITY 4: QUIZ ---------------- */
+const quizData = [
+  {q:"8 toys shared by 2 kids. How many toys does each kid get?", opts:["2","4","6","8"], a:1},
+  {q:"Sharing equally means:", opts:["Everyone gets the same amount","One person gets everything","Only the biggest kid gets more","Nobody gets any"], a:0},
+  {q:"10 ÷ 2 = ?", opts:["4","5","6","20"], a:1},
+  {q:"True or False: 6 ÷ 3 = 2", opts:["True","False"], a:0},
+  {q:"12 candies shared by 3 friends. How many does each friend get?", opts:["3","4","5","6"], a:1},
+];
+let quizAnswers = new Array(quizData.length).fill(null);
+function renderQuiz(){
+  const container = document.getElementById('quiz');
+  container.innerHTML='';
+  quizData.forEach((item, qi)=>{
+    const block = document.createElement('div');
+    block.className='q-block';
+    const qText = document.createElement('div');
+    qText.className='q-text'; qText.textContent=(qi+1)+'. '+item.q;
+    block.appendChild(qText);
+    const opts = document.createElement('div'); opts.className='opts';
+    item.opts.forEach((optText, oi)=>{
+      const b = document.createElement('button');
+      b.className='opt'; b.textContent=optText;
+      b.addEventListener('click', ()=>{
+        if(b.disabled) return;
+        opts.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+        b.classList.add('selected');
+        quizAnswers[qi]=oi;
+      });
+      opts.appendChild(b);
+    });
+    block.appendChild(opts);
+    container.appendChild(block);
+  });
+}
+renderQuiz();
+function gradeQuiz(){
+  if(quizAnswers.includes(null)){ alert('Please answer every question before checking!'); return; }
+  let score=0;
+  document.querySelectorAll('.q-block').forEach((block, qi)=>{
+    const opts = block.querySelectorAll('.opt');
+    opts.forEach((o,oi)=>{
+      o.disabled=true;
+      if(oi===quizData[qi].a) o.classList.add('correct');
+      else if(oi===quizAnswers[qi]) o.classList.add('incorrect');
+    });
+    if(quizAnswers[qi]===quizData[qi].a) score++;
+  });
+  document.getElementById('submitQuiz').style.display='none';
+  const card = document.getElementById('scoreCard');
+  card.classList.add('show');
+  document.getElementById('scoreNum').textContent = score+'/'+quizData.length;
+  const msg = score===quizData.length ? "🍪 Full marks! You're a sharing expert!"
+    : score>=quizData.length-1 ? "🎉 Almost perfect — great work!"
+    : score>=quizData.length/2 ? "🙂 Good try — review sharing and try again!"
+    : "🧁 Keep practicing — review the activities above and try again!";
+  document.getElementById('scoreMsg').textContent = msg;
+  progress[3]=true; updateTracker();
+}
+function resetQuiz(){
+  quizAnswers = new Array(quizData.length).fill(null);
+  renderQuiz();
+  document.getElementById('submitQuiz').style.display='inline-block';
+  document.getElementById('scoreCard').classList.remove('show');
+  progress[3]=false; updateTracker();
+}
+
+updateTracker();
+</script>
+</body>
+</html>

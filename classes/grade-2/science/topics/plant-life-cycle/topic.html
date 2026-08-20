@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Cycle of Plants — Interactive Worksheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Noto+Nastaliq+Urdu:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --soil:#6b4423;
+    --soil-dark:#4a2f18;
+    --leaf:#4c9a2a;
+    --leaf-dark:#2f6d17;
+    --leaf-light:#a8d98a;
+    --sun:#ffc93c;
+    --sky:#7ec8e3;
+    --paper:#fbf7ee;
+    --paper-2:#f2ead8;
+    --ink:#20351f;
+    --ink-soft:#4a5a45;
+    --coral:#ef7a5c;
+    --white:#ffffff;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 10% 0%, #eaf6db 0%, transparent 45%),
+      radial-gradient(circle at 90% 10%, #dff1ff 0%, transparent 40%),
+      var(--paper);
+    font-family:'Nunito', sans-serif;
+    color:var(--ink);
+    padding-bottom:60px;
+  }
+  h1,h2,h3, .display{
+    font-family:'Fredoka', sans-serif;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background: linear-gradient(180deg, #3f7a2b 0%, var(--leaf) 55%, #5fae3a 100%);
+    color:white;
+    padding:34px 20px 26px;
+    border-radius:0 0 32px 32px;
+    box-shadow:0 8px 24px rgba(47,109,23,0.25);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:0; height:26px;
+    background: repeating-linear-gradient(90deg, var(--soil) 0 18px, var(--soil-dark) 18px 20px);
+    opacity:0.9;
+  }
+  .hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:2;}
+  .eyebrow{
+    font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+    background:rgba(255,255,255,0.18); display:inline-block;
+    padding:4px 12px;border-radius:999px;margin-bottom:10px;font-weight:700;
+  }
+  h1.title{font-size:28px;margin:0 0 6px;font-weight:700;}
+  .subtitle{font-size:15px;opacity:.92;margin:0 0 22px;font-weight:600;}
+
+  /* growth tracker */
+  .tracker{display:flex;align-items:flex-end;gap:0;margin-top:10px;}
+  .stem-wrap{display:flex;align-items:center;flex:1;}
+  .node{
+    width:40px;height:40px;border-radius:50%;
+    background:rgba(255,255,255,0.25); border:3px solid rgba(255,255,255,0.6);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px; flex-shrink:0; transition:all .4s ease;
+  }
+  .node.done{background:var(--sun); border-color:#fff; color:var(--soil-dark); transform:scale(1.08);}
+  .stem{height:4px;flex:1;background:rgba(255,255,255,0.3);position:relative;overflow:hidden;}
+  .stem-fill{height:100%;width:0%;background:var(--sun);transition:width .5s ease;}
+  .tracker-labels{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;font-weight:700;opacity:.85;}
+  .tracker-labels span{width:60px;text-align:center;}
+
+  /* ---------- LAYOUT ---------- */
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px;}
+  .meta-strip{
+    display:flex;flex-wrap:wrap;gap:10px;margin:-14px 0 26px;position:relative;z-index:3;
+  }
+  .meta-chip{
+    background:var(--white); border:2px solid var(--paper-2);
+    border-radius:14px; padding:8px 14px; font-size:13px; font-weight:700;
+    color:var(--ink-soft); box-shadow:0 4px 10px rgba(0,0,0,0.05);
+  }
+  .meta-chip b{color:var(--leaf-dark);}
+
+  .card{
+    background:var(--white);
+    border-radius:var(--radius);
+    padding:24px 22px;
+    margin-bottom:24px;
+    box-shadow:0 6px 18px rgba(50,70,40,0.08);
+    border:2px solid #eef2e6;
+  }
+  .card h2{
+    font-size:20px;margin:0 0 4px;color:var(--leaf-dark);
+    display:flex;align-items:center;gap:10px;
+  }
+  .card h2 .num{
+    background:var(--leaf); color:white; width:30px;height:30px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+  }
+  .instructions{font-size:14px;color:var(--ink-soft);margin:0 0 18px;font-weight:600;}
+  .tag{
+    display:inline-block;font-size:11px;font-weight:800;letter-spacing:.03em;
+    background:#fff3e0;color:#b3690b;padding:2px 9px;border-radius:999px;margin-left:8px;
+    vertical-align:middle;text-transform:uppercase;
+  }
+
+  /* ---------- DRAG & DROP ---------- */
+  .stages{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;margin-bottom:22px;}
+  .slot{
+    flex:1; min-width:130px;
+    background:var(--paper); border:3px dashed #cdbfa0; border-radius:16px;
+    padding:14px 10px; text-align:center; min-height:118px;
+    display:flex; flex-direction:column; align-items:center; justify-content:flex-end;
+    transition:all .2s ease; position:relative;
+  }
+  .slot .icon{font-size:32px;margin-bottom:6px;}
+  .slot .placed{
+    background:var(--leaf-light); border:2px solid var(--leaf-dark);
+    border-radius:10px; padding:6px 8px; font-size:13px; font-weight:800; color:var(--leaf-dark);
+    width:100%;
+  }
+  .slot.over{border-color:var(--leaf); background:#eef8e6;}
+  .slot.correct{border-style:solid; border-color:var(--leaf);}
+  .slot.wrong .placed{background:#ffd9d0;border-color:var(--coral);color:#a13c22;}
+
+  .word-bank{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .tile{
+    background:var(--sun); color:var(--soil-dark); font-weight:800; font-size:14px;
+    padding:10px 16px; border-radius:12px; cursor:grab; user-select:none;
+    box-shadow:0 3px 0 #d9a824; touch-action:none;
+  }
+  .tile.dragging{opacity:.4;}
+  .tile.used{visibility:hidden;}
+
+  /* ---------- FILL IN BLANK ---------- */
+  .fib-line{font-size:16px;line-height:2.4;font-weight:600;margin-bottom:6px;}
+  .blank{
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:110px; padding:4px 10px; border-bottom:3px solid var(--soil);
+    font-weight:800; color:var(--leaf-dark); cursor:pointer; margin:0 4px;
+  }
+  .blank.empty{color:#b8b8b8;}
+  .fib-bank{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;}
+  .chip{
+    background:var(--sky); color:#0a3049; font-weight:800; font-size:14px;
+    padding:9px 15px; border-radius:12px; cursor:pointer; box-shadow:0 3px 0 #4d9fc2;
+    border:none;
+  }
+  .chip:active{transform:translateY(2px);box-shadow:none;}
+  .chip.used{opacity:.35;pointer-events:none;}
+
+  /* ---------- MATCHING ---------- */
+  .match-wrap{display:flex;gap:18px;position:relative;}
+  .match-col{flex:1;display:flex;flex-direction:column;gap:10px;}
+  .match-item{
+    background:var(--paper); border:2px solid #e2d9c2; border-radius:12px;
+    padding:12px 14px; font-weight:700; font-size:14px; cursor:pointer; text-align:left;
+    transition:all .15s ease;
+  }
+  .match-item.selected{border-color:var(--sky);background:#eaf7fd;}
+  .match-item.matched{border-color:var(--leaf);background:#eaf8e0;color:var(--leaf-dark);cursor:default;}
+  .match-item.wrong{animation:shake .3s;border-color:var(--coral);}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+
+  /* ---------- MCQ ---------- */
+  .q-block{margin-bottom:22px;}
+  .q-text{font-weight:800;font-size:15px;margin-bottom:10px;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(max-width:480px){.opts{grid-template-columns:1fr;}}
+  .opt{
+    background:var(--paper); border:2px solid #e2d9c2; border-radius:12px;
+    padding:11px 14px; font-weight:700; font-size:14px; text-align:left; cursor:pointer;
+  }
+  .opt.selected{border-color:var(--sky);background:#eaf7fd;}
+  .opt.correct{border-color:var(--leaf);background:#e2f6d5;color:var(--leaf-dark);}
+  .opt.incorrect{border-color:var(--coral);background:#ffe3da;color:#a13c22;}
+  .opt[disabled]{cursor:default;}
+
+  .btn{
+    background:var(--leaf); color:white; border:none; font-weight:800; font-size:15px;
+    padding:13px 24px; border-radius:14px; cursor:pointer; box-shadow:0 4px 0 var(--leaf-dark);
+    font-family:'Fredoka',sans-serif;
+  }
+  .btn:active{transform:translateY(3px);box-shadow:none;}
+  .btn.secondary{background:var(--white);color:var(--leaf-dark);border:2px solid var(--leaf);box-shadow:none;font-size:13px;padding:9px 16px;}
+  .btn:disabled{background:#cfd8c9;box-shadow:none;cursor:not-allowed;}
+
+  .feedback{
+    margin-top:14px;padding:12px 16px;border-radius:12px;font-weight:700;font-size:14px;display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.good{background:#e2f6d5;color:var(--leaf-dark);}
+  .feedback.bad{background:#ffe3da;color:#a13c22;}
+
+  .score-card{
+    text-align:center;padding:28px 20px;border-radius:20px;
+    background:linear-gradient(135deg,#fff9e8,#fff3d0);
+    border:2px solid var(--sun); display:none;
+  }
+  .score-card.show{display:block;}
+  .score-num{font-family:'Fredoka';font-size:44px;font-weight:700;color:var(--soil-dark);}
+  .score-msg{font-weight:700;color:var(--ink-soft);margin-top:6px;}
+
+  .footer-note{
+    text-align:center;font-size:12px;color:#9aa598;margin-top:30px;font-weight:600;
+  }
+
+  /* ---------- EXPLAINER (story) ---------- */
+  .explainer-card{
+    border:2px solid var(--sun);
+    background:linear-gradient(180deg,#fffdf6,var(--white));
+  }
+  .explain-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+  .explain-dots{display:flex;gap:6px;}
+  .explain-dot{width:8px;height:8px;border-radius:50%;background:#e5ddc8;transition:all .3s;}
+  .explain-dot.active{background:var(--leaf);width:20px;border-radius:5px;}
+  .read-btn{
+    background:var(--paper); border:2px solid var(--paper-2); border-radius:999px;
+    padding:6px 13px; font-weight:800; font-size:12px; color:var(--leaf-dark); cursor:pointer;
+  }
+  .read-btn.speaking{background:var(--leaf); color:white; border-color:var(--leaf-dark);}
+  .lang-toggle{
+    background:var(--paper); border:2px solid var(--paper-2); border-radius:999px;
+    padding:6px 4px; font-weight:800; font-size:12px; color:var(--leaf-dark); cursor:pointer;
+    display:flex; gap:2px;
+  }
+  .lang-toggle span{padding:4px 10px; border-radius:999px;}
+  .lang-toggle span.active{background:var(--leaf); color:white;}
+  .explain-actions{display:flex; gap:8px; align-items:center;}
+
+  .new-word{
+    display:inline-flex; align-items:center; gap:6px; background:#fff3e0; color:#b3690b;
+    font-weight:800; font-size:12.5px; padding:6px 12px; border-radius:999px; margin:8px auto 0;
+  }
+
+  .explain-scene{ text-align:center; padding:14px 4px 6px; min-height:230px; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  .explain-visual{font-size:64px; margin-bottom:10px; line-height:1;}
+  .explain-headline{font-size:19px; margin:0 0 6px; color:var(--leaf-dark);}
+  .explain-caption{font-size:14.5px; color:var(--ink-soft); font-weight:600; line-height:1.55; max-width:440px; margin:0 auto;}
+  .explain-caption.urdu-text{direction:rtl; font-family:'Noto Nastaliq Urdu', serif; font-size:17px; line-height:2;}
+
+  .tap-duo{display:flex; gap:22px; justify-content:center; margin-top:16px;}
+  .tap-icon{
+    width:64px;height:64px;border-radius:50%; background:var(--paper); border:3px solid #e2d9c2;
+    display:flex;align-items:center;justify-content:center; font-size:28px; cursor:pointer;
+    transition:all .2s ease;
+  }
+  .tap-icon.done{background:var(--leaf-light); border-color:var(--leaf-dark); transform:scale(1.08);}
+  .tap-hint{font-size:11px;font-weight:800;color:#b3a486;margin-top:16px;}
+
+  .explain-nav{
+    display:flex; justify-content:space-between; align-items:center; margin-top:18px;
+    padding-top:14px; border-top:2px solid #f3ecd8;
+  }
+  .explain-nav .nav-btn{
+    font-family:'Fredoka',sans-serif; font-weight:700; font-size:14px;
+    padding:10px 20px; border-radius:12px; border:none; cursor:pointer;
+  }
+  .explain-nav .nav-btn.primary{background:var(--leaf); color:white; box-shadow:0 4px 0 var(--leaf-dark);}
+  .explain-nav .nav-btn.primary:active{transform:translateY(3px);box-shadow:none;}
+  .explain-nav .nav-btn.primary:disabled{background:#cfd8c9; box-shadow:none; cursor:not-allowed;}
+  .explain-nav .nav-btn.ghost{background:none; color:#b5ab94;}
+  .explain-nav .nav-btn.ghost:disabled{opacity:.3;}
+
+  /* activities lock */
+  .lock-banner{
+    display:flex; align-items:center; gap:10px; background:#f2ead8; border:2px dashed #cdbfa0;
+    border-radius:16px; padding:14px 16px; font-weight:800; font-size:13.5px; color:#8a7a5c;
+    margin-bottom:20px;
+  }
+  #activitiesSection.locked .card{opacity:0.4; filter:grayscale(0.5); pointer-events:none;}
+  #activitiesSection.locked .lock-banner{display:flex;}
+  #activitiesSection:not(.locked) .lock-banner{display:none;}
+  #activitiesSection{transition:opacity .5s ease;}
+</style>
+</head>
+<body>
+
+<div style="padding:10px 18px;"><a href="../../subject.html" style="font-family:'Fredoka';font-weight:700;font-size:14px;color:#2f6d17;text-decoration:none;">← Back to subjects</a></div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">🌾 Learning App · Grade 2 Science</span>
+    <h1 class="title">Life Cycle of Plants</h1>
+    <p class="subtitle">Grow your knowledge one stage at a time — complete every activity to make the plant bloom!</p>
+    <div class="stem-wrap">
+      <div class="node" id="node-explain">📖</div>
+      <div class="stem"><div class="stem-fill" id="fill-explain"></div></div>
+      <div class="node" id="node-0">🌰</div>
+      <div class="stem"><div class="stem-fill" id="fill-0"></div></div>
+      <div class="node" id="node-1">🌱</div>
+      <div class="stem"><div class="stem-fill" id="fill-1"></div></div>
+      <div class="node" id="node-2">🔗</div>
+      <div class="stem"><div class="stem-fill" id="fill-2"></div></div>
+      <div class="node" id="node-3">🌻</div>
+    </div>
+    <div class="tracker-labels">
+      <span>Learn it</span><span>Label it</span><span>Fill blanks</span><span>Match it</span><span>Quiz</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="meta-strip">
+    <div class="meta-chip">Topic Code: <b>SB-SCI-G2-U3-T2</b></div>
+    <div class="meta-chip">Time: <b>~15 min</b></div>
+    <div class="meta-chip">Type: <b>Interactive</b></div>
+  </div>
+
+  <!-- VIDEO LESSON -->
+  <div class="card">
+    <h2><span class="num">🎥</span>Watch & Learn<span class="tag">Video</span></h2>
+    <p class="instructions">Watch this short video first. Then try the story below.</p>
+    <div style="position:relative; padding-bottom:56.25%; height:0; border-radius:14px; overflow:hidden;">
+      <iframe src="https://www.youtube.com/embed/2SBVz4MgeIE"
+        style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+        title="Plant Life Cycle video lesson" allowfullscreen
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
+    </div>
+  </div>
+
+  <!-- STORY EXPLAINER -->
+  <div class="card explainer-card" id="explainerCard">
+    <div class="explain-top">
+      <div class="explain-dots" id="explainDots"></div>
+      <div class="explain-actions">
+        <div class="lang-toggle" id="langToggle">
+          <span class="active" onclick="setLang('en')">EN</span><span onclick="setLang('ur')">اردو</span>
+        </div>
+        <button class="read-btn" id="explainReadBtn" onclick="toggleExplainRead()">🔊 Read to me</button>
+      </div>
+    </div>
+    <div class="explain-scene" id="explainScene"></div>
+    <div class="explain-nav">
+      <button class="nav-btn ghost" id="explainBack" onclick="explainGo(-1)">← Back</button>
+      <button class="nav-btn primary" id="explainNext" onclick="explainGo(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- ACTIVITIES (unlocks after the story) -->
+  <div id="activitiesSection" class="locked">
+  <div class="lock-banner">🔒 Finish the story above first — then these activities will unlock!</div>
+
+  <!-- ACTIVITY 1: DRAG AND DROP -->
+  <div class="card">
+    <h2><span class="num">1</span>Label the Stages<span class="tag">Drag & Drop</span></h2>
+    <p class="instructions">Drag each word to the right picture.</p>
+    <div class="stages" id="stages">
+      <div class="slot" data-answer="seed"><div class="icon">🟤</div></div>
+      <div class="slot" data-answer="germination"><div class="icon">🌾</div></div>
+      <div class="slot" data-answer="seedling"><div class="icon">🌿</div></div>
+      <div class="slot" data-answer="mature"><div class="icon">🌻</div></div>
+    </div>
+    <div class="word-bank" id="wordBank">
+      <div class="tile" draggable="true" data-value="seedling">Seedling</div>
+      <div class="tile" draggable="true" data-value="mature">Mature Plant</div>
+      <div class="tile" draggable="true" data-value="seed">Seed</div>
+      <div class="tile" draggable="true" data-value="germination">Germination</div>
+    </div>
+    <div class="feedback" id="dndFeedback"></div>
+    <div style="margin-top:14px;"><button class="btn secondary" onclick="resetDnD()">Reset activity</button></div>
+  </div>
+
+  <!-- ACTIVITY 2: FILL IN THE BLANK -->
+  <div class="card">
+    <h2><span class="num">2</span>Fill in the Blanks<span class="tag">Tap to fill</span></h2>
+    <p class="instructions">Tap a word. Then tap the blank.</p>
+
+    <p class="fib-line">a) A plant begins its life as a <span class="blank empty" data-index="0" data-answer="seed">______</span>.</p>
+    <p class="fib-line">b) <span class="blank empty" data-index="1" data-answer="germination">______</span> happens when a seed starts to grow after getting water, air and warmth.</p>
+    <p class="fib-line">c) Roots absorb water and <span class="blank empty" data-index="2" data-answer="nutrients">______</span> from the soil.</p>
+    <p class="fib-line">d) <span class="blank empty" data-index="3" data-answer="pollination">______</span> helps flowers make new seeds.</p>
+
+    <div class="fib-bank" id="fibBank">
+      <button class="chip" data-value="germination">germination</button>
+      <button class="chip" data-value="pollination">pollination</button>
+      <button class="chip" data-value="seed">seed</button>
+      <button class="chip" data-value="nutrients">nutrients</button>
+    </div>
+    <div class="feedback" id="fibFeedback"></div>
+    <div style="margin-top:14px;"><button class="btn secondary" onclick="resetFIB()">Reset activity</button></div>
+  </div>
+
+  <!-- ACTIVITY 3: MATCHING -->
+  <div class="card">
+    <h2><span class="num">3</span>Match the Pairs<span class="tag">Tap to connect</span></h2>
+    <p class="instructions">Tap one card. Then tap its match.</p>
+    <div class="match-wrap">
+      <div class="match-col" id="matchLeft"></div>
+      <div class="match-col" id="matchRight"></div>
+    </div>
+    <div class="feedback" id="matchFeedback"></div>
+    <div style="margin-top:14px;"><button class="btn secondary" onclick="resetMatch()">Reset activity</button></div>
+  </div>
+
+  <!-- ACTIVITY 4: QUIZ -->
+  <div class="card">
+    <h2><span class="num">4</span>Quick Quiz<span class="tag">Auto-graded</span></h2>
+    <p class="instructions">Pick the best answer. Then tap the check button.</p>
+    <div id="quiz"></div>
+    <button class="btn" id="submitQuiz" onclick="gradeQuiz()">Check my answers ✓</button>
+    <div class="score-card" id="scoreCard">
+      <div class="score-num" id="scoreNum">0/5</div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <button class="btn secondary" style="margin-top:14px;" onclick="resetQuiz()">Try again</button>
+    </div>
+  </div>
+
+  <p class="footer-note">🌱 Prototype interactive worksheet — built to preview how PDF worksheets can become live, auto-checked activities in the LMS.</p>
+  </div><!-- /activitiesSection -->
+</div>
+
+<script>
+/* ================= STORY EXPLAINER ================= */
+const explainSteps = [
+  {
+    headline:"Meet the Seed",
+    visual:"🟤",
+    caption:"This is a seed. It looks like a small stone. But a baby plant is sleeping inside!",
+    captionUr:"یہ ایک بیج ہے۔ یہ چھوٹے پتھر جیسا لگتا ہے۔ لیکن اس کے اندر ایک چھوٹا پودا سویا ہوا ہے!",
+    newWord:null,
+    interactive:false
+  },
+  {
+    headline:"Germination",
+    visual:"🌰",
+    caption:"Water and sun wake up the seed. It starts to grow.",
+    captionUr:"پانی اور سورج بیج کو جگاتے ہیں۔ یہ اگنا شروع ہوتا ہے۔",
+    tapCaption:"Tap the water. Tap the sun. Watch the seed wake up!",
+    tapCaptionUr:"پانی پر ٹیپ کریں۔ سورج پر ٹیپ کریں۔ بیج کو جاگتے دیکھیں!",
+    newWord:{en:"Germination = seed starts to grow", ur:"انکرن = بیج کا اگنا شروع ہونا"},
+    interactive:"grow"
+  },
+  {
+    headline:"Seedling",
+    visual:"🌱",
+    caption:"The seed opens. A tiny plant comes out with two small leaves.",
+    captionUr:"بیج کھلتا ہے۔ ایک چھوٹا پودا دو چھوٹے پتوں کے ساتھ نکلتا ہے۔",
+    newWord:{en:"Seedling = a very young plant", ur:"پنیری = ایک بہت چھوٹا پودا"},
+    interactive:false
+  },
+  {
+    headline:"Mature Plant",
+    visual:"🌻",
+    caption:"The plant grows big and tall. It grows a beautiful flower.",
+    captionUr:"پودا بڑا اور لمبا ہوتا ہے۔ اس میں ایک خوبصورت پھول اگتا ہے۔",
+    newWord:{en:"Mature = fully grown", ur:"بالغ = مکمل طور پر اگا ہوا"},
+    interactive:false
+  },
+  {
+    headline:"Pollination",
+    visual:"🐝🌼",
+    caption:"A bee visits the flower. It carries yellow dust to make new seeds.",
+    captionUr:"ایک شہد کی مکھی پھول پر آتی ہے۔ وہ زرد گرد لے جاتی ہے جس سے نئے بیج بنتے ہیں۔",
+    newWord:{en:"Pollination = bees help make new seeds", ur:"پولینیشن = مکھیاں نئے بیج بنانے میں مدد کرتی ہیں"},
+    interactive:false
+  },
+  {
+    headline:"Seed Dispersal",
+    visual:"🌬️🌾",
+    caption:"Wind blows the seeds far away. They land and grow into new plants!",
+    captionUr:"ہوا بیجوں کو دور اڑا لے جاتی ہے۔ وہ گرتے ہیں اور نئے پودے بنتے ہیں!",
+    newWord:{en:"Dispersal = seeds travel to a new place", ur:"پھیلاؤ = بیجوں کا نئی جگہ جانا"},
+    interactive:false
+  },
+];
+let explainStep = 0;
+let grownDone = false;
+let tappedWater=false, tappedSun=false;
+let currentLang = 'en';
+
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll('#langToggle span').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('#langToggle span')[lang==='en'?0:1].classList.add('active');
+  stopExplainRead();
+  renderExplainScene();
+}
+
+function renderExplainDots(){
+  const el = document.getElementById('explainDots');
+  el.innerHTML='';
+  explainSteps.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className = 'explain-dot' + (i===explainStep ? ' active':'');
+    el.appendChild(d);
+  });
+}
+
+function renderExplainScene(){
+  const s = explainSteps[explainStep];
+  const scene = document.getElementById('explainScene');
+  const isUr = currentLang === 'ur';
+  const capClass = 'explain-caption' + (isUr ? ' urdu-text' : '');
+
+  const newWordHtml = s.newWord
+    ? `<div class="new-word">🆕 ${isUr ? s.newWord.ur : s.newWord.en}</div>`
+    : '';
+
+  if(s.interactive === 'grow' && !grownDone){
+    const tapText = isUr ? s.tapCaptionUr : s.tapCaption;
+    scene.innerHTML = `
+      <div class="explain-visual" id="growVisual">🌰</div>
+      <h3 class="explain-headline display">${s.headline}</h3>
+      <p class="${capClass}">${tapText}</p>
+      <div class="tap-duo">
+        <div class="tap-icon" id="tapWater" onclick="tapGrow('water')">💧</div>
+        <div class="tap-icon" id="tapSun" onclick="tapGrow('sun')">☀️</div>
+      </div>
+      <p class="tap-hint">${isUr ? 'دونوں پر ٹیپ کریں' : 'Tap both to continue'}</p>
+    `;
+  } else {
+    scene.innerHTML = `
+      <div class="explain-visual">${s.visual}</div>
+      <h3 class="explain-headline display">${s.headline}</h3>
+      <p class="${capClass}">${isUr ? s.captionUr : s.caption}</p>
+      ${newWordHtml}
+    `;
+  }
+  renderExplainDots();
+  updateExplainNav();
+}
+
+function tapGrow(which){
+  if(which==='water') tappedWater=true;
+  if(which==='sun') tappedSun=true;
+  const wEl = document.getElementById('tapWater');
+  const sEl = document.getElementById('tapSun');
+  if(wEl) wEl.classList.toggle('done', tappedWater);
+  if(sEl) sEl.classList.toggle('done', tappedSun);
+  if(tappedWater && tappedSun){
+    grownDone = true;
+    setTimeout(()=>{ renderExplainScene(); }, 400);
+  }
+}
+
+function updateExplainNav(){
+  const back = document.getElementById('explainBack');
+  const next = document.getElementById('explainNext');
+  back.disabled = explainStep===0;
+  const s = explainSteps[explainStep];
+  const blocked = s.interactive==='grow' && !grownDone;
+  next.disabled = blocked;
+  next.textContent = explainStep===explainSteps.length-1 ? 'Start the Activities! 🌟' : 'Next →';
+}
+
+function explainGo(dir){
+  stopExplainRead();
+  const target = explainStep + dir;
+  if(target < 0) return;
+  if(target >= explainSteps.length){
+    finishExplainer();
+    return;
+  }
+  explainStep = target;
+  renderExplainScene();
+}
+
+function finishExplainer(){
+  document.getElementById('node-explain').classList.add('done');
+  document.getElementById('fill-explain').style.width='100%';
+  const section = document.getElementById('activitiesSection');
+  section.classList.remove('locked');
+  section.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+let explainSpeaking=false;
+function toggleExplainRead(){
+  const btn = document.getElementById('explainReadBtn');
+  if(explainSpeaking){ stopExplainRead(); return; }
+  if(!('speechSynthesis' in window)){ alert('Read-aloud is not supported in this browser.'); return; }
+  const s = explainSteps[explainStep];
+  const isUr = currentLang === 'ur';
+  let text;
+  if(s.interactive==='grow' && !grownDone){
+    text = isUr ? s.tapCaptionUr : s.tapCaption;
+  } else {
+    text = isUr ? s.captionUr : s.caption;
+  }
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = 0.88; utter.pitch = 1.05;
+  if(isUr){
+    utter.lang = 'ur-PK';
+    const voices = speechSynthesis.getVoices();
+    const urVoice = voices.find(v=>v.lang && v.lang.toLowerCase().startsWith('ur'));
+    if(urVoice) utter.voice = urVoice;
+  } else {
+    utter.lang = 'en-US';
+  }
+  utter.onend = ()=>{ explainSpeaking=false; btn.classList.remove('speaking'); };
+  speechSynthesis.speak(utter);
+  explainSpeaking = true; btn.classList.add('speaking');
+}
+function stopExplainRead(){
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  explainSpeaking=false;
+  const btn = document.getElementById('explainReadBtn');
+  if(btn) btn.classList.remove('speaking');
+}
+
+renderExplainScene();
+
+/* ---------------- PROGRESS TRACKER ---------------- */
+const progress = [false,false,false,false];
+function updateTracker(){
+  const filled = progress.filter(Boolean).length;
+  for(let i=0;i<4;i++){
+    document.getElementById('node-'+i)?.classList.toggle('done', progress[i] || (i===3 && progress[2]));
+  }
+  document.getElementById('node-0').classList.toggle('done', progress[0]);
+  document.getElementById('node-1').classList.toggle('done', progress[1]);
+  document.getElementById('node-2').classList.toggle('done', progress[2]);
+  document.getElementById('node-3').classList.toggle('done', progress[3]);
+  document.getElementById('fill-0').style.width = progress[0] ? '100%' : '0%';
+  document.getElementById('fill-1').style.width = progress[1] ? '100%' : '0%';
+  document.getElementById('fill-2').style.width = progress[2] ? '100%' : '0%';
+}
+
+/* ---------------- ACTIVITY 1: DRAG & DROP (pointer-events based, touch friendly) ---------------- */
+let dndPlaced = {};
+function setupDnD(){
+  const tiles = document.querySelectorAll('#wordBank .tile');
+  const slots = document.querySelectorAll('#stages .slot');
+  let dragEl=null, dragValue=null, offsetX=0, offsetY=0, ghost=null;
+
+  tiles.forEach(tile=>{
+    tile.addEventListener('pointerdown', e=>{
+      if(tile.classList.contains('used')) return;
+      dragEl = tile; dragValue = tile.dataset.value;
+      tile.setPointerCapture(e.pointerId);
+      tile.classList.add('dragging');
+    });
+    tile.addEventListener('pointermove', e=>{
+      if(dragEl !== tile) return;
+    });
+    tile.addEventListener('pointerup', e=>{
+      if(dragEl !== tile) return;
+      tile.classList.remove('dragging');
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const slot = el ? el.closest('.slot') : null;
+      slots.forEach(s=>s.classList.remove('over'));
+      if(slot && !slot.querySelector('.placed')){
+        placeInSlot(slot, dragValue, tile);
+      }
+      dragEl=null; dragValue=null;
+    });
+  });
+
+  // simple HTML5 fallback for desktop drag
+  tiles.forEach(tile=>{
+    tile.addEventListener('dragstart', e=>{
+      e.dataTransfer.setData('text/plain', tile.dataset.value);
+      setTimeout(()=>tile.classList.add('dragging'),0);
+    });
+    tile.addEventListener('dragend', ()=> tile.classList.remove('dragging'));
+  });
+  slots.forEach(slot=>{
+    slot.addEventListener('dragover', e=>{ e.preventDefault(); slot.classList.add('over'); });
+    slot.addEventListener('dragleave', ()=> slot.classList.remove('over'));
+    slot.addEventListener('drop', e=>{
+      e.preventDefault(); slot.classList.remove('over');
+      if(slot.querySelector('.placed')) return;
+      const value = e.dataTransfer.getData('text/plain');
+      const tile = [...document.querySelectorAll('#wordBank .tile')].find(t=>t.dataset.value===value && !t.classList.contains('used'));
+      if(tile) placeInSlot(slot, value, tile);
+    });
+  });
+}
+function placeInSlot(slot, value, tile){
+  const label = document.createElement('div');
+  label.className='placed';
+  label.textContent = tile.textContent;
+  label.dataset.value = value;
+  slot.appendChild(label);
+  tile.classList.add('used');
+  label.addEventListener('click', ()=>{
+    // tap placed label to remove it
+    slot.classList.remove('correct','wrong');
+    label.remove();
+    tile.classList.remove('used');
+  });
+  checkDnDComplete();
+}
+function checkDnDComplete(){
+  const slots = document.querySelectorAll('#stages .slot');
+  const filled = [...slots].every(s=>s.querySelector('.placed'));
+  if(!filled) return;
+  let allCorrect = true;
+  slots.forEach(s=>{
+    const placed = s.querySelector('.placed');
+    const correct = placed.dataset.value === s.dataset.answer;
+    s.classList.toggle('correct', correct);
+    s.classList.toggle('wrong', !correct);
+    if(!correct) allCorrect=false;
+  });
+  const fb = document.getElementById('dndFeedback');
+  fb.classList.add('show');
+  if(allCorrect){
+    fb.className='feedback show good';
+    fb.textContent='🎉 Great job! All stages are in the right order.';
+    progress[0]=true; updateTracker();
+  } else {
+    fb.className='feedback show bad';
+    fb.textContent='Not quite — tap a label to remove it and try again.';
+  }
+}
+function resetDnD(){
+  document.querySelectorAll('#stages .slot').forEach(s=>{
+    s.classList.remove('correct','wrong','over');
+    const p = s.querySelector('.placed'); if(p) p.remove();
+  });
+  document.querySelectorAll('#wordBank .tile').forEach(t=>t.classList.remove('used'));
+  document.getElementById('dndFeedback').className='feedback';
+  progress[0]=false; updateTracker();
+}
+setupDnD();
+
+/* ---------------- ACTIVITY 2: FILL IN THE BLANK ---------------- */
+let fibSelectedChip = null;
+function setupFIB(){
+  document.querySelectorAll('#fibBank .chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      if(chip.classList.contains('used')) return;
+      document.querySelectorAll('#fibBank .chip').forEach(c=>c.style.outline='none');
+      fibSelectedChip = chip;
+      chip.style.outline='3px solid '+getComputedStyle(document.documentElement).getPropertyValue('--soil');
+    });
+  });
+  document.querySelectorAll('.blank').forEach(blank=>{
+    blank.addEventListener('click', ()=>{
+      if(!blank.classList.contains('empty')){
+        // clear it
+        const usedChip = [...document.querySelectorAll('#fibBank .chip')].find(c=>c.dataset.value===blank.dataset.filled);
+        if(usedChip) usedChip.classList.remove('used');
+        blank.textContent='______';
+        blank.classList.add('empty');
+        blank.removeAttribute('data-filled');
+        blank.style.color='';
+        return;
+      }
+      if(!fibSelectedChip) return;
+      blank.textContent = fibSelectedChip.dataset.value;
+      blank.dataset.filled = fibSelectedChip.dataset.value;
+      blank.classList.remove('empty');
+      fibSelectedChip.classList.add('used');
+      fibSelectedChip.style.outline='none';
+      fibSelectedChip=null;
+      checkFIBComplete();
+    });
+  });
+}
+function checkFIBComplete(){
+  const blanks = document.querySelectorAll('.blank');
+  const allFilled = [...blanks].every(b=>!b.classList.contains('empty'));
+  if(!allFilled) return;
+  let allCorrect=true;
+  blanks.forEach(b=>{
+    const correct = b.dataset.filled === b.dataset.answer;
+    b.style.color = correct ? '#2f6d17' : '#a13c22';
+    if(!correct) allCorrect=false;
+  });
+  const fb = document.getElementById('fibFeedback');
+  fb.classList.add('show');
+  if(allCorrect){
+    fb.className='feedback show good';
+    fb.textContent='🌟 Perfect! Every blank is correct.';
+    progress[1]=true; updateTracker();
+  } else {
+    fb.className='feedback show bad';
+    fb.textContent='Some words are in the wrong spot — tap a blank to clear it and retry.';
+  }
+}
+function resetFIB(){
+  document.querySelectorAll('.blank').forEach(b=>{
+    b.textContent='______'; b.classList.add('empty'); b.removeAttribute('data-filled'); b.style.color='';
+  });
+  document.querySelectorAll('#fibBank .chip').forEach(c=>{c.classList.remove('used'); c.style.outline='none';});
+  document.getElementById('fibFeedback').className='feedback';
+  fibSelectedChip=null;
+  progress[1]=false; updateTracker();
+}
+setupFIB();
+
+/* ---------------- ACTIVITY 3: MATCHING ---------------- */
+const pairs = [
+  {id:'seed', left:'Seed', right:'Dormant stage containing a baby plant'},
+  {id:'seedling', left:'Seedling', right:'Young plant that has just sprouted'},
+  {id:'mature', left:'Mature Plant', right:'Fully grown plant that can produce flowers'},
+  {id:'pollination', left:'Pollination', right:'Pollen moves between flowers to make seeds'},
+  {id:'dispersal', left:'Seed Dispersal', right:'Wind or animals carry seeds to new places'},
+];
+let matchLeftSel=null, matchedCount=0;
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-0.5); }
+function setupMatch(){
+  const leftCol = document.getElementById('matchLeft');
+  const rightCol = document.getElementById('matchRight');
+  leftCol.innerHTML=''; rightCol.innerHTML='';
+  shuffle(pairs).forEach(p=>{
+    const el = document.createElement('div');
+    el.className='match-item'; el.textContent=p.left; el.dataset.id=p.id;
+    el.addEventListener('click', ()=> selectLeft(el, p.id));
+    leftCol.appendChild(el);
+  });
+  shuffle(pairs).forEach(p=>{
+    const el = document.createElement('div');
+    el.className='match-item'; el.textContent=p.right; el.dataset.id=p.id;
+    el.addEventListener('click', ()=> selectRight(el, p.id));
+    rightCol.appendChild(el);
+  });
+  matchLeftSel=null; matchedCount=0;
+}
+function selectLeft(el, id){
+  if(el.classList.contains('matched')) return;
+  document.querySelectorAll('#matchLeft .match-item').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  matchLeftSel = {el, id};
+}
+function selectRight(el, id){
+  if(el.classList.contains('matched') || !matchLeftSel) return;
+  if(matchLeftSel.id === id){
+    matchLeftSel.el.classList.remove('selected');
+    matchLeftSel.el.classList.add('matched');
+    el.classList.add('matched');
+    matchLeftSel=null;
+    matchedCount++;
+    if(matchedCount === pairs.length){
+      const fb = document.getElementById('matchFeedback');
+      fb.className='feedback show good';
+      fb.textContent='🔗 All matched! You know your plant stages well.';
+      progress[2]=true; updateTracker();
+    }
+  } else {
+    el.classList.add('wrong');
+    matchLeftSel.el.classList.add('wrong');
+    setTimeout(()=>{
+      el.classList.remove('wrong');
+      matchLeftSel && matchLeftSel.el.classList.remove('wrong','selected');
+      matchLeftSel=null;
+    }, 350);
+  }
+}
+function resetMatch(){
+  document.getElementById('matchFeedback').className='feedback';
+  setupMatch();
+  progress[2]=false; updateTracker();
+}
+setupMatch();
+
+/* ---------------- ACTIVITY 4: QUIZ ---------------- */
+const quizData = [
+  {q:"What grows first — before anything else?", opts:["A flower","A seed","A bee","A leaf"], a:1},
+  {q:"What does a seed need to start growing?", opts:["Only sunlight","Water, air and warmth","Only fertilizer","Darkness"], a:1},
+  {q:"Who carries pollen between flowers?", opts:["Bees and wind","Rocks","Rain only","Soil"], a:0},
+  {q:"True or False: A seedling looks the same as a full-grown plant.", opts:["True","False"], a:1},
+  {q:"What comes right after 'seedling'?", opts:["Seed","Mature Plant","Seed Dispersal","Germination"], a:1},
+];
+let quizAnswers = new Array(quizData.length).fill(null);
+function renderQuiz(){
+  const container = document.getElementById('quiz');
+  container.innerHTML='';
+  quizData.forEach((item, qi)=>{
+    const block = document.createElement('div');
+    block.className='q-block';
+    const qText = document.createElement('div');
+    qText.className='q-text'; qText.textContent=(qi+1)+'. '+item.q;
+    block.appendChild(qText);
+    const opts = document.createElement('div'); opts.className='opts';
+    item.opts.forEach((optText, oi)=>{
+      const b = document.createElement('button');
+      b.className='opt'; b.textContent=optText;
+      b.addEventListener('click', ()=>{
+        if(b.disabled) return;
+        opts.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+        b.classList.add('selected');
+        quizAnswers[qi]=oi;
+      });
+      opts.appendChild(b);
+    });
+    block.appendChild(opts);
+    container.appendChild(block);
+  });
+}
+renderQuiz();
+function gradeQuiz(){
+  if(quizAnswers.includes(null)){
+    alert('Please answer every question before checking!');
+    return;
+  }
+  let score=0;
+  document.querySelectorAll('.q-block').forEach((block, qi)=>{
+    const opts = block.querySelectorAll('.opt');
+    opts.forEach((o,oi)=>{
+      o.disabled=true;
+      if(oi===quizData[qi].a) o.classList.add('correct');
+      else if(oi===quizAnswers[qi]) o.classList.add('incorrect');
+    });
+    if(quizAnswers[qi]===quizData[qi].a) score++;
+  });
+  document.getElementById('submitQuiz').style.display='none';
+  const card = document.getElementById('scoreCard');
+  card.classList.add('show');
+  document.getElementById('scoreNum').textContent = score+'/'+quizData.length;
+  const msg = score===quizData.length ? "🌻 Full marks! You're a plant expert!"
+    : score>=quizData.length-1 ? "🌿 Almost perfect — great work!"
+    : score>=quizData.length/2 ? "🌱 Good try — review the stages and try again!"
+    : "🌰 Keep practicing — review Section A and try again!";
+  document.getElementById('scoreMsg').textContent = msg;
+  progress[3]=true; updateTracker();
+}
+function resetQuiz(){
+  quizAnswers = new Array(quizData.length).fill(null);
+  renderQuiz();
+  document.getElementById('submitQuiz').style.display='inline-block';
+  document.getElementById('scoreCard').classList.remove('show');
+  progress[3]=false; updateTracker();
+}
+
+updateTracker();
+</script>
+</body>
+</html>
