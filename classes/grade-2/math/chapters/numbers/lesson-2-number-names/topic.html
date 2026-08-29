@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lesson 2: Number Names — Grade 2 Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-1:#fff3f7;
+    --pink-2:#ffe1ec;
+    --berry-1:#e94f8a;
+    --berry-2:#c22a68;
+    --berry-dark:#8f1c4f;
+    --butter:#ffcf5c;
+    --butter-dark:#e6a800;
+    --mint:#4fd6a8;
+    --sky:#5aa9ff;
+    --ink:#4a1030;
+    --white:#ffffff;
+    --shadow: 0 10px 24px rgba(196,42,104,.18);
+    --radius-lg: 26px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, var(--pink-2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 20%, #ffe9d6 0%, transparent 40%),
+      linear-gradient(180deg, var(--pink-1), #fff);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Fredoka',sans-serif;}
+  button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+
+  /* ---------- Topbar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(135deg,var(--berry-1),var(--berry-2));
+    color:#fff;
+    padding:10px 16px;
+    box-shadow:0 4px 14px rgba(143,28,79,.25);
+  }
+  .topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .topbar .lesson-title{font-family:'Fredoka';font-weight:600;font-size:1.05rem;flex:1;}
+  .topbar .lesson-title small{display:block;font-family:'Nunito';font-weight:700;font-size:.68rem;opacity:.85;letter-spacing:.04em;text-transform:uppercase;}
+  .stars-count{background:rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;font-weight:800;font-size:.85rem;display:flex;align-items:center;gap:4px;}
+  .back-btn{
+    display:inline-flex;align-items:center;gap:4px;flex-shrink:0;
+    background:rgba(255,255,255,.18);color:#fff;text-decoration:none;
+    font-family:'Fredoka';font-weight:700;font-size:.8rem;
+    padding:7px 14px;border-radius:20px;transition:background .15s ease;
+  }
+  .back-btn:hover{background:rgba(255,255,255,.3);}
+
+  .progress-track{
+    max-width:900px;margin:8px auto 0;
+    display:flex;gap:4px;padding:0 16px;
+  }
+  .progress-dot{
+    flex:1;height:7px;border-radius:6px;background:rgba(255,255,255,.28);
+    transition:background .3s ease;
+  }
+  .progress-dot.done{background:var(--butter);}
+  .progress-dot.active{background:#fff;}
+
+  /* ---------- Layout ---------- */
+  .stage-wrap{max-width:780px;margin:0 auto;padding:22px 16px 90px;min-height:70vh;}
+  .stage{display:none;animation:fadeUp .45s ease both;}
+  .stage.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .stage-header{text-align:center;margin-bottom:18px;}
+  .stage-eyebrow{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--pink-2);color:var(--berry-dark);
+    font-weight:800;font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;
+    padding:5px 14px;border-radius:20px;margin-bottom:8px;
+  }
+  .stage-header h2{font-size:1.5rem;margin:0 0 4px;color:var(--berry-dark);}
+  .stage-header p{margin:0;font-weight:700;color:#7a3a5a;font-size:.95rem;}
+
+  .card{
+    background:#fff;border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    padding:22px;
+    border:3px solid var(--pink-2);
+  }
+
+  /* ---------- Audio button ---------- */
+  .audio-btn{
+    background:linear-gradient(135deg,var(--sky),#2f7fe0);
+    color:#fff;font-weight:800;font-size:.85rem;
+    padding:10px 18px;border-radius:30px;
+    display:inline-flex;align-items:center;gap:8px;
+    box-shadow:0 6px 14px rgba(47,127,224,.3);
+    transition:transform .15s ease;
+  }
+  .audio-btn:active{transform:scale(.94);}
+  .audio-btn.small{padding:7px 14px;font-size:.78rem;}
+  .audio-btn .icon{font-size:1.1rem;}
+
+  .row-center{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+
+  /* ---------- Number display (Activity 1) ---------- */
+  .big-number{
+    font-family:'Fredoka';font-weight:700;
+    font-size:3.6rem;text-align:center;color:var(--berry-2);
+    margin:10px 0 2px;
+    text-shadow:0 4px 0 var(--pink-2);
+  }
+  .number-name-reveal{
+    text-align:center;font-family:'Fredoka';font-weight:600;
+    font-size:1.5rem;color:var(--butter-dark);
+    min-height:1.9rem;margin-bottom:14px;
+    opacity:0;transform:translateY(6px);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .number-name-reveal.show{opacity:1;transform:translateY(0);}
+
+  .example-dots{display:flex;justify-content:center;gap:6px;margin:14px 0;}
+  .example-dots span{width:9px;height:9px;border-radius:50%;background:var(--pink-2);}
+  .example-dots span.done{background:var(--berry-1);}
+  .example-dots span.current{background:var(--butter-dark);transform:scale(1.3);}
+
+  /* ---------- Buttons general ---------- */
+  .btn{
+    font-weight:800;font-size:.95rem;padding:12px 26px;border-radius:30px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:linear-gradient(135deg,var(--berry-1),var(--berry-2));color:#fff;box-shadow:0 8px 18px rgba(196,42,104,.3);}
+  .btn-primary[disabled]{opacity:.4;pointer-events:none;}
+  .btn-ghost{background:var(--pink-2);color:var(--berry-dark);}
+  .center-btn-row{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap;}
+
+  /* ---------- Match It (drag) ---------- */
+  .match-area{display:flex;justify-content:space-between;gap:18px;margin-top:16px;flex-wrap:wrap;}
+  .match-col{flex:1;min-width:140px;display:flex;flex-direction:column;gap:12px;}
+  .match-col h4{text-align:center;font-family:'Fredoka';color:var(--berry-dark);margin:0 0 6px;font-size:.9rem;text-transform:uppercase;letter-spacing:.04em;}
+  .drag-chip{
+    touch-action:none;user-select:none;
+    background:var(--pink-1);border:2.5px solid var(--berry-1);
+    color:var(--berry-dark);font-family:'Fredoka';font-weight:600;
+    padding:14px 10px;border-radius:16px;text-align:center;font-size:1.05rem;
+    box-shadow:0 4px 0 var(--pink-2);
+    position:relative;z-index:5;
+  }
+  .drag-chip.dragging{box-shadow:0 12px 20px rgba(196,42,104,.35);z-index:100;}
+  .drop-slot{
+    background:#fff8fb;border:2.5px dashed #f3b8d0;
+    border-radius:16px;padding:14px 10px;text-align:center;
+    font-family:'Fredoka';font-weight:600;color:#c98cae;font-size:.95rem;
+    min-height:54px;display:flex;align-items:center;justify-content:center;
+  }
+  .drop-slot.filled{border-style:solid;color:var(--berry-dark);background:var(--pink-2);}
+  .drop-slot.correct{border-color:var(--mint);background:#e3fbf3;color:#1a8a63;}
+
+  /* ---------- MCQ options ---------- */
+  .options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;}
+  .options.two-col{grid-template-columns:1fr 1fr;}
+  .options.stacked{grid-template-columns:1fr;}
+  .opt-btn{
+    background:#fff;border:2.5px solid var(--pink-2);color:var(--ink);
+    border-radius:14px;padding:14px 8px;font-family:'Fredoka';font-weight:600;
+    font-size:1.15rem;text-align:center;
+  }
+  .opt-btn:hover{border-color:var(--berry-1);}
+  .opt-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .opt-btn.wrong{background:#ffe9e9;border-color:#f08a8a;color:#c23c3c;}
+  .opt-btn[disabled]{pointer-events:none;}
+
+  .feedback{
+    text-align:center;font-weight:800;font-family:'Fredoka';font-size:1.05rem;
+    min-height:1.6rem;margin-top:12px;
+  }
+  .feedback.good{color:#1a8a63;}
+  .feedback.bad{color:#c23c3c;}
+
+  .q-progress{text-align:center;font-weight:800;color:#a85778;font-size:.8rem;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;}
+
+  /* ---------- Doors (Number Detective) ---------- */
+  .doors-row{display:flex;justify-content:center;gap:16px;margin-top:20px;flex-wrap:wrap;}
+  .door{
+    width:100px;height:140px;border-radius:14px 14px 8px 8px;
+    background:linear-gradient(180deg,#c9793e,#a85a26);
+    border:4px solid #7a3c15;
+    display:flex;align-items:flex-end;justify-content:center;
+    color:#fff5e6;font-family:'Fredoka';font-weight:700;font-size:1.3rem;
+    padding-bottom:10px;position:relative;
+    box-shadow:0 6px 14px rgba(0,0,0,.2);
+  }
+  .door::before{content:'';position:absolute;top:18px;width:60%;height:60%;background:rgba(255,255,255,.08);border-radius:8px;}
+  .door.shake{animation:shake .4s ease;}
+  .door.open{background:linear-gradient(180deg,#4fd6a8,#1a8a63);}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+
+  /* ---------- Balloon Pop ---------- */
+  .balloon-field{
+    position:relative;min-height:340px;border-radius:20px;
+    background:linear-gradient(180deg,#eaf6ff,#f8fcff);
+    border:2.5px dashed #bfe0ff;overflow:hidden;margin-top:14px;
+  }
+  .balloon{
+    position:absolute;width:88px;height:104px;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
+    font-family:'Fredoka';font-weight:700;font-size:.95rem;color:#fff;
+    box-shadow:inset 0 -10px 14px rgba(0,0,0,.12);
+    animation:floaty 3.6s ease-in-out infinite;
+    padding:6px;
+  }
+  .balloon::after{
+    content:'';position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);
+    width:2px;height:16px;background:#999;
+  }
+  .balloon.selected{outline:4px solid #fff;outline-offset:2px;}
+  .balloon.popped{animation:none;opacity:0;transform:scale(1.5);pointer-events:none;}
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+
+  /* ---------- Build the number name ---------- */
+  .build-target{
+    display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px 0;
+    min-height:60px;
+  }
+  .build-slot{
+    min-width:70px;height:52px;border:2.5px dashed #f3b8d0;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    background:#fff8fb;font-family:'Fredoka';font-weight:600;color:var(--berry-dark);
+    padding:0 8px;
+  }
+  .build-slot.filled{border-style:solid;background:var(--pink-2);}
+  .build-bank{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:10px;}
+  .word-piece{
+    touch-action:none;user-select:none;
+    background:var(--butter);color:#5a3d00;font-family:'Fredoka';font-weight:700;
+    padding:12px 18px;border-radius:14px;font-size:1.05rem;
+    box-shadow:0 4px 0 var(--butter-dark);position:relative;z-index:5;
+  }
+  .word-piece.used{opacity:0;pointer-events:none;}
+  .word-piece.dragging{z-index:100;box-shadow:0 10px 18px rgba(0,0,0,.25);}
+
+  /* ---------- Treasure hunt ---------- */
+  .chest-row{display:flex;justify-content:center;gap:14px;margin-top:18px;flex-wrap:wrap;}
+  .chest{
+    width:84px;height:74px;border-radius:10px 10px 6px 6px;
+    background:linear-gradient(180deg,#e0a94e,#b9762a);
+    border:3px solid #8a541a;
+    display:flex;align-items:center;justify-content:center;
+    color:#fff8ea;font-family:'Fredoka';font-weight:700;font-size:1.15rem;
+    box-shadow:0 6px 12px rgba(0,0,0,.18);position:relative;
+  }
+  .chest.open{background:linear-gradient(180deg,var(--butter),var(--butter-dark));}
+  .chest.shake{animation:shake .4s ease;}
+  .chest .lock{position:absolute;top:-8px;font-size:.9rem;}
+  .found-count{text-align:center;font-family:'Fredoka';font-weight:700;color:var(--berry-dark);margin-top:14px;font-size:1rem;}
+
+  /* ---------- Stars ---------- */
+  .stars-row{display:flex;justify-content:center;gap:4px;margin:6px 0;}
+  .star-icon{font-size:1.3rem;filter:grayscale(1) opacity(.35);}
+  .star-icon.lit{filter:none;}
+
+  /* ---------- Reward ---------- */
+  .reward-card{
+    text-align:center;padding:36px 22px;
+    background:linear-gradient(160deg,#fff,var(--pink-1));
+  }
+  .badge-circle{
+    width:130px;height:130px;border-radius:50%;margin:0 auto 16px;
+    background:linear-gradient(135deg,var(--butter),var(--butter-dark));
+    display:flex;align-items:center;justify-content:center;font-size:3.4rem;
+    box-shadow:0 14px 26px rgba(230,168,0,.4);
+    border:6px solid #fff;
+  }
+  .reward-card h2{color:var(--berry-dark);font-size:1.7rem;margin:0 0 4px;}
+  .reward-card p{color:#7a3a5a;font-weight:700;margin:0 0 10px;}
+  .next-lesson-card{
+    margin-top:22px;background:#fff;border:2.5px solid var(--pink-2);
+    border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;
+    text-align:left;
+  }
+  .next-lesson-card .lock-icon{font-size:1.6rem;}
+  .next-lesson-card .txt small{display:block;color:#a85778;font-weight:800;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;}
+  .next-lesson-card .txt strong{font-family:'Fredoka';color:var(--berry-dark);font-size:1.05rem;}
+
+  @media (max-width:480px){
+    .big-number{font-size:2.7rem;}
+    .options{grid-template-columns:1fr 1fr;}
+    .match-area{gap:10px;}
+    .door{width:82px;height:118px;font-size:1.05rem;}
+    .balloon{width:76px;height:90px;font-size:.82rem;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .balloon, .stage{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="../lessons.html">&larr; Chapter</a>
+    <div class="lesson-title">
+      <small>Grade 2 · Math · Chapter 1: Numbers</small>
+      🔢 Lesson 2: Number Names
+    </div>
+    <div class="stars-count"><span id="starTotal">0</span> ⭐</div>
+  </div>
+  <div class="progress-track" id="progressTrack"></div>
+</div>
+
+<div class="stage-wrap" id="stageWrap"></div>
+
+<script>
+/* ============================================================
+   LESSON 2: NUMBER NAMES — self-contained, no shared engine.js
+   Progress saved via ../../../../../../assets/js/progress.js
+   (falls back to local localStorage if that file is unavailable)
+============================================================ */
+const TOPIC_ID = "grade2-math-ch1-lesson2-number-names";
+let totalStars = 0;
+
+/* ---- optional shared progress helper (safe if missing) ---- */
+let progressHelper = null;
+(function loadProgressHelper(){
+  try{
+    const s = document.createElement('script');
+    s.src = "../../../../../../assets/js/progress.js";
+    s.onload = () => { progressHelper = window; };
+    s.onerror = () => { progressHelper = null; };
+    document.head.appendChild(s);
+  }catch(e){ progressHelper = null; }
+})();
+function saveStepDone(step){
+  try{
+    if (typeof setStepDone === 'function'){ setStepDone(TOPIC_ID, step, true); return; }
+  }catch(e){}
+  try{
+    const key = 'progress:' + TOPIC_ID;
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data[step] = true;
+    localStorage.setItem(key, JSON.stringify(data));
+  }catch(e){ /* storage unavailable — fail silently, never block the lesson */ }
+}
+
+/* ---------------- Speech ---------------- */
+let enVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  enVoice = voices.find(v => v.lang === 'en-IN') ||
+            voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+}
+if ('speechSynthesis' in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speak(text){
+  try{
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (enVoice) u.voice = enVoice;
+    u.rate = 0.88;
+    u.lang = 'en-IN';
+    speechSynthesis.speak(u);
+  }catch(e){ /* speech unavailable — visuals still work */ }
+}
+
+/* ---------------- Star tracking ---------------- */
+function addStar(n=1){
+  totalStars += n;
+  document.getElementById('starTotal').textContent = totalStars;
+}
+function isStageActive(stageId){
+  const el = document.getElementById(stageId);
+  return !!(el && el.classList.contains('active'));
+}
+function speakForStage(stageId, text){
+  // All stages are BUILT immediately at page load, but only one is
+  // SHOWN — without this guard, every hidden stage's setup-time
+  // narration fires anyway and overlaps whatever is on screen.
+  if (isStageActive(stageId)) speak(text);
+}
+
+/* ---------------- Stage machine ---------------- */
+const STAGES = [
+  {id:'s1', label:'See & Hear', icon:'👀'},
+  {id:'s2', label:'Match It', icon:'🧩'},
+  {id:'s3', label:'Listen & Find', icon:'🔊'},
+  {id:'s4', label:'Number Detective', icon:'🔎'},
+  {id:'s5', label:'Balloon Pop', icon:'🎈'},
+  {id:'s6', label:'Build the Name', icon:'🏗️'},
+  {id:'s7', label:'Choose the Name', icon:'✏️'},
+  {id:'s8', label:'Name → Number', icon:'🧠'},
+  {id:'s9', label:'Treasure Hunt', icon:'🗺️'},
+  {id:'s10', label:'Mini Challenge', icon:'⭐'},
+  {id:'reward', label:'Reward', icon:'🏆'},
+];
+let currentStageIndex = 0;
+
+function renderProgressTrack(){
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  STAGES.forEach((st, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i < currentStageIndex ? ' done' : '') + (i === currentStageIndex ? ' active' : '');
+    track.appendChild(d);
+  });
+}
+
+function goToStage(index){
+  currentStageIndex = index;
+  document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(STAGES[index].id);
+  if (target) target.classList.add('active');
+  renderProgressTrack();
+  saveStepDone(STAGES[index].id);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function completeStage(){
+  if (currentStageIndex < STAGES.length - 1) goToStage(currentStageIndex + 1);
+}
+
+/* helper to shuffle array (copy) */
+function shuffled(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+/* number -> words (supports what this lesson needs, up to 999) */
+const ONES = ['','one','two','three','four','five','six','seven','eight','nine','ten',
+  'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+const TENS = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+function numberToWords(n){
+  if (n === 0) return 'zero';
+  let out = '';
+  const h = Math.floor(n/100), rem = n%100;
+  if (h) out += ONES[h] + ' hundred';
+  if (rem){
+    if (out) out += ' ';
+    if (rem < 20) out += ONES[rem];
+    else {
+      out += TENS[Math.floor(rem/10)];
+      if (rem%10) out += '-' + ONES[rem%10];
+    }
+  }
+  return out;
+}
+function capWords(s){ return s.replace(/(^|\s)([a-z])/g, (m,sp,c) => sp + c.toUpperCase()); }
+
+/* ============================================================
+   BUILD EACH STAGE's HTML
+============================================================ */
+const wrap = document.getElementById('stageWrap');
+
+/* ---------- STAGE 1: See & Hear ---------- */
+const s1Examples = [100, 200, 325, 500];
+let s1Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s1">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 1 · See &amp; Hear</div>
+    <h2>Say the Number</h2>
+    <p>Watch the number, then hear its name.</p>
+  </div>
+  <div class="card">
+    <div class="example-dots" id="s1Dots"></div>
+    <div class="big-number" id="s1Number"></div>
+    <div class="number-name-reveal" id="s1Name"></div>
+    <div class="row-center">
+      <button class="audio-btn" id="s1Listen"><span class="icon">🔊</span> Listen Again</button>
+    </div>
+    <div class="center-btn-row">
+      <button class="btn btn-ghost" id="s1Repeat">🔁 Try Again</button>
+      <button class="btn btn-primary" id="s1Next">Next ➜</button>
+    </div>
+  </div>
+</section>`);
+function renderS1Dots(){
+  const dots = document.getElementById('s1Dots');
+  dots.innerHTML = s1Examples.map((_,i) =>
+    `<span class="${i < s1Index ? 'done' : ''}${i === s1Index ? ' current' : ''}"></span>`).join('');
+}
+function playS1(){
+  const n = s1Examples[s1Index];
+  const nameEl = document.getElementById('s1Name');
+  document.getElementById('s1Number').textContent = n;
+  nameEl.classList.remove('show');
+  nameEl.textContent = '';
+  renderS1Dots();
+  setTimeout(() => {
+    const words = capWords(numberToWords(n));
+    nameEl.textContent = words;
+    nameEl.classList.add('show');
+    speakForStage('s1', words);
+  }, 550);
+}
+document.getElementById('s1Listen').onclick = () => speak(capWords(numberToWords(s1Examples[s1Index])));
+document.getElementById('s1Repeat').onclick = () => playS1();
+document.getElementById('s1Next').onclick = () => {
+  s1Index++;
+  if (s1Index >= s1Examples.length){
+    document.getElementById('s1Next').textContent = 'Continue ➜';
+    document.getElementById('s1Next').onclick = () => completeStage();
+    s1Index = s1Examples.length - 1;
+    renderS1Dots();
+    return;
+  }
+  playS1();
+};
+playS1();
+
+/* ---------- STAGE 2: Match It (drag) ---------- */
+const s2Pairs = [
+  {num:125, name:'One hundred twenty-five'},
+  {num:250, name:'Two hundred fifty'},
+  {num:400, name:'Four hundred'},
+];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s2">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 2 · Match It</div>
+    <h2>Drag the Number to Its Name</h2>
+    <p>Connect each number with the way we say it.</p>
+  </div>
+  <div class="card">
+    <div class="match-area">
+      <div class="match-col">
+        <h4>Numbers</h4>
+        <div id="s2Numbers"></div>
+      </div>
+      <div class="match-col">
+        <h4>Names</h4>
+        <div id="s2Names"></div>
+      </div>
+    </div>
+    <div class="feedback" id="s2Feedback"></div>
+    <div class="center-btn-row">
+      <button class="btn btn-primary" id="s2Next" disabled>Next ➜</button>
+    </div>
+  </div>
+</section>`);
+(function setupS2(){
+  const numsCol = document.getElementById('s2Numbers');
+  const namesCol = document.getElementById('s2Names');
+  const shuffledNums = shuffled(s2Pairs);
+  const shuffledNames = shuffled(s2Pairs);
+  let matched = 0;
+
+  shuffledNums.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = 'drag-chip';
+    chip.textContent = p.num;
+    chip.dataset.num = p.num;
+    numsCol.appendChild(chip);
+    makeDraggable(chip, namesCol);
+  });
+  shuffledNames.forEach(p => {
+    const slot = document.createElement('div');
+    slot.className = 'drop-slot';
+    slot.textContent = capWords(p.name);
+    slot.dataset.num = p.num;
+    namesCol.appendChild(slot);
+  });
+
+  function makeDraggable(chip, dropContainer){
+    let offsetX, offsetY, startParent, startRect;
+    chip.addEventListener('pointerdown', (e) => {
+      if (chip.classList.contains('locked')) return;
+      chip.setPointerCapture(e.pointerId);
+      chip.classList.add('dragging');
+      startRect = chip.getBoundingClientRect();
+      startParent = chip.parentElement;
+      document.body.appendChild(chip);
+      chip.style.position = 'fixed';
+      chip.style.width = startRect.width + 'px';
+      chip.style.left = startRect.left + 'px';
+      chip.style.top = startRect.top + 'px';
+      offsetX = e.clientX - startRect.left;
+      offsetY = e.clientY - startRect.top;
+
+      function onMove(ev){
+        chip.style.left = (ev.clientX - offsetX) + 'px';
+        chip.style.top = (ev.clientY - offsetY) + 'px';
+      }
+      function onUp(ev){
+        chip.removeEventListener('pointermove', onMove);
+        chip.removeEventListener('pointerup', onUp);
+        chip.classList.remove('dragging');
+        const slots = dropContainer.querySelectorAll('.drop-slot:not(.correct)');
+        let dropped = null;
+        slots.forEach(slot => {
+          const r = slot.getBoundingClientRect();
+          if (ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom){
+            dropped = slot;
+          }
+        });
+        chip.style.position = '';
+        chip.style.left = '';
+        chip.style.top = '';
+        chip.style.width = '';
+
+        if (dropped){
+          if (String(dropped.dataset.num) === String(chip.dataset.num)){
+            dropped.classList.add('correct', 'filled');
+            dropped.textContent = capWords(dropped.textContent) + '  ✅';
+            chip.remove();
+            matched++;
+            addStar(1);
+            document.getElementById('s2Feedback').textContent = 'Great! 🎉';
+            document.getElementById('s2Feedback').className = 'feedback good';
+            speak('Great job!');
+            if (matched === s2Pairs.length){
+              document.getElementById('s2Next').disabled = false;
+              document.getElementById('s2Feedback').textContent = 'All matched! Well done! 🎉';
+            }
+          } else {
+            startParent.appendChild(chip);
+            document.getElementById('s2Feedback').textContent = 'Try again.';
+            document.getElementById('s2Feedback').className = 'feedback bad';
+            speak('Try again.');
+          }
+        } else {
+          startParent.appendChild(chip);
+        }
+      }
+      chip.addEventListener('pointermove', onMove);
+      chip.addEventListener('pointerup', onUp);
+    });
+  }
+})();
+document.getElementById('s2Next').onclick = () => completeStage();
+
+/* ---------- STAGE 3: Listen & Find ---------- */
+const s3Questions = [
+  {answer:320, options:[302,320,230]},
+  {answer:506, options:[506,560,605]},
+  {answer:740, options:[704,740,470]},
+  {answer:912, options:[912,921,192]},
+];
+let s3Index = 0, s3Correct = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s3">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 3 · Listen &amp; Find</div>
+    <h2>Listen & Find the Number</h2>
+    <p>Tap the audio, then choose the number you hear.</p>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s3Progress"></div>
+    <div class="row-center">
+      <button class="audio-btn" id="s3Play"><span class="icon">🔊</span> Play</button>
+    </div>
+    <div class="options" id="s3Options"></div>
+    <div class="feedback" id="s3Feedback"></div>
+  </div>
+</section>`);
+function renderS3(){
+  const q = s3Questions[s3Index];
+  document.getElementById('s3Progress').textContent = `Question ${s3Index+1} of ${s3Questions.length}`;
+  document.getElementById('s3Feedback').textContent = '';
+  const optsWrap = document.getElementById('s3Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => handleS3Answer(opt, b);
+    optsWrap.appendChild(b);
+  });
+  document.getElementById('s3Play').onclick = () => speak(capWords(numberToWords(q.answer)));
+  setTimeout(() => speakForStage('s3', capWords(numberToWords(q.answer))), 400);
+}
+function handleS3Answer(opt, btn){
+  const q = s3Questions[s3Index];
+  const allBtns = document.querySelectorAll('#s3Options .opt-btn');
+  allBtns.forEach(b => b.disabled = true);
+  const fb = document.getElementById('s3Feedback');
+  if (opt === q.answer){
+    btn.classList.add('correct');
+    fb.textContent = 'Great listening! 🎉';
+    fb.className = 'feedback good';
+    speak('Great job!');
+    addStar(1);
+    s3Correct++;
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = 'Try again next time!';
+    fb.className = 'feedback bad';
+    speak('Not quite.');
+  }
+  setTimeout(() => {
+    s3Index++;
+    if (s3Index >= s3Questions.length){
+      completeStage();
+    } else {
+      renderS3();
+    }
+  }, 1400);
+}
+renderS3();
+
+/* ---------- STAGE 4: Number Detective ---------- */
+const s4Rounds = [
+  {answer:625, options:[652,625,265]},
+  {answer:481, options:[481,841,418]},
+];
+let s4Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s4">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 4 · Number Detective</div>
+    <h2>Help the Detective!</h2>
+    <p id="s4Prompt">Find the number behind the right door.</p>
+  </div>
+  <div class="card">
+    <div class="row-center">
+      <button class="audio-btn small" id="s4Play"><span class="icon">🔎</span> Hear the Clue</button>
+    </div>
+    <div class="doors-row" id="s4Doors"></div>
+    <div class="feedback" id="s4Feedback"></div>
+  </div>
+</section>`);
+function renderS4(){
+  const r = s4Rounds[s4Index];
+  document.getElementById('s4Prompt').textContent =
+    `I am looking for ${capWords(numberToWords(r.answer))}.`;
+  document.getElementById('s4Feedback').textContent = '';
+  const doorsWrap = document.getElementById('s4Doors');
+  doorsWrap.innerHTML = '';
+  shuffled(r.options).forEach(opt => {
+    const d = document.createElement('div');
+    d.className = 'door';
+    d.textContent = opt;
+    d.onclick = () => handleS4Answer(opt, d);
+    doorsWrap.appendChild(d);
+  });
+  document.getElementById('s4Play').onclick = () => speak('I am looking for ' + capWords(numberToWords(r.answer)));
+  setTimeout(() => speakForStage('s4', 'I am looking for ' + capWords(numberToWords(r.answer))), 400);
+}
+function handleS4Answer(opt, doorEl){
+  const r = s4Rounds[s4Index];
+  const fb = document.getElementById('s4Feedback');
+  if (opt === r.answer){
+    doorEl.classList.add('open');
+    fb.textContent = '🎉 Door opens! +1 Star';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('You found it!');
+    document.querySelectorAll('#s4Doors .door').forEach(d => d.onclick = null);
+    setTimeout(() => {
+      s4Index++;
+      if (s4Index >= s4Rounds.length) completeStage();
+      else renderS4();
+    }, 1300);
+  } else {
+    doorEl.classList.add('shake');
+    fb.textContent = 'Try again!';
+    fb.className = 'feedback bad';
+    speak('Try again.');
+    setTimeout(() => doorEl.classList.remove('shake'), 400);
+  }
+}
+renderS4();
+
+/* ---------- STAGE 5: Balloon Pop ---------- */
+const s5Pairs = [
+  {num:350, name:'Three hundred fifty'},
+  {num:200, name:'Two hundred'},
+  {num:415, name:'Four hundred fifteen'},
+];
+const s5Colors = ['#e94f8a','#5aa9ff','#4fd6a8','#ffcf5c','#b784f0','#ff9d5c'];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s5">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 5 · Balloon Pop</div>
+    <h2>Pop the Matching Pair!</h2>
+    <p>Tap a number balloon, then tap its matching name balloon.</p>
+  </div>
+  <div class="card">
+    <div class="balloon-field" id="s5Field"></div>
+    <div class="feedback" id="s5Feedback"></div>
+  </div>
+</section>`);
+(function setupS5(){
+  const field = document.getElementById('s5Field');
+  const items = [];
+  s5Pairs.forEach(p => {
+    items.push({key:p.num, label:String(p.num), pairId:p.num});
+    items.push({key:p.name, label:capWords(p.name), pairId:p.num});
+  });
+  const mixed = shuffled(items);
+  let selected = null;
+  let poppedCount = 0;
+
+  mixed.forEach((it, i) => {
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    b.textContent = it.label;
+    b.style.background = s5Colors[i % s5Colors.length];
+    b.style.left = (8 + (i % 3) * 30) + '%';
+    b.style.top = (18 + Math.floor(i/3) * 42) + '%';
+    b.style.animationDelay = (i * 0.3) + 's';
+    b.dataset.pairId = it.pairId;
+    b.onclick = () => {
+      if (b.classList.contains('popped')) return;
+      speak(it.label);
+      if (!selected){
+        selected = b;
+        b.classList.add('selected');
+        return;
+      }
+      if (selected === b) return;
+      if (selected.dataset.pairId === b.dataset.pairId){
+        selected.classList.add('popped');
+        b.classList.add('popped');
+        addStar(1);
+        document.getElementById('s5Feedback').textContent = 'POP! ⭐ +1';
+        document.getElementById('s5Feedback').className = 'feedback good';
+        speak('Pop!');
+        poppedCount += 2;
+        selected.classList.remove('selected');
+        selected = null;
+        if (poppedCount === mixed.length){
+          setTimeout(() => completeStage(), 1000);
+        }
+      } else {
+        document.getElementById('s5Feedback').textContent = 'Not a match — try again!';
+        document.getElementById('s5Feedback').className = 'feedback bad';
+        selected.classList.remove('selected');
+        selected = null;
+      }
+    };
+    field.appendChild(b);
+  });
+})();
+
+/* ---------- STAGE 6: Build the Number Name ---------- */
+const s6Target = 342; // three hundred forty-two
+const s6Words = ['three','hundred','forty','two'];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s6">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 6 · Build It</div>
+    <h2>Build the Number Name</h2>
+    <p>Drag the word pieces into the correct order.</p>
+  </div>
+  <div class="card">
+    <div class="big-number">${s6Target}</div>
+    <div class="build-target" id="s6Slots"></div>
+    <div class="build-bank" id="s6Bank"></div>
+    <div class="feedback" id="s6Feedback"></div>
+    <div class="center-btn-row">
+      <button class="btn btn-primary" id="s6Next" disabled>Next ➜</button>
+    </div>
+  </div>
+</section>`);
+(function setupS6(){
+  const slotsWrap = document.getElementById('s6Slots');
+  const bankWrap = document.getElementById('s6Bank');
+  const slots = [];
+  s6Words.forEach((w, i) => {
+    const slot = document.createElement('div');
+    slot.className = 'build-slot';
+    slot.dataset.index = i;
+    slotsWrap.appendChild(slot);
+    slots.push(slot);
+  });
+  const bankWords = shuffled(s6Words.map((w,i) => ({word:w, correctIndex:i})));
+  bankWords.forEach(item => {
+    const piece = document.createElement('div');
+    piece.className = 'word-piece';
+    piece.textContent = item.word;
+    piece.dataset.correctIndex = item.correctIndex;
+    bankWrap.appendChild(piece);
+    makeDraggable(piece);
+  });
+
+  function makeDraggable(piece){
+    piece.addEventListener('pointerdown', (e) => {
+      const startRect = piece.getBoundingClientRect();
+      piece.setPointerCapture(e.pointerId);
+      piece.classList.add('dragging');
+      document.body.appendChild(piece);
+      piece.style.position = 'fixed';
+      piece.style.left = startRect.left + 'px';
+      piece.style.top = startRect.top + 'px';
+      const offsetX = e.clientX - startRect.left;
+      const offsetY = e.clientY - startRect.top;
+
+      function onMove(ev){
+        piece.style.left = (ev.clientX - offsetX) + 'px';
+        piece.style.top = (ev.clientY - offsetY) + 'px';
+      }
+      function onUp(ev){
+        piece.removeEventListener('pointermove', onMove);
+        piece.removeEventListener('pointerup', onUp);
+        piece.classList.remove('dragging');
+        let target = null;
+        slots.forEach(slot => {
+          const r = slot.getBoundingClientRect();
+          if (ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom && !slot.classList.contains('filled')){
+            target = slot;
+          }
+        });
+        piece.style.position = '';
+        piece.style.left = '';
+        piece.style.top = '';
+        if (target){
+          const idx = Number(target.dataset.index);
+          if (idx === Number(piece.dataset.correctIndex)){
+            target.textContent = piece.textContent;
+            target.classList.add('filled');
+            piece.classList.add('used');
+            document.getElementById('s6Feedback').textContent = 'Nice!';
+            document.getElementById('s6Feedback').className = 'feedback good';
+            const filledCount = document.querySelectorAll('#s6Slots .build-slot.filled').length;
+            if (filledCount === s6Words.length){
+              addStar(1);
+              document.getElementById('s6Feedback').textContent = `🎉 ${s6Target} = ${capWords(s6Words.join(' ').replace('forty two','forty-two'))}`;
+              document.getElementById('s6Next').disabled = false;
+              speak(capWords(numberToWords(s6Target)));
+            }
+          } else {
+            document.getElementById('s6Bank').appendChild(piece);
+            document.getElementById('s6Feedback').textContent = 'Not that spot — try again.';
+            document.getElementById('s6Feedback').className = 'feedback bad';
+          }
+        } else {
+          document.getElementById('s6Bank').appendChild(piece);
+        }
+      }
+      piece.addEventListener('pointermove', onMove);
+      piece.addEventListener('pointerup', onUp);
+    });
+  }
+})();
+document.getElementById('s6Next').onclick = () => completeStage();
+
+/* ---------- STAGE 7: Choose the Correct Name ---------- */
+const s7Questions = [
+  {num:527, answer:'Five hundred twenty-seven', options:['Five hundred seventy-two','Five hundred twenty-seven','Seven hundred twenty-five']},
+  {num:804, answer:'Eight hundred four', options:['Eight hundred four','Eight hundred forty','Eight hundred fourteen']},
+];
+let s7Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s7">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 7 · Choose the Name</div>
+    <h2>Pick the Correct Name</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s7Progress"></div>
+    <div class="big-number" id="s7Number"></div>
+    <div class="options stacked" id="s7Options"></div>
+    <div class="feedback" id="s7Feedback"></div>
+  </div>
+</section>`);
+function renderS7(){
+  const q = s7Questions[s7Index];
+  document.getElementById('s7Progress').textContent = `Question ${s7Index+1} of ${s7Questions.length}`;
+  document.getElementById('s7Number').textContent = q.num;
+  document.getElementById('s7Feedback').textContent = '';
+  const optsWrap = document.getElementById('s7Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => handleS7Answer(opt, b);
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s7', String(q.num));
+}
+function handleS7Answer(opt, btn){
+  const q = s7Questions[s7Index];
+  document.querySelectorAll('#s7Options .opt-btn').forEach(b => b.disabled = true);
+  const fb = document.getElementById('s7Feedback');
+  if (opt === q.answer){
+    btn.classList.add('correct');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = `The answer is ${q.answer}.`;
+    fb.className = 'feedback bad';
+    speak('Not quite.');
+  }
+  setTimeout(() => {
+    s7Index++;
+    if (s7Index >= s7Questions.length) completeStage();
+    else renderS7();
+  }, 1500);
+}
+renderS7();
+
+/* ---------- STAGE 8: Number Name → Number ---------- */
+const s8Questions = [
+  {name:'Four hundred thirty-six', answer:436, options:[346,436,463]},
+  {name:'Two hundred nine', answer:209, options:[209,290,902]},
+  {name:'Six hundred eighty', answer:680, options:[608,860,680]},
+];
+let s8Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s8">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 8 · Name → Number</div>
+    <h2>Which Number Is This?</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s8Progress"></div>
+    <div class="row-center" style="margin-bottom:10px;">
+      <button class="audio-btn small" id="s8Play"><span class="icon">🔊</span> Listen</button>
+    </div>
+    <div class="number-name-reveal show" id="s8Name" style="font-size:1.6rem;"></div>
+    <div class="options" id="s8Options"></div>
+    <div class="feedback" id="s8Feedback"></div>
+  </div>
+</section>`);
+function renderS8(){
+  const q = s8Questions[s8Index];
+  document.getElementById('s8Progress').textContent = `Question ${s8Index+1} of ${s8Questions.length}`;
+  document.getElementById('s8Name').textContent = q.name;
+  document.getElementById('s8Feedback').textContent = '';
+  document.getElementById('s8Play').onclick = () => speak(q.name);
+  const optsWrap = document.getElementById('s8Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => handleS8Answer(opt, b);
+    optsWrap.appendChild(b);
+  });
+  setTimeout(() => speakForStage('s8', q.name), 300);
+}
+function handleS8Answer(opt, btn){
+  const q = s8Questions[s8Index];
+  document.querySelectorAll('#s8Options .opt-btn').forEach(b => b.disabled = true);
+  const fb = document.getElementById('s8Feedback');
+  if (opt === q.answer){
+    btn.classList.add('correct');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = `The answer is ${q.answer}.`;
+    fb.className = 'feedback bad';
+    speak('Not quite.');
+  }
+  setTimeout(() => {
+    s8Index++;
+    if (s8Index >= s8Questions.length) completeStage();
+    else renderS8();
+  }, 1500);
+}
+renderS8();
+
+/* ---------- STAGE 9: Treasure Hunt ---------- */
+const s9Sequence = [375, 725, 125, 500, 250];
+let s9Order, s9Found = 0, s9Target = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s9">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 9 · Treasure Hunt</div>
+    <h2>Find the Treasure!</h2>
+    <p id="s9Prompt">Listen, then tap the matching chest.</p>
+  </div>
+  <div class="card">
+    <div class="row-center">
+      <button class="audio-btn" id="s9Play"><span class="icon">🗺️</span> Hear the Clue</button>
+    </div>
+    <div class="chest-row" id="s9Chests"></div>
+    <div class="found-count" id="s9Count">Treasures found: 0 / 5</div>
+    <div class="feedback" id="s9Feedback"></div>
+  </div>
+</section>`);
+function setupS9(){
+  s9Order = shuffled([125,250,375,500,725]);
+  const chestsWrap = document.getElementById('s9Chests');
+  chestsWrap.innerHTML = '';
+  s9Order.forEach(n => {
+    const c = document.createElement('div');
+    c.className = 'chest';
+    c.innerHTML = `<span class="lock">🔒</span>${n}`;
+    c.dataset.num = n;
+    c.onclick = () => handleS9Click(n, c);
+    chestsWrap.appendChild(c);
+  });
+  nextS9Clue();
+}
+function nextS9Clue(){
+  s9Target = s9Sequence[s9Found];
+  document.getElementById('s9Prompt').textContent = `Find ${capWords(numberToWords(s9Target))}!`;
+  document.getElementById('s9Play').onclick = () => speak('Find ' + capWords(numberToWords(s9Target)));
+  setTimeout(() => speakForStage('s9', 'Find ' + capWords(numberToWords(s9Target))), 400);
+}
+function handleS9Click(n, chestEl){
+  if (chestEl.classList.contains('open')) return;
+  const fb = document.getElementById('s9Feedback');
+  if (n === s9Target){
+    chestEl.classList.add('open');
+    chestEl.querySelector('.lock').textContent = '🎁';
+    s9Found++;
+    addStar(1);
+    fb.textContent = 'Treasure found! ⭐';
+    fb.className = 'feedback good';
+    speak('Treasure found!');
+    document.getElementById('s9Count').textContent = `Treasures found: ${s9Found} / 5`;
+    if (s9Found >= s9Sequence.length){
+      setTimeout(() => completeStage(), 1200);
+    } else {
+      setTimeout(nextS9Clue, 1200);
+    }
+  } else {
+    chestEl.classList.add('shake');
+    fb.textContent = 'Try again!';
+    fb.className = 'feedback bad';
+    speak('Try again.');
+    setTimeout(() => chestEl.classList.remove('shake'), 400);
+  }
+}
+setupS9();
+
+/* ---------- STAGE 10: Mini Challenge ---------- */
+const s10Questions = [
+  {name:'Eight hundred five', answer:805, options:[850,805,815]},
+  {name:'Six hundred thirty-two', answer:632, options:[623,632,362]},
+  {name:'Nine hundred ninety', answer:990, options:[909,990,999]},
+];
+let s10Index = 0, s10Correct = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s10">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 10 · Mini Challenge</div>
+    <h2>Final Challenge!</h2>
+    <p>Listen carefully — these are a little trickier.</p>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s10Progress"></div>
+    <div class="row-center" style="margin-bottom:10px;">
+      <button class="audio-btn" id="s10Play"><span class="icon">🔊</span> Listen</button>
+    </div>
+    <div class="options" id="s10Options"></div>
+    <div class="feedback" id="s10Feedback"></div>
+  </div>
+</section>`);
+function renderS10(){
+  const q = s10Questions[s10Index];
+  document.getElementById('s10Progress').textContent = `Challenge ${s10Index+1} of ${s10Questions.length}`;
+  document.getElementById('s10Feedback').textContent = '';
+  document.getElementById('s10Play').onclick = () => speak(q.name);
+  const optsWrap = document.getElementById('s10Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => handleS10Answer(opt, b);
+    optsWrap.appendChild(b);
+  });
+  setTimeout(() => speakForStage('s10', q.name), 350);
+}
+function handleS10Answer(opt, btn){
+  const q = s10Questions[s10Index];
+  document.querySelectorAll('#s10Options .opt-btn').forEach(b => b.disabled = true);
+  const fb = document.getElementById('s10Feedback');
+  if (opt === q.answer){
+    btn.classList.add('correct');
+    fb.textContent = 'Excellent! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    s10Correct++;
+    speak('Excellent!');
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = `It was ${q.answer}.`;
+    fb.className = 'feedback bad';
+    speak('Not quite.');
+  }
+  setTimeout(() => {
+    s10Index++;
+    if (s10Index >= s10Questions.length) showReward();
+    else renderS10();
+  }, 1400);
+}
+renderS10();
+
+/* ---------- REWARD ---------- */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="reward">
+  <div class="card reward-card">
+    <div class="badge-circle">🔎</div>
+    <h2>NUMBER DETECTIVE</h2>
+    <p>You found all the numbers!</p>
+    <div class="stars-row" id="rewardStars"></div>
+    <div class="next-lesson-card">
+      <div class="lock-icon">🔓</div>
+      <div class="txt">
+        <small>Next Lesson</small>
+        <strong>Lesson 3: Expanded Form</strong>
+      </div>
+    </div>
+  </div>
+</section>`);
+function showReward(){
+  goToStage(STAGES.length - 1);
+  const starsRow = document.getElementById('rewardStars');
+  starsRow.innerHTML = '';
+  for (let i=0;i<5;i++){
+    const s = document.createElement('span');
+    s.className = 'star-icon' + (i < 5 ? ' lit' : '');
+    s.textContent = '⭐';
+    starsRow.appendChild(s);
+  }
+  saveStepDone('lesson2-complete');
+  speak('Great job! You are a Number Detective!');
+}
+
+/* ---------------- init ---------------- */
+renderProgressTrack();
+goToStage(0);
+</script>
+</body>
+</html>

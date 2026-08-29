@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lesson 4: Place Value — Grade 2 Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-1:#fff3f7;
+    --pink-2:#ffe1ec;
+    --berry-1:#e94f8a;
+    --berry-2:#c22a68;
+    --berry-dark:#8f1c4f;
+    --butter:#ffcf5c;
+    --butter-dark:#e6a800;
+    --mint:#4fd6a8;
+    --sky:#5aa9ff;
+    --ink:#4a1030;
+    --shadow: 0 10px 24px rgba(196,42,104,.18);
+    --radius-lg: 26px;
+    --hund:#5aa9ff;
+    --tens:#ffcf5c;
+    --ones:#4fd6a8;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, var(--pink-2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 20%, #ffe9d6 0%, transparent 40%),
+      linear-gradient(180deg, var(--pink-1), #fff);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Fredoka',sans-serif;}
+  button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(135deg,var(--berry-1),var(--berry-2));
+    color:#fff;padding:10px 16px;
+    box-shadow:0 4px 14px rgba(143,28,79,.25);
+  }
+  .topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .topbar .lesson-title{font-family:'Fredoka';font-weight:600;font-size:1.05rem;flex:1;}
+  .topbar .lesson-title small{display:block;font-family:'Nunito';font-weight:700;font-size:.68rem;opacity:.85;letter-spacing:.04em;text-transform:uppercase;}
+  .stars-count{background:rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;font-weight:800;font-size:.85rem;display:flex;align-items:center;gap:4px;}
+  .back-btn{
+    display:inline-flex;align-items:center;gap:4px;flex-shrink:0;
+    background:rgba(255,255,255,.18);color:#fff;text-decoration:none;
+    font-family:'Fredoka';font-weight:700;font-size:.8rem;
+    padding:7px 14px;border-radius:20px;transition:background .15s ease;
+  }
+  .back-btn:hover{background:rgba(255,255,255,.3);}
+
+  .progress-track{max-width:900px;margin:8px auto 0;display:flex;gap:4px;padding:0 16px;}
+  .progress-dot{flex:1;height:7px;border-radius:6px;background:rgba(255,255,255,.28);transition:background .3s ease;}
+  .progress-dot.done{background:var(--butter);}
+  .progress-dot.active{background:#fff;}
+
+  .stage-wrap{max-width:780px;margin:0 auto;padding:22px 16px 90px;min-height:70vh;}
+  .stage{display:none;animation:fadeUp .45s ease both;}
+  .stage.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .stage-header{text-align:center;margin-bottom:18px;}
+  .stage-eyebrow{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--pink-2);color:var(--berry-dark);
+    font-weight:800;font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;
+    padding:5px 14px;border-radius:20px;margin-bottom:8px;
+  }
+  .stage-header h2{font-size:1.5rem;margin:0 0 4px;color:var(--berry-dark);}
+  .stage-header p{margin:0;font-weight:700;color:#7a3a5a;font-size:.95rem;}
+
+  .card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:22px;border:3px solid var(--pink-2);}
+
+  .audio-btn{
+    background:linear-gradient(135deg,var(--sky),#2f7fe0);color:#fff;font-weight:800;font-size:.85rem;
+    padding:10px 18px;border-radius:30px;display:inline-flex;align-items:center;gap:8px;
+    box-shadow:0 6px 14px rgba(47,127,224,.3);transition:transform .15s ease;
+  }
+  .audio-btn:active{transform:scale(.94);}
+  .audio-btn.small{padding:7px 14px;font-size:.78rem;}
+  .audio-btn .icon{font-size:1.1rem;}
+
+  .row-center{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+
+  .big-number{
+    font-family:'Fredoka';font-weight:700;font-size:3.6rem;text-align:center;color:var(--berry-2);
+    margin:10px 0 2px;text-shadow:0 4px 0 var(--pink-2);
+  }
+  .big-number .digit{display:inline-block;transition:transform .2s ease, color .2s ease;padding:0 4px;border-radius:10px;cursor:pointer;}
+  .big-number .digit.tappable:hover{transform:scale(1.12);}
+  .big-number .digit.highlight-h{background:var(--hund);color:#fff;}
+  .big-number .digit.highlight-t{background:var(--tens);color:#5a3d00;}
+  .big-number .digit.highlight-o{background:var(--ones);color:#fff;}
+  .big-number .digit.correct-tap{background:var(--mint);color:#fff;}
+  .big-number .digit.wrong-tap{background:#f08a8a;color:#fff;}
+
+  .htotag-row{display:flex;justify-content:center;gap:14px;margin:18px 0;flex-wrap:wrap;}
+  .htotag{
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    opacity:0;transform:translateY(10px);transition:opacity .4s ease, transform .4s ease;
+  }
+  .htotag.show{opacity:1;transform:translateY(0);}
+  .htotag .swatch{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka';font-weight:700;font-size:1.4rem;color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.12);}
+  .htotag .swatch.h{background:var(--hund);}
+  .htotag .swatch.t{background:var(--tens);color:#5a3d00;}
+  .htotag .swatch.o{background:var(--ones);}
+  .htotag .name{font-family:'Fredoka';font-weight:700;font-size:.85rem;color:#7a3a5a;text-transform:uppercase;letter-spacing:.03em;}
+
+  .btn{font-weight:800;font-size:.95rem;padding:12px 26px;border-radius:30px;transition:transform .15s ease, box-shadow .15s ease;}
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:linear-gradient(135deg,var(--berry-1),var(--berry-2));color:#fff;box-shadow:0 8px 18px rgba(196,42,104,.3);}
+  .btn-primary[disabled]{opacity:.4;pointer-events:none;}
+  .center-btn-row{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap;}
+
+  .drag-chip{
+    touch-action:none;user-select:none;background:var(--pink-1);border:2.5px solid var(--berry-1);
+    color:var(--berry-dark);font-family:'Fredoka';font-weight:700;padding:14px 18px;border-radius:16px;
+    text-align:center;font-size:1.3rem;box-shadow:0 4px 0 var(--pink-2);position:relative;z-index:5;
+    cursor:grab;
+  }
+  .drag-chip.dragging{box-shadow:0 12px 20px rgba(196,42,104,.35);z-index:100;cursor:grabbing;}
+  .drag-chip.used{opacity:0;pointer-events:none;}
+
+  .place-boxes{display:flex;justify-content:center;gap:16px;margin:18px 0;flex-wrap:wrap;}
+  .place-box-col{text-align:center;}
+  .place-box-col h4{font-family:'Fredoka';font-size:.8rem;color:#7a3a5a;text-transform:uppercase;letter-spacing:.04em;margin:0 0 6px;}
+  .place-box{
+    width:88px;height:64px;border:2.5px dashed #f3b8d0;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.5rem;color:#c98cae;background:#fff8fb;
+  }
+  .place-box.filled{border-style:solid;background:var(--pink-2);color:var(--berry-dark);}
+  .place-box.hundreds-box.filled{border-color:var(--hund);}
+  .place-box.tens-box.filled{border-color:var(--tens);}
+  .place-box.ones-box.filled{border-color:var(--ones);}
+  .result-eq{text-align:center;font-family:'Fredoka';font-weight:700;font-size:1.3rem;color:var(--berry-dark);margin-top:14px;min-height:1.8rem;}
+
+  .bank-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:10px;}
+
+  .options{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px;}
+  .options.grid3{grid-template-columns:1fr 1fr 1fr;}
+  .opt-btn{
+    background:#fff;border:2.5px solid var(--pink-2);color:var(--ink);border-radius:14px;
+    padding:14px 8px;font-family:'Fredoka';font-weight:600;font-size:1.1rem;text-align:center;
+  }
+  .opt-btn:hover{border-color:var(--berry-1);}
+  .opt-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .opt-btn.wrong{background:#ffe9e9;border-color:#f08a8a;color:#c23c3c;}
+  .opt-btn.selected{background:var(--pink-2);border-color:var(--berry-1);color:var(--berry-dark);}
+  .feedback.neutral{color:var(--berry-dark);}
+  .opt-btn[disabled]{pointer-events:none;}
+
+  .feedback{text-align:center;font-weight:800;font-family:'Fredoka';font-size:1.05rem;min-height:1.6rem;margin-top:12px;}
+  .feedback.good{color:#1a8a63;}
+  .feedback.bad{color:#c23c3c;}
+  .q-progress{text-align:center;font-weight:800;color:#a85778;font-size:.8rem;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;}
+
+  /* Houses (Activity 5) */
+  .houses-row{display:flex;justify-content:center;gap:20px;margin:18px 0;flex-wrap:wrap;}
+  .house{text-align:center;}
+  .house .roof{
+    width:0;height:0;border-left:44px solid transparent;border-right:44px solid transparent;
+    border-bottom:34px solid var(--berry-2);margin:0 auto;
+  }
+  .house.dragover .roof{border-bottom-color:var(--butter-dark);}
+  .house-body{
+    width:88px;height:70px;background:var(--pink-2);border:3px solid var(--berry-2);border-top:none;
+    border-radius:0 0 10px 10px;display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.6rem;color:var(--berry-dark);
+  }
+  .house-body.filled{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .house .label{font-family:'Fredoka';font-weight:700;font-size:.8rem;color:#7a3a5a;text-transform:uppercase;margin-top:6px;}
+  .falling-digits{display:flex;justify-content:center;gap:14px;margin-top:16px;flex-wrap:wrap;}
+
+  /* Clue list */
+  .clue-list{list-style:none;padding:0;margin:14px 0;display:flex;flex-direction:column;gap:10px;}
+  .clue-list li{
+    background:var(--pink-1);border:2px solid var(--pink-2);border-radius:14px;padding:12px 16px;
+    font-family:'Fredoka';font-weight:600;color:var(--berry-dark);display:flex;align-items:center;gap:10px;
+  }
+  .clue-list li .num{font-size:1.3rem;color:var(--berry-2);}
+
+  .stars-row{display:flex;justify-content:center;gap:4px;margin:6px 0;}
+  .star-icon{font-size:1.3rem;}
+
+  .reward-card{text-align:center;padding:36px 22px;background:linear-gradient(160deg,#fff,var(--pink-1));}
+  .badge-circle{
+    width:130px;height:130px;border-radius:50%;margin:0 auto 16px;
+    background:linear-gradient(135deg,var(--butter),var(--butter-dark));
+    display:flex;align-items:center;justify-content:center;font-size:3.4rem;
+    box-shadow:0 14px 26px rgba(230,168,0,.4);border:6px solid #fff;
+  }
+  .reward-card h2{color:var(--berry-dark);font-size:1.7rem;margin:0 0 4px;}
+  .reward-card p{color:#7a3a5a;font-weight:700;margin:0 0 10px;}
+  .next-lesson-card{
+    margin-top:22px;background:#fff;border:2.5px solid var(--pink-2);border-radius:18px;
+    padding:16px;display:flex;align-items:center;gap:14px;text-align:left;
+  }
+  .next-lesson-card .lock-icon{font-size:1.6rem;}
+  .next-lesson-card .txt small{display:block;color:#a85778;font-weight:800;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;}
+  .next-lesson-card .txt strong{font-family:'Fredoka';color:var(--berry-dark);font-size:1.05rem;}
+
+  @media (max-width:480px){
+    .big-number{font-size:2.7rem;}
+    .options.grid3{grid-template-columns:1fr 1fr;}
+    .place-box{width:74px;height:56px;font-size:1.3rem;}
+    .house-body{width:74px;height:60px;font-size:1.3rem;}
+  }
+  @media (prefers-reduced-motion: reduce){ .stage{animation:none;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="../lessons.html">&larr; Chapter</a>
+    <div class="lesson-title">
+      <small>Grade 2 · Math · Chapter 1: Numbers</small>
+      🏗️ Lesson 4: Place Value
+    </div>
+    <div class="stars-count"><span id="starTotal">0</span> ⭐</div>
+  </div>
+  <div class="progress-track" id="progressTrack"></div>
+</div>
+
+<div class="stage-wrap" id="stageWrap"></div>
+
+<script>
+/* ============================================================
+   LESSON 4: PLACE VALUE — self-contained, no shared engine.js
+   Progress saved via ../../../../../../assets/js/progress.js
+   (falls back to local localStorage if that file is unavailable)
+============================================================ */
+const TOPIC_ID = "grade2-math-ch1-lesson4-place-value";
+let totalStars = 0;
+
+(function loadProgressHelper(){
+  try{
+    const s = document.createElement('script');
+    s.src = "../../../../../../assets/js/progress.js";
+    document.head.appendChild(s);
+  }catch(e){ /* no-op: local fallback below still works */ }
+})();
+function saveStepDone(step){
+  try{
+    if (typeof setStepDone === 'function'){ setStepDone(TOPIC_ID, step, true); return; }
+  }catch(e){}
+  try{
+    const key = 'progress:' + TOPIC_ID;
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data[step] = true;
+    localStorage.setItem(key, JSON.stringify(data));
+  }catch(e){ /* storage unavailable — fail silently, never block the lesson */ }
+}
+
+/* ---------------- Speech ---------------- */
+let enVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  enVoice = voices.find(v => v.lang === 'en-IN') ||
+            voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+}
+if ('speechSynthesis' in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speak(text){
+  try{
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (enVoice) u.voice = enVoice;
+    u.rate = 0.88;
+    u.lang = 'en-IN';
+    speechSynthesis.speak(u);
+  }catch(e){ /* speech unavailable — visuals still work */ }
+}
+
+function addStar(n=1){
+  totalStars += n;
+  document.getElementById('starTotal').textContent = totalStars;
+}
+function isStageActive(stageId){
+  const el = document.getElementById(stageId);
+  return !!(el && el.classList.contains('active'));
+}
+function speakForStage(stageId, text){
+  // All stages are BUILT immediately at page load, but only one is
+  // SHOWN — without this guard, every hidden stage's setup-time
+  // narration fires anyway and overlaps whatever is on screen.
+  if (isStageActive(stageId)) speak(text);
+}
+function shuffled(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+function splitPlaces(n){
+  const h = Math.floor(n/100);
+  const t = Math.floor((n%100)/10);
+  const o = n%10;
+  return {h, t, o};
+}
+function expandedString(n){
+  const {h,t,o} = splitPlaces(n);
+  return `${h*100} + ${t*10} + ${o}`;
+}
+
+/* ---------------- Stage machine ---------------- */
+const STAGES = [
+  {id:'s1', label:'See'},
+  {id:'s2', label:'Hear & Tap'},
+  {id:'s3', label:'Place the Digit'},
+  {id:'s4', label:'Build'},
+  {id:'s5', label:'Place Value House'},
+  {id:'s6', label:'What Is My Place'},
+  {id:'s7', label:'Make My Number'},
+  {id:'s8', label:'Detective'},
+  {id:'s9', label:'Practice'},
+  {id:'s10', label:'Mystery Number'},
+  {id:'reward', label:'Reward'},
+];
+let currentStageIndex = 0;
+
+function renderProgressTrack(){
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  STAGES.forEach((st, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i < currentStageIndex ? ' done' : '') + (i === currentStageIndex ? ' active' : '');
+    track.appendChild(d);
+  });
+}
+function goToStage(index){
+  currentStageIndex = index;
+  document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(STAGES[index].id);
+  if (target) target.classList.add('active');
+  renderProgressTrack();
+  saveStepDone(STAGES[index].id);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function completeStage(){
+  if (currentStageIndex < STAGES.length - 1) goToStage(currentStageIndex + 1);
+}
+
+const wrap = document.getElementById('stageWrap');
+
+/* ============================================================
+   STAGE 1: See — "Meet H-T-O"
+============================================================ */
+const s1Number = 342;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s1">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 1 · See</div>
+    <h2>Meet H-T-O</h2>
+    <p>Every digit in a number has a special place.</p>
+  </div>
+  <div class="card">
+    <div class="big-number">
+      <span class="digit" id="s1D0">3</span><span class="digit" id="s1D1">4</span><span class="digit" id="s1D2">2</span>
+    </div>
+    <div class="htotag-row">
+      <div class="htotag" id="s1TagH"><div class="swatch h">3</div><div class="name">Hundreds</div></div>
+      <div class="htotag" id="s1TagT"><div class="swatch t">4</div><div class="name">Tens</div></div>
+      <div class="htotag" id="s1TagO"><div class="swatch o">2</div><div class="name">Ones</div></div>
+    </div>
+    <div class="row-center">
+      <button class="audio-btn" id="s1Listen"><span class="icon">🔊</span> Listen Again</button>
+    </div>
+    <div class="center-btn-row">
+      <button class="btn btn-primary" id="s1Next">Continue ➜</button>
+    </div>
+  </div>
+</section>`);
+function playS1Sequence(){
+  ['s1D0','s1D1','s1D2'].forEach(id => document.getElementById(id).className = 'digit');
+  ['s1TagH','s1TagT','s1TagO'].forEach(id => document.getElementById(id).classList.remove('show'));
+  setTimeout(() => { document.getElementById('s1D0').classList.add('highlight-h'); document.getElementById('s1TagH').classList.add('show'); }, 300);
+  setTimeout(() => { document.getElementById('s1D1').classList.add('highlight-t'); document.getElementById('s1TagT').classList.add('show'); }, 900);
+  setTimeout(() => { document.getElementById('s1D2').classList.add('highlight-o'); document.getElementById('s1TagO').classList.add('show'); }, 1500);
+  setTimeout(() => speakForStage('s1', '3 is hundreds. 4 is tens. 2 is ones.'), 1800);
+}
+document.getElementById('s1Listen').onclick = playS1Sequence;
+document.getElementById('s1Next').onclick = () => completeStage();
+playS1Sequence();
+
+/* ============================================================
+   STAGE 2: Hear & Tap
+============================================================ */
+const s2Number = 526;
+const s2Parts = splitPlaces(s2Number);
+const s2Digits = [String(s2Parts.h), String(s2Parts.t), String(s2Parts.o)];
+const s2Sequence = [
+  {place:'hundreds', digit:s2Digits[0], index:0},
+  {place:'tens', digit:s2Digits[1], index:1},
+  {place:'ones', digit:s2Digits[2], index:2},
+];
+let s2Step = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s2">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 2 · Hear &amp; Tap</div>
+    <h2>Tap the Digit</h2>
+    <p id="s2Prompt">Listen, then tap the correct digit.</p>
+  </div>
+  <div class="card">
+    <div class="big-number">
+      <span class="digit tappable" id="s2D0" data-index="0">${s2Digits[0]}</span><span class="digit tappable" id="s2D1" data-index="1">${s2Digits[1]}</span><span class="digit tappable" id="s2D2" data-index="2">${s2Digits[2]}</span>
+    </div>
+    <div class="row-center">
+      <button class="audio-btn" id="s2Play"><span class="icon">🔊</span> Hear the Clue</button>
+    </div>
+    <div class="feedback" id="s2Feedback"></div>
+  </div>
+</section>`);
+function askS2(){
+  const step = s2Sequence[s2Step];
+  document.getElementById('s2Prompt').textContent = `Tap the ${step.place}.`;
+  document.getElementById('s2Play').onclick = () => speak('Tap the ' + step.place);
+  setTimeout(() => speakForStage('s2', 'Tap the ' + step.place), 400);
+}
+[0,1,2].forEach(i => {
+  document.getElementById('s2D' + i).onclick = () => {
+    const step = s2Sequence[s2Step];
+    const el = document.getElementById('s2D' + i);
+    const fb = document.getElementById('s2Feedback');
+    if (i === step.index){
+      el.classList.add('correct-tap');
+      el.classList.remove('tappable');
+      fb.textContent = 'Great! 🎉';
+      fb.className = 'feedback good';
+      addStar(1);
+      speak('Correct!');
+      s2Step++;
+      if (s2Step >= s2Sequence.length){
+        setTimeout(() => completeStage(), 1200);
+      } else {
+        setTimeout(askS2, 1200);
+      }
+    } else {
+      el.classList.add('wrong-tap');
+      fb.textContent = 'Try again!';
+      fb.className = 'feedback bad';
+      speak('Try again.');
+      setTimeout(() => el.classList.remove('wrong-tap'), 500);
+    }
+  };
+});
+askS2();
+
+/* ============================================================
+   STAGE 3: Place the Digit
+============================================================ */
+const s3Number = 735;
+const s3Parts = splitPlaces(s3Number);
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s3">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 3 · Place the Digit</div>
+    <h2>Drag Each Digit to Its Box</h2>
+    <p>Make ${s3Number}.</p>
+  </div>
+  <div class="card">
+    <div class="place-boxes">
+      <div class="place-box-col"><h4>Hundreds</h4><div class="place-box hundreds-box" id="s3BoxH"></div></div>
+      <div class="place-box-col"><h4>Tens</h4><div class="place-box tens-box" id="s3BoxT"></div></div>
+      <div class="place-box-col"><h4>Ones</h4><div class="place-box ones-box" id="s3BoxO"></div></div>
+    </div>
+    <div class="bank-row" id="s3Bank"></div>
+    <div class="result-eq" id="s3Result"></div>
+    <div class="feedback" id="s3Feedback"></div>
+    <div class="center-btn-row">
+      <button class="btn btn-primary" id="s3Next" disabled>Next ➜</button>
+    </div>
+  </div>
+</section>`);
+(function setupS3(){
+  const bank = document.getElementById('s3Bank');
+  const boxes = { h: document.getElementById('s3BoxH'), t: document.getElementById('s3BoxT'), o: document.getElementById('s3BoxO') };
+  const pieces = shuffled([
+    {val:s3Parts.h, place:'h'},
+    {val:s3Parts.t, place:'t'},
+    {val:s3Parts.o, place:'o'},
+  ]);
+  let filledCount = 0;
+  pieces.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = 'drag-chip';
+    chip.textContent = p.val;
+    chip.dataset.place = p.place;
+    bank.appendChild(chip);
+    makeDraggable(chip);
+  });
+  function makeDraggable(chip){
+    chip.addEventListener('pointerdown', (e) => {
+      if (chip.classList.contains('used') || chip.dataset.dragActive === '1') return;
+      chip.dataset.dragActive = '1';
+      const startRect = chip.getBoundingClientRect();
+      const startParent = chip.parentElement;
+      try{ chip.setPointerCapture(e.pointerId); }catch(err){}
+      chip.classList.add('dragging');
+      document.body.appendChild(chip);
+      chip.style.position = 'fixed';
+      chip.style.width = startRect.width + 'px';
+      chip.style.left = startRect.left + 'px';
+      chip.style.top = startRect.top + 'px';
+      const offsetX = e.clientX - startRect.left;
+      const offsetY = e.clientY - startRect.top;
+      function onMove(ev){
+        ev.preventDefault();
+        chip.style.left = (ev.clientX - offsetX) + 'px';
+        chip.style.top = (ev.clientY - offsetY) + 'px';
+      }
+      function cleanupListeners(){
+        chip.removeEventListener('pointermove', onMove);
+        chip.removeEventListener('pointerup', onUp);
+        chip.removeEventListener('pointercancel', onCancel);
+        chip.classList.remove('dragging');
+        chip.dataset.dragActive = '0';
+      }
+      function onCancel(){
+        cleanupListeners();
+        chip.style.position = ''; chip.style.left = ''; chip.style.top = ''; chip.style.width = '';
+        startParent.appendChild(chip);
+      }
+      function onUp(ev){
+        cleanupListeners();
+        chip.style.position = ''; chip.style.left = ''; chip.style.top = ''; chip.style.width = '';
+        let target = null;
+        Object.entries(boxes).forEach(([key, box]) => {
+          const r = box.getBoundingClientRect();
+          if (ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom && !box.classList.contains('filled')){
+            target = {key, box};
+          }
+        });
+        const fb = document.getElementById('s3Feedback');
+        if (target){
+          if (target.key === chip.dataset.place){
+            target.box.textContent = chip.textContent;
+            target.box.classList.add('filled');
+            chip.classList.add('used');
+            chip.remove();
+            filledCount++;
+            fb.textContent = 'Nice!';
+            fb.className = 'feedback good';
+            if (filledCount === 3){
+              document.getElementById('s3Result').textContent = `🎉 ${s3Number}`;
+              fb.textContent = 'You placed every digit!';
+              addStar(1);
+              document.getElementById('s3Next').disabled = false;
+              speak(String(s3Number));
+            }
+          } else {
+            startParent.appendChild(chip);
+            fb.textContent = 'Not that box — try again.';
+            fb.className = 'feedback bad';
+          }
+        } else {
+          startParent.appendChild(chip);
+        }
+      }
+      chip.addEventListener('pointermove', onMove);
+      chip.addEventListener('pointerup', onUp);
+      chip.addEventListener('pointercancel', onCancel);
+    });
+  }
+})();
+document.getElementById('s3Next').onclick = () => completeStage();
+
+/* ============================================================
+   STAGE 4: Build the Number
+============================================================ */
+const s4Answer = 462;
+const s4Parts = splitPlaces(s4Answer);
+const s4Options = [462, 426, 246];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s4">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 4 · Build</div>
+    <h2>Build the Number</h2>
+    <p>4 Hundreds + 6 Tens + 2 Ones</p>
+  </div>
+  <div class="card">
+    <div class="htotag-row">
+      <div class="htotag show"><div class="swatch h">4</div><div class="name">Hundreds</div></div>
+      <div class="htotag show"><div class="swatch t">6</div><div class="name">Tens</div></div>
+      <div class="htotag show"><div class="swatch o">2</div><div class="name">Ones</div></div>
+    </div>
+    <div class="row-center">
+      <button class="audio-btn small" id="s4Play"><span class="icon">🔊</span> Hear It</button>
+    </div>
+    <div class="options grid3" id="s4Options"></div>
+    <div class="result-eq" id="s4Result"></div>
+    <div class="feedback" id="s4Feedback"></div>
+  </div>
+</section>`);
+(function setupS4(){
+  document.getElementById('s4Play').onclick = () => speak('Build the number. 4 hundreds, 6 tens, 2 ones.');
+  setTimeout(() => speakForStage('s4', 'Build the number. 4 hundreds, 6 tens, 2 ones.'), 400);
+  const optsWrap = document.getElementById('s4Options');
+  shuffled(s4Options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      const fb = document.getElementById('s4Feedback');
+      if (opt === s4Answer){
+        document.querySelectorAll('#s4Options .opt-btn').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        document.getElementById('s4Result').textContent = `${s4Parts.h*100} + ${s4Parts.t*10} + ${s4Parts.o} = ${s4Answer}`;
+        fb.textContent = 'Correct! ⭐';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct! ' + s4Answer);
+        setTimeout(() => completeStage(), 1500);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+    optsWrap.appendChild(b);
+  });
+})();
+
+/* ============================================================
+   STAGE 5: Place Value House
+============================================================ */
+const s5Number = 583;
+const s5Parts = splitPlaces(s5Number);
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s5">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 5 · Place Value House</div>
+    <h2>Put Each Digit in Its House</h2>
+    <p>Make ${s5Number}.</p>
+  </div>
+  <div class="card">
+    <div class="houses-row">
+      <div class="house"><div class="roof"></div><div class="house-body" id="s5HouseH" data-place="h"></div><div class="label">Hundreds</div></div>
+      <div class="house"><div class="roof"></div><div class="house-body" id="s5HouseT" data-place="t"></div><div class="label">Tens</div></div>
+      <div class="house"><div class="roof"></div><div class="house-body" id="s5HouseO" data-place="o"></div><div class="label">Ones</div></div>
+    </div>
+    <div class="falling-digits" id="s5Bank"></div>
+    <div class="feedback" id="s5Feedback"></div>
+    <div class="center-btn-row">
+      <button class="btn btn-primary" id="s5Next" disabled>Next ➜</button>
+    </div>
+  </div>
+</section>`);
+(function setupS5(){
+  const bank = document.getElementById('s5Bank');
+  const houses = { h: document.getElementById('s5HouseH'), t: document.getElementById('s5HouseT'), o: document.getElementById('s5HouseO') };
+  const houseWraps = { h: houses.h.closest('.house'), t: houses.t.closest('.house'), o: houses.o.closest('.house') };
+  const pieces = shuffled([
+    {val:s5Parts.h, place:'h'},
+    {val:s5Parts.t, place:'t'},
+    {val:s5Parts.o, place:'o'},
+  ]);
+  let filledCount = 0;
+  pieces.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = 'drag-chip';
+    chip.textContent = p.val;
+    chip.dataset.place = p.place;
+    bank.appendChild(chip);
+    makeDraggable(chip);
+  });
+  function makeDraggable(chip){
+    chip.addEventListener('pointerdown', (e) => {
+      if (chip.classList.contains('used') || chip.dataset.dragActive === '1') return;
+      chip.dataset.dragActive = '1';
+      const startRect = chip.getBoundingClientRect();
+      const startParent = chip.parentElement;
+      try{ chip.setPointerCapture(e.pointerId); }catch(err){}
+      chip.classList.add('dragging');
+      document.body.appendChild(chip);
+      chip.style.position = 'fixed';
+      chip.style.width = startRect.width + 'px';
+      chip.style.left = startRect.left + 'px';
+      chip.style.top = startRect.top + 'px';
+      const offsetX = e.clientX - startRect.left;
+      const offsetY = e.clientY - startRect.top;
+      function onMove(ev){
+        ev.preventDefault();
+        chip.style.left = (ev.clientX - offsetX) + 'px';
+        chip.style.top = (ev.clientY - offsetY) + 'px';
+        Object.values(houseWraps).forEach(h => h.classList.remove('dragover'));
+        Object.entries(houses).forEach(([key, house]) => {
+          const r = house.getBoundingClientRect();
+          if (ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top-40 && ev.clientY <= r.bottom){
+            houseWraps[key].classList.add('dragover');
+          }
+        });
+      }
+      function cleanupListeners(){
+        chip.removeEventListener('pointermove', onMove);
+        chip.removeEventListener('pointerup', onUp);
+        chip.removeEventListener('pointercancel', onCancel);
+        chip.classList.remove('dragging');
+        chip.dataset.dragActive = '0';
+        Object.values(houseWraps).forEach(h => h.classList.remove('dragover'));
+      }
+      function onCancel(){
+        cleanupListeners();
+        chip.style.position = ''; chip.style.left = ''; chip.style.top = ''; chip.style.width = '';
+        startParent.appendChild(chip);
+      }
+      function onUp(ev){
+        cleanupListeners();
+        chip.style.position = ''; chip.style.left = ''; chip.style.top = ''; chip.style.width = '';
+        let target = null;
+        Object.entries(houses).forEach(([key, house]) => {
+          const r = house.getBoundingClientRect();
+          if (ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top-40 && ev.clientY <= r.bottom && !house.classList.contains('filled')){
+            target = {key, house};
+          }
+        });
+        const fb = document.getElementById('s5Feedback');
+        if (target){
+          if (target.key === chip.dataset.place){
+            target.house.textContent = chip.textContent;
+            target.house.classList.add('filled');
+            chip.classList.add('used');
+            chip.remove();
+            filledCount++;
+            fb.textContent = 'Nice!';
+            fb.className = 'feedback good';
+            if (filledCount === 3){
+              addStar(1);
+              fb.textContent = `🎉 All digits home! ${s5Number}`;
+              document.getElementById('s5Next').disabled = false;
+              speak(String(s5Number));
+            }
+          } else {
+            startParent.appendChild(chip);
+            fb.textContent = 'Wrong house — try again.';
+            fb.className = 'feedback bad';
+          }
+        } else {
+          startParent.appendChild(chip);
+        }
+      }
+      chip.addEventListener('pointermove', onMove);
+      chip.addEventListener('pointerup', onUp);
+      chip.addEventListener('pointercancel', onCancel);
+    });
+  }
+})();
+document.getElementById('s5Next').onclick = () => completeStage();
+
+/* ============================================================
+   STAGE 6: What Is My Place?
+============================================================ */
+const s6Questions = [
+  {num:'674', highlightIndex:1, answer:'Tens'},
+  {num:'674', highlightIndex:0, answer:'Hundreds'},
+  {num:'674', highlightIndex:2, answer:'Ones'},
+];
+let s6Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s6">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 6 · What Is My Place?</div>
+    <h2>Name the Highlighted Place</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s6Progress"></div>
+    <div class="big-number" id="s6Number"></div>
+    <div class="options grid3" id="s6Options"></div>
+    <div class="feedback" id="s6Feedback"></div>
+  </div>
+</section>`);
+function renderS6(){
+  const q = s6Questions[s6Index];
+  document.getElementById('s6Progress').textContent = `Question ${s6Index+1} of ${s6Questions.length}`;
+  const numEl = document.getElementById('s6Number');
+  numEl.innerHTML = '';
+  [...q.num].forEach((d, i) => {
+    const span = document.createElement('span');
+    span.className = 'digit';
+    span.textContent = d;
+    if (i === q.highlightIndex) span.classList.add('highlight-h');
+    numEl.appendChild(span);
+  });
+  document.getElementById('s6Feedback').textContent = '';
+  const optsWrap = document.getElementById('s6Options');
+  optsWrap.innerHTML = '';
+  shuffled(['Hundreds','Tens','Ones']).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      const fb = document.getElementById('s6Feedback');
+      if (opt === q.answer){
+        document.querySelectorAll('#s6Options .opt-btn').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        fb.textContent = 'Correct! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct! ' + opt);
+        setTimeout(() => {
+          s6Index++;
+          if (s6Index >= s6Questions.length) completeStage();
+          else renderS6();
+        }, 1300);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s6', 'What place?');
+}
+renderS6();
+
+/* ============================================================
+   STAGE 7: Make My Number
+============================================================ */
+const s7Answer = 537;
+const s7Parts = splitPlaces(s7Answer);
+const s7Options = [537, 573, 357];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s7">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 7 · Make My Number</div>
+    <h2>Listen to the Clues</h2>
+  </div>
+  <div class="card">
+    <ul class="clue-list" id="s7Clues"></ul>
+    <div class="row-center">
+      <button class="audio-btn" id="s7Play"><span class="icon">🔊</span> Hear the Clues</button>
+    </div>
+    <div class="options grid3" id="s7Options"></div>
+    <div class="feedback" id="s7Feedback"></div>
+  </div>
+</section>`);
+(function setupS7(){
+  const clues = [`I have ${s7Parts.h} hundreds.`, `I have ${s7Parts.t} tens.`, `I have ${s7Parts.o} ones.`];
+  const list = document.getElementById('s7Clues');
+  clues.forEach(c => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="num">🔎</span> ${c}`;
+    list.appendChild(li);
+  });
+  function speakClues(){ speakForStage('s7', clues.join(' ')); }
+  document.getElementById('s7Play').onclick = speakClues;
+  setTimeout(speakClues, 500);
+  const optsWrap = document.getElementById('s7Options');
+  shuffled(s7Options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      document.querySelectorAll('#s7Options .opt-btn').forEach(x => x.disabled = true);
+      const fb = document.getElementById('s7Feedback');
+      if (opt === s7Answer){
+        b.classList.add('correct');
+        fb.textContent = 'Correct! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct! ' + s7Answer);
+      } else {
+        b.classList.add('wrong');
+        fb.textContent = `It's ${s7Answer}.`;
+        fb.className = 'feedback bad';
+        speak('Not quite.');
+      }
+      setTimeout(() => completeStage(), 1500);
+    };
+    optsWrap.appendChild(b);
+  });
+})();
+
+/* ============================================================
+   STAGE 8: Place Value Detective
+============================================================ */
+const s8Number = 826;
+const s8Parts = splitPlaces(s8Number);
+const s8Rounds = [
+  {place:'hundreds', answer:s8Parts.h, options:shuffled([s8Parts.h, s8Parts.t, s8Parts.o])},
+  {place:'ones', answer:s8Parts.o, options:shuffled([s8Parts.h, s8Parts.t, s8Parts.o])},
+];
+let s8Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s8">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 8 · Place Value Detective</div>
+    <h2>🕵️ Find the Digit</h2>
+  </div>
+  <div class="card">
+    <div class="big-number">${s8Number}</div>
+    <div class="row-center">
+      <button class="audio-btn" id="s8Play"><span class="icon">🔎</span> Hear the Clue</button>
+    </div>
+    <div class="options grid3" id="s8Options"></div>
+    <div class="feedback" id="s8Feedback"></div>
+  </div>
+</section>`);
+function renderS8(){
+  const r = s8Rounds[s8Index];
+  document.getElementById('s8Play').onclick = () => speak('Find the digit in the ' + r.place + ' place.');
+  setTimeout(() => speakForStage('s8', 'Find the digit in the ' + r.place + ' place.'), 400);
+  const optsWrap = document.getElementById('s8Options');
+  optsWrap.innerHTML = '';
+  r.options.forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      const fb = document.getElementById('s8Feedback');
+      if (opt === r.answer){
+        document.querySelectorAll('#s8Options .opt-btn').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        fb.textContent = "You found it! 🎉";
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('You found it!');
+        setTimeout(() => {
+          s8Index++;
+          if (s8Index >= s8Rounds.length) completeStage();
+          else renderS8();
+        }, 1400);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+    optsWrap.appendChild(b);
+  });
+}
+renderS8();
+
+/* ============================================================
+   STAGE 9: Practice (5 questions)
+============================================================ */
+const s9Questions = [
+  {prompt:'What is the hundreds digit in 425?', answer:'4', options:['4','2','5']},
+  {prompt:'What is the tens digit in 638?', answer:'3', options:['6','3','8']},
+  {prompt:'What is the ones digit in 751?', answer:'1', options:['7','5','1']},
+  {prompt:'Which number has 4 hundreds, 2 tens and 5 ones?', answer:'425', options:['425','452','245']},
+  {prompt:'7 hundreds + 0 tens + 3 ones = ?', answer:'703', options:['703','730','307']},
+];
+let s9Index = 0;
+let s9CorrectCount = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s9">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 9 · Practice</div>
+    <h2>Quick Practice</h2>
+    <p>Five short questions.</p>
+  </div>
+  <div class="card" id="s9Intro">
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">You're going to answer 5 questions on your own now. Take your time and do your best!</p>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s9Start">Start Practice ▶</button></div>
+  </div>
+  <div class="card" id="s9Quiz" style="display:none;">
+    <div class="q-progress" id="s9Progress"></div>
+    <div style="text-align:center;font-family:'Fredoka';font-weight:700;font-size:1.3rem;color:var(--berry-dark);margin:10px 0;" id="s9Prompt"></div>
+    <div class="options grid3" id="s9Options"></div>
+    <div class="feedback" id="s9Feedback"></div>
+  </div>
+</section>`);
+document.getElementById('s9Start').onclick = () => {
+  document.getElementById('s9Intro').style.display = 'none';
+  document.getElementById('s9Quiz').style.display = 'block';
+  speak("Now you're going to answer some questions on your own. Let's begin!");
+  renderS9();
+};
+function renderS9(){
+  const q = s9Questions[s9Index];
+  document.getElementById('s9Progress').textContent = `Question ${s9Index+1} of ${s9Questions.length}`;
+  document.getElementById('s9Prompt').textContent = q.prompt;
+  document.getElementById('s9Feedback').textContent = '';
+  const optsWrap = document.getElementById('s9Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      document.querySelectorAll('#s9Options .opt-btn').forEach(x => x.disabled = true);
+      b.classList.add('selected');
+      if (opt === q.answer) s9CorrectCount++;
+      const fb = document.getElementById('s9Feedback');
+      fb.textContent = 'Got it! Next question…';
+      fb.className = 'feedback neutral';
+      speak('Got it. Next question.');
+      setTimeout(() => {
+        s9Index++;
+        if (s9Index >= s9Questions.length) showS9Summary();
+        else renderS9();
+      }, 1100);
+    };
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s9', q.prompt);
+}
+function showS9Summary(){
+  document.getElementById('s9Progress').textContent = 'Practice Complete!';
+  document.getElementById('s9Prompt').textContent =
+    `You got ${s9CorrectCount} out of ${s9Questions.length} correct!`;
+  const optsWrap = document.getElementById('s9Options');
+  optsWrap.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.textContent = 'Continue ➜';
+  btn.style.gridColumn = '1 / -1';
+  btn.style.margin = '6px auto 0';
+  btn.onclick = () => completeStage();
+  optsWrap.appendChild(btn);
+  addStar(s9CorrectCount);
+  document.getElementById('s9Feedback').textContent =
+    s9CorrectCount === s9Questions.length ? 'Perfect score! 🌟' : 'Great effort! 🎉';
+  document.getElementById('s9Feedback').className = 'feedback good';
+  speak(`You got ${s9CorrectCount} out of ${s9Questions.length} correct!`);
+}
+
+
+/* ============================================================
+   STAGE 10: Mystery Number Challenge
+============================================================ */
+const s10Answer = 846;
+const s10Parts = splitPlaces(s10Answer);
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s10">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 10 · Mystery Number</div>
+    <h2>Who Am I?</h2>
+    <p>Two answers for one mystery!</p>
+  </div>
+  <div class="card">
+    <ul class="clue-list" id="s10Clues"></ul>
+    <div class="row-center">
+      <button class="audio-btn" id="s10Play"><span class="icon">🔎</span> Hear the Clues</button>
+    </div>
+    <div id="s10Stage1">
+      <div class="options grid3" id="s10NumberOptions"></div>
+    </div>
+    <div id="s10Stage2" style="display:none;">
+      <p style="text-align:center;font-weight:800;color:#7a3a5a;margin-top:16px;">Now, what is my expanded form?</p>
+      <div class="options" id="s10ExpandOptions"></div>
+    </div>
+    <div class="feedback" id="s10Feedback"></div>
+  </div>
+</section>`);
+(function setupS10(){
+  const clues = [`I have ${s10Parts.h} hundreds.`, `I have ${s10Parts.t} tens.`, `I have ${s10Parts.o} ones.`];
+  const list = document.getElementById('s10Clues');
+  clues.forEach(c => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="num">🔎</span> ${c}`;
+    list.appendChild(li);
+  });
+  function speakClues(){ speakForStage('s10', clues.join(' ')); }
+  document.getElementById('s10Play').onclick = speakClues;
+  setTimeout(speakClues, 500);
+
+  const numOpts = shuffled([s10Answer, 864, 468]);
+  const numWrap = document.getElementById('s10NumberOptions');
+  numOpts.forEach(n => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = n;
+    b.onclick = () => {
+      if (b.disabled) return;
+      const fb = document.getElementById('s10Feedback');
+      if (n === s10Answer){
+        document.querySelectorAll('#s10NumberOptions .opt-btn').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        fb.textContent = "That's me! 🎉";
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct! I am ' + s10Answer);
+        setTimeout(() => {
+          document.getElementById('s10Stage1').style.display = 'none';
+          document.getElementById('s10Stage2').style.display = 'block';
+          fb.textContent = '';
+          setupExpandStage();
+        }, 1200);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+    numWrap.appendChild(b);
+  });
+
+  function setupExpandStage(){
+    const expOpts = shuffled([expandedString(s10Answer), '80 + 4 + 6', '800 + 4 + 60']);
+    const expWrap = document.getElementById('s10ExpandOptions');
+    expWrap.innerHTML = '';
+    expOpts.forEach(exp => {
+      const b = document.createElement('button');
+      b.className = 'opt-btn';
+      b.textContent = exp;
+      b.onclick = () => {
+        if (b.disabled) return;
+        const fb = document.getElementById('s10Feedback');
+        if (exp === expandedString(s10Answer)){
+          document.querySelectorAll('#s10ExpandOptions .opt-btn').forEach(x => x.disabled = true);
+          b.classList.add('correct');
+          fb.textContent = 'Excellent! 🏆';
+          fb.className = 'feedback good';
+          addStar(1);
+          speak('Excellent!');
+          setTimeout(() => showReward(), 1400);
+        } else {
+          b.classList.add('wrong');
+          b.disabled = true;
+          fb.textContent = 'Try again, you are very close!';
+          fb.className = 'feedback bad';
+          speak('Try again, you are very close!');
+        }
+      };
+      expWrap.appendChild(b);
+    });
+  }
+})();
+
+/* ============================================================
+   REWARD
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="reward">
+  <div class="card reward-card">
+    <div class="badge-circle">🏗️</div>
+    <h2>PLACE VALUE BUILDER</h2>
+    <p>You know Hundreds, Tens and Ones!</p>
+    <div class="stars-row" id="rewardStars"></div>
+    <div class="next-lesson-card">
+      <div class="lock-icon">🔓</div>
+      <div class="txt">
+        <small>Next Lesson</small>
+        <strong>Compare Numbers</strong>
+      </div>
+    </div>
+  </div>
+</section>`);
+function showReward(){
+  goToStage(STAGES.length - 1);
+  const starsRow = document.getElementById('rewardStars');
+  starsRow.innerHTML = '';
+  for (let i=0;i<5;i++){
+    const s = document.createElement('span');
+    s.className = 'star-icon';
+    s.textContent = '⭐';
+    starsRow.appendChild(s);
+  }
+  saveStepDone('lesson4-complete');
+  speak('Great job! You know hundreds, tens, and ones!');
+}
+
+/* ---------------- init ---------------- */
+renderProgressTrack();
+goToStage(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numbers to 1000 — Grade 2 Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crust:#7a4a2b; --crust-dark:#563018;
+    --berry:#e85d75; --berry-dark:#c33f57; --berry-light:#ffc9d4;
+    --butter:#ffd166; --butter-deep:#e8a930;
+    --mint:#8fd9c4; --mint-deep:#3fae8c;
+    --paper:#fff7ec; --paper-2:#ffe9d1;
+    --ink:#3a2b1f; --ink-soft:#8a7360;
+    --coral:#ef7a5c; --white:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 10% 0%, #ffe9d1 0%, transparent 45%),
+      radial-gradient(circle at 90% 10%, #ffe3ea 0%, transparent 40%),
+      var(--paper);
+    font-family:'Nunito', sans-serif; color:var(--ink); padding-bottom:60px;
+  }
+  h1,h2,h3,.display{font-family:'Fredoka', sans-serif;}
+
+  .topic-back{display:inline-block; padding:10px 18px; font-family:'Fredoka'; font-weight:700; font-size:14px; color:var(--berry-dark); text-decoration:none;}
+
+  .hero{
+    background: linear-gradient(180deg, #d9486a 0%, var(--berry) 55%, #ef7690 100%);
+    color:white; padding:30px 20px 26px; border-radius:0 0 32px 32px;
+    box-shadow:0 8px 24px rgba(200,63,87,0.25); position:relative; overflow:hidden;
+  }
+  .hero::after{content:""; position:absolute; left:0; right:0; bottom:0; height:26px;
+    background: repeating-linear-gradient(90deg, var(--crust) 0 18px, var(--crust-dark) 18px 20px); opacity:.9;}
+  .hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:2;}
+  .eyebrow{font-size:13px;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.18);
+    display:inline-block;padding:4px 12px;border-radius:999px;margin-bottom:10px;font-weight:700;}
+  h1.title{font-size:26px;margin:0 0 6px;font-weight:700;}
+  .subtitle{font-size:14px;opacity:.92;margin:0 0 20px;font-weight:600;}
+
+  .stem-wrap{display:flex;align-items:center;flex:1;}
+  .node{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.25);border:3px solid rgba(255,255,255,.6);
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:all .4s ease;}
+  .node.done{background:var(--butter);border-color:#fff;color:var(--crust-dark);transform:scale(1.08);}
+  .stem{height:4px;flex:1;background:rgba(255,255,255,.3);position:relative;overflow:hidden;}
+  .stem-fill{height:100%;width:0%;background:var(--butter);transition:width .4s ease;}
+  .tracker-labels{display:flex;justify-content:space-between;margin-top:6px;font-size:9.5px;font-weight:700;opacity:.85;}
+  .tracker-labels span{width:44px;text-align:center;}
+
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px;}
+  .meta-strip{display:flex;flex-wrap:wrap;gap:10px;margin:-14px 0 26px;position:relative;z-index:3;}
+  .meta-chip{background:var(--white);border:2px solid var(--paper-2);border-radius:14px;padding:8px 14px;
+    font-size:13px;font-weight:700;color:var(--ink-soft);box-shadow:0 4px 10px rgba(0,0,0,.05);}
+  .meta-chip b{color:var(--berry-dark);}
+
+  .card{background:var(--white);border-radius:22px;padding:26px 22px;margin-bottom:24px;
+    box-shadow:0 6px 18px rgba(122,74,43,.1);border:2px solid var(--butter);}
+
+  .quest-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .quest-dots{display:flex;gap:6px;}
+  .quest-dot{width:8px;height:8px;border-radius:50%;background:#f0e0c9;transition:all .3s;}
+  .quest-dot.active{background:var(--berry);width:20px;border-radius:5px;}
+  .read-btn{background:var(--paper);border:2px solid var(--paper-2);border-radius:999px;padding:6px 13px;
+    font-weight:800;font-size:12px;color:var(--berry-dark);cursor:pointer;}
+  .read-btn.speaking{background:var(--berry);color:white;border-color:var(--berry-dark);}
+
+  .stage-tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.03em;background:#fff3e0;
+    color:#b3690b;padding:3px 10px;border-radius:999px;text-transform:uppercase;margin-bottom:10px;}
+  .scene{min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px 4px;}
+  .scene h2{font-size:21px;color:var(--berry-dark);margin:0 0 8px;}
+  .narration{font-size:14.5px;color:var(--ink-soft);font-weight:700;margin:0 0 18px;max-width:440px;}
+
+  /* SEE */
+  .see-grid{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;}
+  .see-item{background:var(--paper);border:2px solid var(--paper-2);border-radius:16px;padding:16px 14px;width:120px;}
+  .see-item .emoji{font-size:34px;}
+  .see-item .count{font-family:'Fredoka';font-weight:700;font-size:20px;color:var(--berry-dark);margin-top:4px;}
+  .see-item .label{font-size:11px;font-weight:700;color:var(--ink-soft);}
+
+  /* LEARN */
+  .journey-row{display:flex;align-items:flex-end;gap:14px;justify-content:center;margin-bottom:6px;}
+  .journey-num{font-family:'Fredoka';font-weight:700;color:var(--berry);background:var(--paper);
+    border:2px solid var(--paper-2);border-radius:14px;padding:10px 14px;transition:all .3s ease;}
+  .journey-num.big{font-size:30px;color:var(--berry-dark);border-color:var(--berry);background:var(--berry-light);}
+
+  /* TRY / CHALLENGE / PLAY options */
+  .options-grid{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:6px;}
+  .option-btn{
+    font-family:'Fredoka';font-weight:700;font-size:22px;color:var(--crust-dark);
+    background:var(--paper);border:3px solid var(--paper-2);border-radius:18px;
+    padding:18px 26px;cursor:pointer;transition:all .15s ease;min-width:90px;
+  }
+  .option-btn:active{transform:scale(.96);}
+  .option-btn.correct{background:#e2f6ea;border-color:var(--mint-deep);color:var(--mint-deep);}
+  .option-btn.wrong{background:#ffe3da;border-color:var(--coral);color:#a13c22;animation:shake .3s;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+
+  .round-label{font-size:12px;font-weight:800;color:var(--ink-soft);margin-bottom:4px;}
+  .try-feedback{margin-top:14px;font-weight:800;font-size:14px;min-height:20px;}
+  .try-feedback.good{color:var(--mint-deep);}
+  .try-feedback.bad{color:#a13c22;}
+
+  /* PRACTICE (mini quiz) */
+  .prac-block{width:100%;text-align:left;margin-bottom:18px;}
+  .prac-q{font-weight:800;font-size:14.5px;margin-bottom:8px;}
+  .prac-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  @media(max-width:480px){.prac-opts{grid-template-columns:1fr 1fr;}}
+  .prac-opt{background:var(--paper);border:2px solid var(--paper-2);border-radius:10px;padding:9px 10px;
+    font-weight:700;font-size:13.5px;text-align:center;cursor:pointer;}
+  .prac-opt.selected{border-color:var(--mint-deep);background:#eafaf4;}
+  .prac-opt.correct{border-color:var(--mint-deep);background:#e2f6ea;color:var(--mint-deep);}
+  .prac-opt.incorrect{border-color:var(--coral);background:#ffe3da;color:#a13c22;}
+  .prac-score{text-align:center;font-family:'Fredoka';font-weight:700;font-size:20px;color:var(--berry-dark);margin-top:6px;display:none;}
+  .prac-score.show{display:block;}
+
+  /* REWARD */
+  .reward-badge{font-size:70px;margin-bottom:6px;}
+  .reward-title{font-family:'Fredoka';font-weight:700;font-size:24px;color:var(--berry-dark);margin:0 0 6px;}
+  .reward-sub{font-size:14px;color:var(--ink-soft);font-weight:700;margin-bottom:18px;}
+  .reward-chip{display:inline-block;background:var(--butter);color:var(--crust-dark);font-family:'Fredoka';
+    font-weight:700;font-size:16px;padding:10px 22px;border-radius:999px;box-shadow:0 4px 0 var(--butter-deep);}
+
+  .quest-nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:16px;border-top:2px solid var(--paper-2);}
+  .nav-btn{font-family:'Fredoka';font-weight:700;font-size:14px;padding:11px 22px;border-radius:12px;border:none;cursor:pointer;}
+  .nav-btn.primary{background:var(--berry);color:white;box-shadow:0 4px 0 var(--berry-dark);text-decoration:none;display:inline-block;}
+  .nav-btn.primary:active{transform:translateY(3px);box-shadow:none;}
+  .nav-btn.primary:disabled{background:#e3d5c2;box-shadow:none;cursor:not-allowed;}
+  .nav-btn.ghost{background:none;color:#c9b394;}
+  .nav-btn.ghost:disabled{opacity:.3;}
+  .btn-check{background:var(--mint-deep);color:white;box-shadow:0 4px 0 #2c8267;}
+</style>
+</head>
+<body>
+
+<a class="topic-back" href="../lessons.html">← Back to Chapter 1: Numbers</a>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">🔢 Grade 2 Math · Chapter 1: Numbers</span>
+    <h1 class="title">Numbers to 1000</h1>
+    <p class="subtitle">See it, hear it, try it, play it — and become a Number Explorer!</p>
+    <div class="stem-wrap" id="tracker"></div>
+    <div class="tracker-labels" id="trackerLabels"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="meta-strip">
+    <div class="meta-chip">Topic Code: <b>SB-MATH-G2-C1-L1</b></div>
+    <div class="meta-chip">Time: <b>~12 min</b></div>
+    <div class="meta-chip">Type: <b>Interactive</b></div>
+  </div>
+
+  <div class="card">
+    <div class="quest-top">
+      <div class="quest-dots" id="questDots"></div>
+      <button class="read-btn" id="readBtn">🔊 Read to me</button>
+    </div>
+    <div class="scene" id="scene"></div>
+    <div class="quest-nav">
+      <button class="nav-btn ghost" id="backBtn">← Back</button>
+      <button class="nav-btn primary" id="nextBtn">Next →</button>
+    </div>
+  </div>
+</div>
+
+<script src="../../../../../../assets/js/progress.js"></script>
+<script>
+const TOPIC_ID = 'numbers-to-1000';
+
+const stages = [
+  {
+    key:'see', icon:'👀', label:'See',
+    headline:"Numbers Around Us",
+    narration:"Numbers help us count.",
+    items:[
+      {emoji:'🍎', count:'10', label:'10 apples'},
+      {emoji:'📚', count:'100', label:'100 books'},
+      {emoji:'⚽', count:'500', label:'500 balls'},
+      {emoji:'🎈', count:'1000', label:'1000 balloons'},
+    ]
+  },
+  {
+    key:'learn', icon:'🔊', label:'Learn',
+    headline:"Number Journey",
+    narration:"Numbers can be small. Numbers can be big.",
+    journey:[1,10,100,500,1000]
+  },
+  {
+    key:'try', icon:'✋', label:'Try',
+    headline:"Find the Number",
+    narration:"Find 245.",
+    options:['245','425','254'], answer:'245'
+  },
+  {
+    key:'play', icon:'🎮', label:'Play',
+    headline:"Number Treasure Hunt 🗺️",
+    rounds:[
+      {prompt:"Find 500!", options:['100','500','250','1000'], answer:'500'},
+      {prompt:"Find 250!", options:['1000','250','725','345'], answer:'250'}
+    ]
+  },
+  {
+    key:'practice', icon:'✏️', label:'Practice',
+    headline:"Practice Time",
+    questions:[
+      {q:"Find 300.", opts:['300','330','30','3000'], a:0},
+      {q:"Find 725.", opts:['725','275','752','572'], a:0},
+      {q:"Which is 900?", opts:['900','190','909','90'], a:0},
+      {q:"Which number is bigger: 200 or 700?", opts:['200','700'], a:1},
+      {q:"Find 1000.", opts:['1000','100','10000','1010'], a:0},
+    ]
+  },
+  {
+    key:'challenge', icon:'⭐', label:'Challenge',
+    headline:"Mini Challenge",
+    narration:"Find the biggest number.",
+    options:['345','543','435'], answer:'543'
+  },
+  {
+    key:'reward', icon:'🏆', label:'Reward',
+    headline:"You Did It!",
+    narration:"Great work! You explored numbers to 1000."
+  },
+];
+
+let step = 0;
+let stageState = {}; // per-stage transient state (selected, roundIndex, etc.)
+
+function buildTracker(){
+  const t = document.getElementById('tracker');
+  const l = document.getElementById('trackerLabels');
+  t.innerHTML=''; l.innerHTML='';
+  stages.forEach((s,i)=>{
+    const node = document.createElement('div');
+    node.className='node'; node.id='node-'+i; node.textContent=s.icon;
+    t.appendChild(node);
+    if(i < stages.length-1){
+      const stem = document.createElement('div');
+      stem.className='stem';
+      stem.innerHTML = `<div class="stem-fill" id="fill-${i}"></div>`;
+      t.appendChild(stem);
+    }
+    const lbl = document.createElement('span'); lbl.textContent = s.label;
+    l.appendChild(lbl);
+  });
+}
+function markDone(i){
+  const n = document.getElementById('node-'+i); if(n) n.classList.add('done');
+  const f = document.getElementById('fill-'+i); if(f) f.style.width='100%';
+}
+
+function renderDots(){
+  const el = document.getElementById('questDots');
+  el.innerHTML='';
+  stages.forEach((_,i)=>{
+    const d = document.createElement('div');
+    d.className = 'quest-dot' + (i===step?' active':'');
+    el.appendChild(d);
+  });
+}
+
+function narrationText(){
+  const s = stages[step];
+  if(s.key==='try' || s.key==='challenge') return s.narration;
+  if(s.key==='play') return stageState.roundIndex!=null ? s.rounds[stageState.roundIndex].prompt : s.rounds[0].prompt;
+  return s.narration || '';
+}
+
+function render(){
+  const s = stages[step];
+  const scene = document.getElementById('scene');
+  let html = `<div class="stage-tag">${s.label}</div><h2 class="display">${s.headline}</h2>`;
+
+  if(s.key==='see'){
+    html += `<p class="narration">${s.narration}</p>
+      <div class="see-grid">${s.items.map(it=>`
+        <div class="see-item">
+          <div class="emoji">${it.emoji}</div>
+          <div class="count">${it.count}</div>
+          <div class="label">${it.label}</div>
+        </div>`).join('')}</div>`;
+    scene.innerHTML = html;
+    setNextEnabled(true);
+  }
+
+  else if(s.key==='learn'){
+    html += `<p class="narration">${s.narration}</p>
+      <div class="journey-row">${s.journey.map((n,i)=>`
+        <div class="journey-num ${i===s.journey.length-1?'big':''}" style="font-size:${14+i*4}px;">${n}</div>`).join('')}</div>`;
+    scene.innerHTML = html;
+    setNextEnabled(true);
+  }
+
+  else if(s.key==='try'){
+    stageState.picked = stageState.picked || null;
+    html += `<p class="narration">${s.narration}</p>
+      <div class="options-grid">${s.options.map(o=>`<button class="option-btn" data-val="${o}">${o}</button>`).join('')}</div>
+      <div class="try-feedback" id="tryFeedback"></div>`;
+    scene.innerHTML = html;
+    wireOptionButtons(s.answer, ()=>{ markDone(step); setNextEnabled(true); }, 'tryFeedback');
+    setNextEnabled(!!stageState.done);
+  }
+
+  else if(s.key==='play'){
+    if(stageState.roundIndex==null) stageState.roundIndex = 0;
+    const round = s.rounds[stageState.roundIndex];
+    html += `<div class="round-label">Round ${stageState.roundIndex+1} of ${s.rounds.length}</div>
+      <p class="narration">${round.prompt}</p>
+      <div class="options-grid">${round.options.map(o=>`<button class="option-btn" data-val="${o}">${o}</button>`).join('')}</div>
+      <div class="try-feedback" id="tryFeedback"></div>`;
+    scene.innerHTML = html;
+    wireOptionButtons(round.answer, ()=>{
+      if(stageState.roundIndex < s.rounds.length-1){
+        setTimeout(()=>{ stageState.roundIndex++; render(); }, 700);
+      } else {
+        markDone(step); setNextEnabled(true);
+      }
+    }, 'tryFeedback');
+    setNextEnabled(stageState.roundIndex===s.rounds.length-1 && !!stageState.done);
+  }
+
+  else if(s.key==='practice'){
+    stageState.answers = stageState.answers || new Array(s.questions.length).fill(null);
+    stageState.checked = stageState.checked || false;
+    html += `<div style="width:100%;">`;
+    s.questions.forEach((q,qi)=>{
+      html += `<div class="prac-block">
+        <div class="prac-q">${qi+1}. ${q.q}</div>
+        <div class="prac-opts" data-qi="${qi}">
+          ${q.opts.map((o,oi)=>`<div class="prac-opt" data-oi="${oi}">${o}</div>`).join('')}
+        </div>
+      </div>`;
+    });
+    html += `<div style="text-align:center;">
+        <button class="nav-btn btn-check" id="checkBtn">Check my answers ✓</button>
+        <div class="prac-score" id="pracScore"></div>
+      </div></div>`;
+    scene.innerHTML = html;
+    wirePractice(s.questions);
+    setNextEnabled(!!stageState.checked);
+  }
+
+  else if(s.key==='challenge'){
+    stageState.picked = stageState.picked || null;
+    html += `<p class="narration">${s.narration}</p>
+      <div class="options-grid">${s.options.map(o=>`<button class="option-btn" data-val="${o}">${o}</button>`).join('')}</div>
+      <div class="try-feedback" id="tryFeedback"></div>`;
+    scene.innerHTML = html;
+    wireOptionButtons(s.answer, ()=>{ markDone(step); setNextEnabled(true); }, 'tryFeedback');
+    setNextEnabled(!!stageState.done);
+  }
+
+  else if(s.key==='reward'){
+    setStepDone(TOPIC_ID, 'complete', true);
+    markDone(step);
+    html += `
+      <div class="reward-badge">🏆</div>
+      <p class="narration">${s.narration}</p>
+      <div class="reward-chip">⭐ Number Explorer</div>
+      <div style="margin-top:22px;">
+        <a class="nav-btn primary" href="../lessons.html">Finish ✓</a>
+      </div>`;
+    scene.innerHTML = html;
+    document.getElementById('nextBtn').style.display='none';
+  }
+
+  renderDots();
+  updateNav();
+}
+
+function wireOptionButtons(answer, onCorrect, feedbackId){
+  document.querySelectorAll('.option-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(btn.disabled) return;
+      const fb = document.getElementById(feedbackId);
+      if(btn.dataset.val === answer){
+        btn.classList.add('correct');
+        document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+        fb.className='try-feedback good'; fb.textContent='🎉 Correct!';
+        stageState.done = true;
+        onCorrect();
+      } else {
+        btn.classList.add('wrong');
+        fb.className='try-feedback bad'; fb.textContent='Try again!';
+        setTimeout(()=> btn.classList.remove('wrong'), 400);
+      }
+    });
+  });
+}
+
+function wirePractice(questions){
+  document.querySelectorAll('.prac-opts').forEach(group=>{
+    const qi = +group.dataset.qi;
+    group.querySelectorAll('.prac-opt').forEach(opt=>{
+      opt.addEventListener('click', ()=>{
+        if(stageState.checked) return;
+        group.querySelectorAll('.prac-opt').forEach(o=>o.classList.remove('selected'));
+        opt.classList.add('selected');
+        stageState.answers[qi] = +opt.dataset.oi;
+      });
+    });
+  });
+  document.getElementById('checkBtn').addEventListener('click', ()=>{
+    if(stageState.answers.includes(null)){ alert('Please answer every question first!'); return; }
+    let score = 0;
+    document.querySelectorAll('.prac-opts').forEach(group=>{
+      const qi = +group.dataset.qi;
+      const q = questions[qi];
+      group.querySelectorAll('.prac-opt').forEach(opt=>{
+        const oi = +opt.dataset.oi;
+        if(oi===q.a) opt.classList.add('correct');
+        else if(oi===stageState.answers[qi]) opt.classList.add('incorrect');
+      });
+      if(stageState.answers[qi]===q.a) score++;
+    });
+    stageState.checked = true;
+    const scoreEl = document.getElementById('pracScore');
+    scoreEl.classList.add('show');
+    scoreEl.textContent = `Score: ${score}/${questions.length}`;
+    document.getElementById('checkBtn').style.display='none';
+    markDone(step);
+    setNextEnabled(true);
+  });
+}
+
+function setNextEnabled(val){
+  document.getElementById('nextBtn').disabled = !val;
+}
+
+function updateNav(){
+  const back = document.getElementById('backBtn');
+  const next = document.getElementById('nextBtn');
+  back.disabled = step===0;
+  next.style.display = stages[step].key==='reward' ? 'none' : 'inline-block';
+  next.textContent = step===stages.length-2 ? 'Finish →' : 'Next →';
+}
+
+document.getElementById('backBtn').addEventListener('click', ()=>{
+  if(step===0) return;
+  stopRead(); step--; stageState={}; render();
+});
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  if(step>=stages.length-1) return;
+  stopRead(); step++; stageState={}; render();
+});
+
+let speaking=false;
+document.getElementById('readBtn').addEventListener('click', toggleRead);
+function toggleRead(){
+  const btn = document.getElementById('readBtn');
+  if(speaking){ stopRead(); return; }
+  if(!('speechSynthesis' in window)){ alert('Read-aloud is not supported in this browser.'); return; }
+  const text = narrationText();
+  if(!text) return;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = 0.9; utter.pitch = 1.06; utter.lang = 'en-IN';
+  utter.onend = ()=>{ speaking=false; btn.classList.remove('speaking'); };
+  speechSynthesis.speak(utter);
+  speaking = true; btn.classList.add('speaking');
+}
+function stopRead(){
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  speaking=false;
+  document.getElementById('readBtn').classList.remove('speaking');
+}
+
+buildTracker();
+render();
+</script>
+
+</body>
+</html>

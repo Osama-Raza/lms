@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lesson 3: Expanded Form — Grade 2 Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-1:#fff3f7;
+    --pink-2:#ffe1ec;
+    --berry-1:#e94f8a;
+    --berry-2:#c22a68;
+    --berry-dark:#8f1c4f;
+    --butter:#ffcf5c;
+    --butter-dark:#e6a800;
+    --mint:#4fd6a8;
+    --sky:#5aa9ff;
+    --ink:#4a1030;
+    --white:#ffffff;
+    --shadow: 0 10px 24px rgba(196,42,104,.18);
+    --radius-lg: 26px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+    --hund:#5aa9ff;
+    --tens:#ffcf5c;
+    --ones:#4fd6a8;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, var(--pink-2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 20%, #ffe9d6 0%, transparent 40%),
+      linear-gradient(180deg, var(--pink-1), #fff);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Fredoka',sans-serif;}
+  button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+
+  /* ---------- Topbar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(135deg,var(--berry-1),var(--berry-2));
+    color:#fff;
+    padding:10px 16px;
+    box-shadow:0 4px 14px rgba(143,28,79,.25);
+  }
+  .topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .topbar .lesson-title{font-family:'Fredoka';font-weight:600;font-size:1.05rem;flex:1;}
+  .topbar .lesson-title small{display:block;font-family:'Nunito';font-weight:700;font-size:.68rem;opacity:.85;letter-spacing:.04em;text-transform:uppercase;}
+  .stars-count{background:rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;font-weight:800;font-size:.85rem;display:flex;align-items:center;gap:4px;}
+  .back-btn{
+    display:inline-flex;align-items:center;gap:4px;flex-shrink:0;
+    background:rgba(255,255,255,.18);color:#fff;text-decoration:none;
+    font-family:'Fredoka';font-weight:700;font-size:.8rem;
+    padding:7px 14px;border-radius:20px;transition:background .15s ease;
+  }
+  .back-btn:hover{background:rgba(255,255,255,.3);}
+
+  .progress-track{
+    max-width:900px;margin:8px auto 0;
+    display:flex;gap:4px;padding:0 16px;
+  }
+  .progress-dot{
+    flex:1;height:7px;border-radius:6px;background:rgba(255,255,255,.28);
+    transition:background .3s ease;
+  }
+  .progress-dot.done{background:var(--butter);}
+  .progress-dot.active{background:#fff;}
+
+  /* ---------- Layout ---------- */
+  .stage-wrap{max-width:780px;margin:0 auto;padding:22px 16px 90px;min-height:70vh;}
+  .stage{display:none;animation:fadeUp .45s ease both;}
+  .stage.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .stage-header{text-align:center;margin-bottom:18px;}
+  .stage-eyebrow{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--pink-2);color:var(--berry-dark);
+    font-weight:800;font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;
+    padding:5px 14px;border-radius:20px;margin-bottom:8px;
+  }
+  .stage-header h2{font-size:1.5rem;margin:0 0 4px;color:var(--berry-dark);}
+  .stage-header p{margin:0;font-weight:700;color:#7a3a5a;font-size:.95rem;}
+
+  .card{
+    background:#fff;border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    padding:22px;
+    border:3px solid var(--pink-2);
+  }
+
+  /* ---------- Audio button ---------- */
+  .audio-btn{
+    background:linear-gradient(135deg,var(--sky),#2f7fe0);
+    color:#fff;font-weight:800;font-size:.85rem;
+    padding:10px 18px;border-radius:30px;
+    display:inline-flex;align-items:center;gap:8px;
+    box-shadow:0 6px 14px rgba(47,127,224,.3);
+    transition:transform .15s ease;
+  }
+  .audio-btn:active{transform:scale(.94);}
+  .audio-btn.small{padding:7px 14px;font-size:.78rem;}
+  .audio-btn .icon{font-size:1.1rem;}
+
+  .row-center{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+
+  /* ---------- Number display ---------- */
+  .big-number{
+    font-family:'Fredoka';font-weight:700;
+    font-size:3.6rem;text-align:center;color:var(--berry-2);
+    margin:10px 0 2px;
+    text-shadow:0 4px 0 var(--pink-2);
+  }
+  .equation-row{
+    display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;
+    font-family:'Fredoka';font-weight:700;font-size:1.7rem;margin:14px 0;
+  }
+  .equation-row .plus{color:#c98cae;font-size:1.4rem;}
+  .place-chip{
+    padding:10px 18px;border-radius:14px;color:#fff;
+    box-shadow:0 4px 0 rgba(0,0,0,.12);
+    opacity:0;transform:translateY(10px) scale(.8);
+    transition:opacity .4s ease, transform .4s ease;
+  }
+  .place-chip.show{opacity:1;transform:translateY(0) scale(1);}
+  .place-chip.hundreds{background:var(--hund);}
+  .place-chip.tens{background:var(--tens);color:#5a3d00;}
+  .place-chip.ones{background:var(--ones);}
+
+  .blocks-row{display:flex;justify-content:center;gap:22px;margin:16px 0;flex-wrap:wrap;}
+  .block-group{text-align:center;}
+  .block-group .label{font-family:'Fredoka';font-weight:700;font-size:.85rem;color:#7a3a5a;margin-bottom:6px;text-transform:uppercase;letter-spacing:.03em;}
+  .block-grid{display:flex;flex-wrap:wrap;gap:3px;max-width:110px;justify-content:center;}
+  .block-grid.hundreds-grid{max-width:140px;}
+  .mini-block{width:16px;height:16px;border-radius:3px;}
+  .mini-block.hundreds{background:var(--hund);}
+  .mini-block.tens{background:var(--tens);}
+  .mini-block.ones{background:var(--ones);border-radius:50%;}
+  .hundred-square{width:46px;height:46px;background:var(--hund);border-radius:5px;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);gap:1px;padding:2px;}
+  .hundred-square span{background:rgba(255,255,255,.35);border-radius:1px;}
+  .ten-rod{width:12px;height:46px;background:var(--tens);border-radius:3px;}
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    font-weight:800;font-size:.95rem;padding:12px 26px;border-radius:30px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:linear-gradient(135deg,var(--berry-1),var(--berry-2));color:#fff;box-shadow:0 8px 18px rgba(196,42,104,.3);}
+  .btn-primary[disabled]{opacity:.4;pointer-events:none;}
+  .btn-ghost{background:var(--pink-2);color:var(--berry-dark);}
+  .center-btn-row{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap;}
+
+  /* ---------- Drag chips / drop slots (generic) ---------- */
+  .drag-chip{
+    touch-action:none;user-select:none;
+    background:var(--pink-1);border:2.5px solid var(--berry-1);
+    color:var(--berry-dark);font-family:'Fredoka';font-weight:700;
+    padding:14px 16px;border-radius:16px;text-align:center;font-size:1.15rem;
+    box-shadow:0 4px 0 var(--pink-2);
+    position:relative;z-index:5;
+  }
+  .drag-chip.dragging{box-shadow:0 12px 20px rgba(196,42,104,.35);z-index:100;}
+  .drag-chip.used{opacity:0;pointer-events:none;}
+  .drop-slot{
+    background:#fff8fb;border:2.5px dashed #f3b8d0;
+    border-radius:16px;padding:14px 10px;text-align:center;
+    font-family:'Fredoka';font-weight:700;color:#c98cae;font-size:1.15rem;
+    min-height:56px;min-width:70px;display:flex;align-items:center;justify-content:center;
+  }
+  .drop-slot.filled{border-style:solid;color:var(--berry-dark);background:var(--pink-2);}
+  .drop-slot.correct{border-color:var(--mint);background:#e3fbf3;color:#1a8a63;}
+
+  /* ---------- Build the Number (Activity 2) ---------- */
+  .build-zone{
+    display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;
+    background:#fff8fb;border:2.5px dashed #f3b8d0;border-radius:18px;
+    min-height:80px;padding:16px;margin:16px 0;
+  }
+  .build-zone.filled{border-style:solid;border-color:var(--mint);background:#e3fbf3;}
+  .bank-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:10px;}
+
+  /* ---------- Number Builder (Activity 4) place boxes ---------- */
+  .place-boxes{display:flex;justify-content:center;gap:16px;margin:18px 0;flex-wrap:wrap;}
+  .place-box-col{text-align:center;}
+  .place-box-col h4{font-family:'Fredoka';font-size:.8rem;color:#7a3a5a;text-transform:uppercase;letter-spacing:.04em;margin:0 0 6px;}
+  .place-box{
+    width:88px;height:64px;border:2.5px dashed #f3b8d0;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.3rem;color:#c98cae;
+    background:#fff8fb;
+  }
+  .place-box.filled{border-style:solid;background:var(--pink-2);color:var(--berry-dark);}
+  .place-box.hundreds-box.filled{border-color:var(--hund);}
+  .place-box.tens-box.filled{border-color:var(--tens);}
+  .place-box.ones-box.filled{border-color:var(--ones);}
+  .result-eq{text-align:center;font-family:'Fredoka';font-weight:700;font-size:1.3rem;color:var(--berry-dark);margin-top:14px;min-height:1.8rem;}
+
+  /* ---------- Match It ---------- */
+  .match-area{display:flex;justify-content:space-between;gap:18px;margin-top:16px;flex-wrap:wrap;}
+  .match-col{flex:1;min-width:140px;display:flex;flex-direction:column;gap:12px;}
+  .match-col h4{text-align:center;font-family:'Fredoka';color:var(--berry-dark);margin:0 0 6px;font-size:.9rem;text-transform:uppercase;letter-spacing:.04em;}
+
+  /* ---------- MCQ options ---------- */
+  .options{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px;}
+  .options.grid3{grid-template-columns:1fr 1fr 1fr;}
+  .opt-btn{
+    background:#fff;border:2.5px solid var(--pink-2);color:var(--ink);
+    border-radius:14px;padding:14px 8px;font-family:'Fredoka';font-weight:600;
+    font-size:1.1rem;text-align:center;
+  }
+  .opt-btn:hover{border-color:var(--berry-1);}
+  .opt-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .opt-btn.wrong{background:#ffe9e9;border-color:#f08a8a;color:#c23c3c;}
+  .opt-btn.selected{background:var(--pink-2);border-color:var(--berry-1);color:var(--berry-dark);}
+  .feedback.neutral{color:var(--berry-dark);}
+  .opt-btn[disabled]{pointer-events:none;}
+
+  .feedback{
+    text-align:center;font-weight:800;font-family:'Fredoka';font-size:1.05rem;
+    min-height:1.6rem;margin-top:12px;
+  }
+  .feedback.good{color:#1a8a63;}
+  .feedback.bad{color:#c23c3c;}
+
+  .q-progress{text-align:center;font-weight:800;color:#a85778;font-size:.8rem;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;}
+
+  /* ---------- Balloon Pop (multi-select) ---------- */
+  .balloon-field{
+    position:relative;min-height:300px;border-radius:20px;
+    background:linear-gradient(180deg,#eaf6ff,#f8fcff);
+    border:2.5px dashed #bfe0ff;overflow:hidden;margin-top:14px;
+  }
+  .balloon{
+    position:absolute;width:118px;height:104px;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;
+    font-family:'Fredoka';font-weight:700;font-size:.92rem;color:#fff;
+    box-shadow:inset 0 -10px 14px rgba(0,0,0,.12);
+    animation:floaty 3.6s ease-in-out infinite;
+    padding:6px;
+  }
+  .balloon::after{
+    content:'';position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);
+    width:2px;height:16px;background:#999;
+  }
+  .balloon.correct-pop{outline:4px solid var(--mint);}
+  .balloon.wrong-pop{outline:4px solid #f08a8a;}
+  .balloon.popped{animation:none;opacity:0;transform:scale(1.5);pointer-events:none;}
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+
+  /* ---------- Mystery clues ---------- */
+  .clue-list{list-style:none;padding:0;margin:14px 0;display:flex;flex-direction:column;gap:10px;}
+  .clue-list li{
+    background:var(--pink-1);border:2px solid var(--pink-2);border-radius:14px;
+    padding:12px 16px;font-family:'Fredoka';font-weight:600;color:var(--berry-dark);
+    display:flex;align-items:center;gap:10px;
+  }
+  .clue-list li .num{font-size:1.3rem;color:var(--berry-2);}
+
+  /* ---------- Stars ---------- */
+  .stars-row{display:flex;justify-content:center;gap:4px;margin:6px 0;}
+  .star-icon{font-size:1.3rem;}
+
+  /* ---------- Reward ---------- */
+  .reward-card{
+    text-align:center;padding:36px 22px;
+    background:linear-gradient(160deg,#fff,var(--pink-1));
+  }
+  .badge-circle{
+    width:130px;height:130px;border-radius:50%;margin:0 auto 16px;
+    background:linear-gradient(135deg,var(--butter),var(--butter-dark));
+    display:flex;align-items:center;justify-content:center;font-size:3.4rem;
+    box-shadow:0 14px 26px rgba(230,168,0,.4);
+    border:6px solid #fff;
+  }
+  .reward-card h2{color:var(--berry-dark);font-size:1.7rem;margin:0 0 4px;}
+  .reward-card p{color:#7a3a5a;font-weight:700;margin:0 0 10px;}
+  .next-lesson-card{
+    margin-top:22px;background:#fff;border:2.5px solid var(--pink-2);
+    border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;
+    text-align:left;
+  }
+  .next-lesson-card .lock-icon{font-size:1.6rem;}
+  .next-lesson-card .txt small{display:block;color:#a85778;font-weight:800;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;}
+  .next-lesson-card .txt strong{font-family:'Fredoka';color:var(--berry-dark);font-size:1.05rem;}
+
+  @media (max-width:480px){
+    .big-number{font-size:2.7rem;}
+    .equation-row{font-size:1.25rem;}
+    .place-chip{padding:8px 12px;}
+    .options.grid3{grid-template-columns:1fr 1fr;}
+    .balloon{width:100px;height:92px;font-size:.8rem;}
+    .place-box{width:74px;height:56px;font-size:1.1rem;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .balloon, .stage{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="../lessons.html">&larr; Chapter</a>
+    <div class="lesson-title">
+      <small>Grade 2 · Math · Chapter 1: Numbers</small>
+      🧱 Lesson 3: Expanded Form
+    </div>
+    <div class="stars-count"><span id="starTotal">0</span> ⭐</div>
+  </div>
+  <div class="progress-track" id="progressTrack"></div>
+</div>
+
+<div class="stage-wrap" id="stageWrap"></div>
+
+<script>
+/* ============================================================
+   LESSON 3: EXPANDED FORM — self-contained, no shared engine.js
+   Progress saved via ../../../../../../assets/js/progress.js
+   (falls back to local localStorage if that file is unavailable)
+============================================================ */
+const TOPIC_ID = "grade2-math-ch1-lesson3-expanded-form";
+let totalStars = 0;
+
+/* ---- optional shared progress helper (safe if missing) ---- */
+(function loadProgressHelper(){
+  try{
+    const s = document.createElement('script');
+    s.src = "../../../../../../assets/js/progress.js";
+    document.head.appendChild(s);
+  }catch(e){ /* no-op: local fallback below still works */ }
+})();
+function saveStepDone(step){
+  try{
+    if (typeof setStepDone === 'function'){ setStepDone(TOPIC_ID, step, true); return; }
+  }catch(e){}
+  try{
+    const key = 'progress:' + TOPIC_ID;
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data[step] = true;
+    localStorage.setItem(key, JSON.stringify(data));
+  }catch(e){ /* storage unavailable — fail silently, never block the lesson */ }
+}
+
+/* ---------------- Speech ---------------- */
+let enVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  enVoice = voices.find(v => v.lang === 'en-IN') ||
+            voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+}
+if ('speechSynthesis' in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speak(text){
+  try{
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (enVoice) u.voice = enVoice;
+    u.rate = 0.88;
+    u.lang = 'en-IN';
+    speechSynthesis.speak(u);
+  }catch(e){ /* speech unavailable — visuals still work */ }
+}
+
+/* ---------------- Star tracking ---------------- */
+function addStar(n=1){
+  totalStars += n;
+  document.getElementById('starTotal').textContent = totalStars;
+}
+function isStageActive(stageId){
+  const el = document.getElementById(stageId);
+  return !!(el && el.classList.contains('active'));
+}
+function speakForStage(stageId, text){
+  // All stages are BUILT immediately at page load, but only one is
+  // SHOWN — without this guard, every hidden stage's setup-time
+  // narration fires anyway and overlaps whatever is on screen.
+  if (isStageActive(stageId)) speak(text);
+}
+
+/* ---------------- helpers ---------------- */
+function shuffled(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+function splitPlaces(n){
+  const h = Math.floor(n/100)*100;
+  const t = Math.floor((n%100)/10)*10;
+  const o = n%10;
+  return {h, t, o};
+}
+function expandedString(n){
+  const {h,t,o} = splitPlaces(n);
+  return `${h} + ${t} + ${o}`;
+}
+function expandedSpoken(n){
+  const {h,t,o} = splitPlaces(n);
+  return `${h} plus ${t} plus ${o}`;
+}
+
+/* ---------------- Stage machine ---------------- */
+const STAGES = [
+  {id:'s1', label:'See'},
+  {id:'s2', label:'Build'},
+  {id:'s3', label:'Choose'},
+  {id:'s4', label:'Number Builder'},
+  {id:'s5', label:'Match It'},
+  {id:'s6', label:'Fix It'},
+  {id:'s7', label:'Balloon Pop'},
+  {id:'s8', label:'Practice'},
+  {id:'s9', label:'Mystery Number'},
+  {id:'reward', label:'Reward'},
+];
+let currentStageIndex = 0;
+
+function renderProgressTrack(){
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  STAGES.forEach((st, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i < currentStageIndex ? ' done' : '') + (i === currentStageIndex ? ' active' : '');
+    track.appendChild(d);
+  });
+}
+function goToStage(index){
+  currentStageIndex = index;
+  document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(STAGES[index].id);
+  if (target) target.classList.add('active');
+  renderProgressTrack();
+  saveStepDone(STAGES[index].id);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function completeStage(){
+  if (currentStageIndex < STAGES.length - 1) goToStage(currentStageIndex + 1);
+}
+
+const wrap = document.getElementById('stageWrap');
+
+/* ============================================================
+   STAGE 1: See — "Break the Number"
+============================================================ */
+const s1Number = 342;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s1">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 1 · See</div>
+    <h2>Break the Number</h2>
+    <p>Watch how a number breaks into hundreds, tens, and ones.</p>
+  </div>
+  <div class="card">
+    <div class="big-number">${s1Number}</div>
+    <div class="blocks-row">
+      <div class="block-group">
+        <div class="label">3 Hundreds</div>
+        <div class="block-grid hundreds-grid" id="s1Hundreds"></div>
+      </div>
+      <div class="block-group">
+        <div class="label">4 Tens</div>
+        <div class="block-grid" id="s1Tens"></div>
+      </div>
+      <div class="block-group">
+        <div class="label">2 Ones</div>
+        <div class="block-grid" id="s1Ones"></div>
+      </div>
+    </div>
+    <div class="equation-row">
+      <div class="place-chip hundreds" id="s1ChipH">300</div>
+      <div class="plus">+</div>
+      <div class="place-chip tens" id="s1ChipT">40</div>
+      <div class="plus">+</div>
+      <div class="place-chip ones" id="s1ChipO">2</div>
+    </div>
+    <div class="row-center">
+      <button class="audio-btn" id="s1Listen"><span class="icon">🔊</span> Listen Again</button>
+    </div>
+    <div class="center-btn-row">
+      <button class="btn btn-primary" id="s1Next">Continue ➜</button>
+    </div>
+  </div>
+</section>`);
+(function buildS1Blocks(){
+  const h = document.getElementById('s1Hundreds');
+  for (let i=0;i<3;i++){
+    const sq = document.createElement('div');
+    sq.className = 'hundred-square';
+    for (let j=0;j<25;j++) sq.appendChild(document.createElement('span'));
+    h.appendChild(sq);
+  }
+  const t = document.getElementById('s1Tens');
+  for (let i=0;i<4;i++){
+    const rod = document.createElement('div');
+    rod.className = 'ten-rod';
+    t.appendChild(rod);
+  }
+  const o = document.getElementById('s1Ones');
+  for (let i=0;i<2;i++){
+    const b = document.createElement('div');
+    b.className = 'mini-block ones';
+    o.appendChild(b);
+  }
+})();
+function playS1Sequence(){
+  ['s1ChipH','s1ChipT','s1ChipO'].forEach(id => document.getElementById(id).classList.remove('show'));
+  setTimeout(() => document.getElementById('s1ChipH').classList.add('show'), 300);
+  setTimeout(() => document.getElementById('s1ChipT').classList.add('show'), 750);
+  setTimeout(() => document.getElementById('s1ChipO').classList.add('show'), 1200);
+  setTimeout(() => speakForStage('s1', 'Three hundred forty-two is 300 plus 40 plus 2.'), 1500);
+}
+document.getElementById('s1Listen').onclick = playS1Sequence;
+document.getElementById('s1Next').onclick = () => completeStage();
+playS1Sequence();
+
+/* ============================================================
+   STAGE 2: Build the Number
+============================================================ */
+const s2Number = 342;
+const s2Parts = splitPlaces(s2Number);
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s2">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 2 · Build</div>
+    <h2>Build the Number</h2>
+    <p id="s2Prompt">Drag the blocks together to make ${s2Number}.</p>
+  </div>
+  <div class="card">
+    <div class="row-center">
+      <button class="audio-btn small" id="s2Play"><span class="icon">🔊</span> Hear It</button>
+    </div>
+    <div class="build-zone" id="s2Zone">Drop here</div>
+    <div class="bank-row" id="s2Bank"></div>
+    <div class="result-eq" id="s2Result"></div>
+    <div class="feedback" id="s2Feedback"></div>
+    <div class="center-btn-row">
+      <button class="btn btn-primary" id="s2Next" disabled>Next ➜</button>
+    </div>
+  </div>
+</section>`);
+(function setupS2(){
+  document.getElementById('s2Play').onclick = () => speak('Make ' + s2Number);
+  setTimeout(() => speakForStage('s2', 'Make ' + s2Number), 400);
+  const bank = document.getElementById('s2Bank');
+  const zone = document.getElementById('s2Zone');
+  const pieces = shuffled([s2Parts.h, s2Parts.t, s2Parts.o]);
+  const dropped = new Set();
+  pieces.forEach(val => {
+    const chip = document.createElement('div');
+    chip.className = 'drag-chip';
+    chip.textContent = val;
+    chip.dataset.val = val;
+    bank.appendChild(chip);
+    makeDraggable(chip);
+  });
+
+  function makeDraggable(chip){
+    chip.addEventListener('pointerdown', (e) => {
+      if (chip.classList.contains('used')) return;
+      const startRect = chip.getBoundingClientRect();
+      chip.setPointerCapture(e.pointerId);
+      chip.classList.add('dragging');
+      document.body.appendChild(chip);
+      chip.style.position = 'fixed';
+      chip.style.left = startRect.left + 'px';
+      chip.style.top = startRect.top + 'px';
+      const offsetX = e.clientX - startRect.left;
+      const offsetY = e.clientY - startRect.top;
+
+      function onMove(ev){
+        chip.style.left = (ev.clientX - offsetX) + 'px';
+        chip.style.top = (ev.clientY - offsetY) + 'px';
+      }
+      function onUp(ev){
+        chip.removeEventListener('pointermove', onMove);
+        chip.removeEventListener('pointerup', onUp);
+        chip.classList.remove('dragging');
+        const r = zone.getBoundingClientRect();
+        const inZone = ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom;
+        chip.style.position = '';
+        chip.style.left = '';
+        chip.style.top = '';
+        if (inZone && !dropped.has(chip.dataset.val)){
+          zone.appendChild(chip);
+          dropped.add(chip.dataset.val);
+          chip.classList.add('used');
+          zone.classList.add('filled');
+          if (dropped.size === 1) zone.textContent = '';
+          zone.appendChild(chip);
+          checkS2Complete();
+        } else {
+          bank.appendChild(chip);
+        }
+      }
+      chip.addEventListener('pointermove', onMove);
+      chip.addEventListener('pointerup', onUp);
+    });
+  }
+  function checkS2Complete(){
+    if (dropped.size === 3){
+      document.getElementById('s2Result').textContent = `${s2Parts.h} + ${s2Parts.t} + ${s2Parts.o} = ${s2Number} ✅`;
+      document.getElementById('s2Feedback').textContent = 'Great! 🎉';
+      document.getElementById('s2Feedback').className = 'feedback good';
+      document.getElementById('s2Next').disabled = false;
+      addStar(1);
+      speak('Great job! ' + s2Number);
+    }
+  }
+})();
+document.getElementById('s2Next').onclick = () => completeStage();
+
+/* ============================================================
+   STAGE 3: Choose the Expanded Form
+============================================================ */
+const s3Number = 527;
+const s3Options = ['500 + 20 + 7','500 + 70 + 2','50 + 20 + 7'];
+const s3Answer = '500 + 20 + 7';
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s3">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 3 · Choose</div>
+    <h2>Choose the Expanded Form</h2>
+  </div>
+  <div class="card">
+    <div class="big-number">${s3Number}</div>
+    <div class="options" id="s3Options"></div>
+    <div class="feedback" id="s3Feedback"></div>
+  </div>
+</section>`);
+(function setupS3(){
+  const optsWrap = document.getElementById('s3Options');
+  shuffled(s3Options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      document.querySelectorAll('#s3Options .opt-btn').forEach(x => x.disabled = true);
+      const fb = document.getElementById('s3Feedback');
+      if (opt === s3Answer){
+        b.classList.add('correct');
+        fb.textContent = 'Correct! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct!');
+      } else {
+        b.classList.add('wrong');
+        fb.textContent = `It's ${s3Answer}.`;
+        fb.className = 'feedback bad';
+        speak('Not quite.');
+      }
+      setTimeout(() => completeStage(), 1400);
+    };
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s3', String(s3Number));
+})();
+
+/* ============================================================
+   STAGE 4: Number Builder (place-value boxes) — main game
+============================================================ */
+const s4Number = 684;
+const s4Parts = splitPlaces(s4Number);
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s4">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 4 · Number Builder</div>
+    <h2>Fill in the Place-Value Boxes</h2>
+    <p>Drag each piece into Hundreds, Tens, or Ones.</p>
+  </div>
+  <div class="card">
+    <div class="big-number">${s4Number}</div>
+    <div class="place-boxes">
+      <div class="place-box-col"><h4>Hundreds</h4><div class="place-box hundreds-box" id="s4BoxH" data-place="h"></div></div>
+      <div class="place-box-col"><h4>Tens</h4><div class="place-box tens-box" id="s4BoxT" data-place="t"></div></div>
+      <div class="place-box-col"><h4>Ones</h4><div class="place-box ones-box" id="s4BoxO" data-place="o"></div></div>
+    </div>
+    <div class="bank-row" id="s4Bank"></div>
+    <div class="result-eq" id="s4Result"></div>
+    <div class="feedback" id="s4Feedback"></div>
+    <div class="center-btn-row">
+      <button class="btn btn-primary" id="s4Next" disabled>Next ➜</button>
+    </div>
+  </div>
+</section>`);
+(function setupS4(){
+  const bank = document.getElementById('s4Bank');
+  const boxes = {
+    h: document.getElementById('s4BoxH'),
+    t: document.getElementById('s4BoxT'),
+    o: document.getElementById('s4BoxO'),
+  };
+  const pieces = shuffled([
+    {val:s4Parts.h, place:'h'},
+    {val:s4Parts.t, place:'t'},
+    {val:s4Parts.o, place:'o'},
+  ]);
+  let filledCount = 0;
+  pieces.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = 'drag-chip';
+    chip.textContent = p.val;
+    chip.dataset.place = p.place;
+    bank.appendChild(chip);
+    makeDraggable(chip);
+  });
+  function makeDraggable(chip){
+    chip.addEventListener('pointerdown', (e) => {
+      if (chip.classList.contains('used')) return;
+      const startRect = chip.getBoundingClientRect();
+      chip.setPointerCapture(e.pointerId);
+      chip.classList.add('dragging');
+      document.body.appendChild(chip);
+      chip.style.position = 'fixed';
+      chip.style.left = startRect.left + 'px';
+      chip.style.top = startRect.top + 'px';
+      const offsetX = e.clientX - startRect.left;
+      const offsetY = e.clientY - startRect.top;
+      function onMove(ev){
+        chip.style.left = (ev.clientX - offsetX) + 'px';
+        chip.style.top = (ev.clientY - offsetY) + 'px';
+      }
+      function onUp(ev){
+        chip.removeEventListener('pointermove', onMove);
+        chip.removeEventListener('pointerup', onUp);
+        chip.classList.remove('dragging');
+        chip.style.position = '';
+        chip.style.left = '';
+        chip.style.top = '';
+        let target = null;
+        Object.entries(boxes).forEach(([key, box]) => {
+          const r = box.getBoundingClientRect();
+          if (ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom && !box.classList.contains('filled')){
+            target = {key, box};
+          }
+        });
+        const fb = document.getElementById('s4Feedback');
+        if (target){
+          if (target.key === chip.dataset.place){
+            target.box.textContent = chip.textContent;
+            target.box.classList.add('filled');
+            chip.classList.add('used');
+            chip.remove();
+            filledCount++;
+            fb.textContent = 'Nice!';
+            fb.className = 'feedback good';
+            if (filledCount === 3){
+              document.getElementById('s4Result').textContent = `${s4Parts.h} + ${s4Parts.t} + ${s4Parts.o} = ${s4Number}`;
+              fb.textContent = '🎉 You built it!';
+              addStar(1);
+              document.getElementById('s4Next').disabled = false;
+              speak(`${s4Parts.h} plus ${s4Parts.t} plus ${s4Parts.o} equals ${s4Number}`);
+            }
+          } else {
+            bank.appendChild(chip);
+            fb.textContent = 'Not that box — try again.';
+            fb.className = 'feedback bad';
+          }
+        } else {
+          bank.appendChild(chip);
+        }
+      }
+      chip.addEventListener('pointermove', onMove);
+      chip.addEventListener('pointerup', onUp);
+    });
+  }
+})();
+document.getElementById('s4Next').onclick = () => completeStage();
+
+/* ============================================================
+   STAGE 5: Match It
+============================================================ */
+const s5Pairs = [
+  {num:245, exp:'200 + 40 + 5'},
+  {num:731, exp:'700 + 30 + 1'},
+  {num:506, exp:'500 + 0 + 6'},
+];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s5">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 5 · Match It</div>
+    <h2>Match the Number to Its Expanded Form</h2>
+  </div>
+  <div class="card">
+    <div class="match-area">
+      <div class="match-col"><h4>Numbers</h4><div id="s5Numbers"></div></div>
+      <div class="match-col"><h4>Expanded Form</h4><div id="s5Names"></div></div>
+    </div>
+    <div class="feedback" id="s5Feedback"></div>
+    <div class="center-btn-row">
+      <button class="btn btn-primary" id="s5Next" disabled>Next ➜</button>
+    </div>
+  </div>
+</section>`);
+(function setupS5(){
+  const numsCol = document.getElementById('s5Numbers');
+  const namesCol = document.getElementById('s5Names');
+  const shuffledNums = shuffled(s5Pairs);
+  const shuffledNames = shuffled(s5Pairs);
+  let matched = 0;
+  shuffledNums.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = 'drag-chip';
+    chip.textContent = p.num;
+    chip.dataset.num = p.num;
+    numsCol.appendChild(chip);
+    makeDraggable(chip, namesCol);
+  });
+  shuffledNames.forEach(p => {
+    const slot = document.createElement('div');
+    slot.className = 'drop-slot';
+    slot.textContent = p.exp;
+    slot.dataset.num = p.num;
+    namesCol.appendChild(slot);
+  });
+  function makeDraggable(chip, dropContainer){
+    let startParent;
+    chip.addEventListener('pointerdown', (e) => {
+      const startRect = chip.getBoundingClientRect();
+      chip.setPointerCapture(e.pointerId);
+      chip.classList.add('dragging');
+      startParent = chip.parentElement;
+      document.body.appendChild(chip);
+      chip.style.position = 'fixed';
+      chip.style.width = startRect.width + 'px';
+      chip.style.left = startRect.left + 'px';
+      chip.style.top = startRect.top + 'px';
+      const offsetX = e.clientX - startRect.left;
+      const offsetY = e.clientY - startRect.top;
+      function onMove(ev){
+        chip.style.left = (ev.clientX - offsetX) + 'px';
+        chip.style.top = (ev.clientY - offsetY) + 'px';
+      }
+      function onUp(ev){
+        chip.removeEventListener('pointermove', onMove);
+        chip.removeEventListener('pointerup', onUp);
+        chip.classList.remove('dragging');
+        const slots = dropContainer.querySelectorAll('.drop-slot:not(.correct)');
+        let dropped = null;
+        slots.forEach(slot => {
+          const r = slot.getBoundingClientRect();
+          if (ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom){
+            dropped = slot;
+          }
+        });
+        chip.style.position = ''; chip.style.left = ''; chip.style.top = ''; chip.style.width = '';
+        const fb = document.getElementById('s5Feedback');
+        if (dropped){
+          if (String(dropped.dataset.num) === String(chip.dataset.num)){
+            dropped.classList.add('correct','filled');
+            dropped.textContent = dropped.textContent + '  ✅';
+            chip.remove();
+            matched++;
+            addStar(1);
+            fb.textContent = 'Great! 🎉';
+            fb.className = 'feedback good';
+            speak('Great job!');
+            if (matched === s5Pairs.length){
+              document.getElementById('s5Next').disabled = false;
+              fb.textContent = 'All matched! Well done! 🎉';
+            }
+          } else {
+            startParent.appendChild(chip);
+            fb.textContent = 'Try again.';
+            fb.className = 'feedback bad';
+            speak('Try again.');
+          }
+        } else {
+          startParent.appendChild(chip);
+        }
+      }
+      chip.addEventListener('pointermove', onMove);
+      chip.addEventListener('pointerup', onUp);
+    });
+  }
+})();
+document.getElementById('s5Next').onclick = () => completeStage();
+
+/* ============================================================
+   STAGE 6: Fix the Number
+============================================================ */
+const s6Questions = [
+  {num:352, options:['300 + 50 + 2','300 + 20 + 5'], answer:'300 + 50 + 2'},
+  {num:468, options:['400 + 60 + 8','400 + 80 + 6'], answer:'400 + 60 + 8'},
+];
+let s6Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s6">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 6 · Fix the Number</div>
+    <h2>Which One Is Correct?</h2>
+    <p>Look closely at the place values.</p>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s6Progress"></div>
+    <div class="big-number" id="s6Number"></div>
+    <div class="options" id="s6Options"></div>
+    <div class="feedback" id="s6Feedback"></div>
+  </div>
+</section>`);
+function renderS6(){
+  const q = s6Questions[s6Index];
+  document.getElementById('s6Progress').textContent = `Question ${s6Index+1} of ${s6Questions.length}`;
+  document.getElementById('s6Number').textContent = q.num;
+  document.getElementById('s6Feedback').textContent = '';
+  const optsWrap = document.getElementById('s6Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      document.querySelectorAll('#s6Options .opt-btn').forEach(x => x.disabled = true);
+      const fb = document.getElementById('s6Feedback');
+      if (opt === q.answer){
+        b.classList.add('correct');
+        fb.textContent = 'Correct! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct!');
+      } else {
+        b.classList.add('wrong');
+        fb.textContent = `It's ${q.answer}.`;
+        fb.className = 'feedback bad';
+        speak('Not quite.');
+      }
+      setTimeout(() => {
+        s6Index++;
+        if (s6Index >= s6Questions.length) completeStage();
+        else renderS6();
+      }, 1400);
+    };
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s6', 'Which one is ' + q.num);
+}
+renderS6();
+
+/* ============================================================
+   STAGE 7: Expanded Form Pop
+============================================================ */
+const s7Target = 425;
+const s7Balloons = ['400 + 20 + 5','400 + 50 + 2','40 + 20 + 5'];
+const s7Correct = '400 + 20 + 5';
+const s7Colors = ['#e94f8a','#5aa9ff','#4fd6a8'];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s7">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 7 · Balloon Pop</div>
+    <h2 id="s7Prompt">Pop the balloon that makes ${s7Target}!</h2>
+  </div>
+  <div class="card">
+    <div class="row-center">
+      <button class="audio-btn small" id="s7Play"><span class="icon">🔊</span> Hear the Clue</button>
+    </div>
+    <div class="balloon-field" id="s7Field"></div>
+    <div class="feedback" id="s7Feedback"></div>
+  </div>
+</section>`);
+(function setupS7(){
+  document.getElementById('s7Play').onclick = () => speak('Pop the balloon that makes ' + s7Target);
+  setTimeout(() => speakForStage('s7', 'Pop the balloon that makes ' + s7Target), 400);
+  const field = document.getElementById('s7Field');
+  shuffled(s7Balloons).forEach((exp, i) => {
+    const b = document.createElement('div');
+    b.className = 'balloon';
+    b.textContent = exp;
+    b.style.background = s7Colors[i % s7Colors.length];
+    b.style.left = (6 + i * 32) + '%';
+    b.style.top = (20 + (i % 2) * 30) + '%';
+    b.style.animationDelay = (i * 0.3) + 's';
+    b.onclick = () => {
+      if (b.classList.contains('popped')) return;
+      const fb = document.getElementById('s7Feedback');
+      if (exp === s7Correct){
+        b.classList.add('popped','correct-pop');
+        fb.textContent = 'POP! 🎉 +1 Star';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Pop! Correct!');
+        setTimeout(() => completeStage(), 1200);
+      } else {
+        b.classList.add('wrong-pop');
+        fb.textContent = 'Not that one — try again!';
+        fb.className = 'feedback bad';
+        speak('Try again.');
+        setTimeout(() => b.classList.remove('wrong-pop'), 500);
+      }
+    };
+    field.appendChild(b);
+  });
+})();
+
+/* ============================================================
+   STAGE 8: Practice (5 questions)
+============================================================ */
+const s8Questions = [
+  {prompt:'234 = ?', answer:'200 + 30 + 4', options:['200 + 30 + 4','200 + 40 + 3','20 + 30 + 4']},
+  {prompt:'500 + 30 + 6 = ?', answer:'536', options:[536,563,563]},
+  {prompt:'721 = ?', answer:'700 + 20 + 1', options:['700 + 20 + 1','700 + 10 + 2','70 + 20 + 1']},
+  {prompt:'800 + 0 + 4 = ?', answer:'804', options:[804,840,480]},
+  {prompt:'650 = ?', answer:'600 + 50 + 0', options:['600 + 50 + 0','600 + 5 + 0','60 + 50 + 0']},
+];
+let s8Index = 0;
+let s8CorrectCount = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s8">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 8 · Practice</div>
+    <h2>Quick Practice</h2>
+    <p>Five short questions.</p>
+  </div>
+  <div class="card" id="s8Intro">
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">You're going to answer 5 questions on your own now. Take your time and do your best!</p>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s8Start">Start Practice ▶</button></div>
+  </div>
+  <div class="card" id="s8Quiz" style="display:none;">
+    <div class="q-progress" id="s8Progress"></div>
+    <div class="big-number" id="s8Prompt" style="font-size:2.2rem;"></div>
+    <div class="options grid3" id="s8Options"></div>
+    <div class="feedback" id="s8Feedback"></div>
+  </div>
+</section>`);
+document.getElementById('s8Start').onclick = () => {
+  document.getElementById('s8Intro').style.display = 'none';
+  document.getElementById('s8Quiz').style.display = 'block';
+  speak("Now you're going to answer some questions on your own. Let's begin!");
+  renderS8();
+};
+function renderS8(){
+  const q = s8Questions[s8Index];
+  document.getElementById('s8Progress').textContent = `Question ${s8Index+1} of ${s8Questions.length}`;
+  document.getElementById('s8Prompt').textContent = q.prompt;
+  document.getElementById('s8Feedback').textContent = '';
+  const optsWrap = document.getElementById('s8Options');
+  optsWrap.innerHTML = '';
+  const opts = [...new Set(q.options.map(String))];
+  while (opts.length < 3) opts.push(String(q.options[0])); // safety
+  shuffled(opts).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      document.querySelectorAll('#s8Options .opt-btn').forEach(x => x.disabled = true);
+      b.classList.add('selected');
+      if (opt === String(q.answer)) s8CorrectCount++;
+      const fb = document.getElementById('s8Feedback');
+      fb.textContent = 'Got it! Next question…';
+      fb.className = 'feedback neutral';
+      speak('Got it. Next question.');
+      setTimeout(() => {
+        s8Index++;
+        if (s8Index >= s8Questions.length) showS8Summary();
+        else renderS8();
+      }, 1100);
+    };
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s8', q.prompt.replace('=','equals'));
+}
+function showS8Summary(){
+  document.getElementById('s8Progress').textContent = 'Practice Complete!';
+  document.getElementById('s8Prompt').textContent = `You got ${s8CorrectCount} out of ${s8Questions.length} correct!`;
+  document.getElementById('s8Options').innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.textContent = 'Continue ➜';
+  btn.onclick = () => completeStage();
+  document.getElementById('s8Options').appendChild(btn);
+  addStar(s8CorrectCount);
+  const fb = document.getElementById('s8Feedback');
+  fb.textContent = s8CorrectCount === s8Questions.length ? 'Perfect score! 🌟' : 'Great effort! 🎉';
+  fb.className = 'feedback good';
+  speak(`You got ${s8CorrectCount} out of ${s8Questions.length} correct!`);
+}
+
+
+/* ============================================================
+   STAGE 9: Mystery Number Challenge
+============================================================ */
+const s9Answer = 635;
+const s9Parts = splitPlaces(s9Answer);
+let s9Step = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s9">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 9 · Mystery Number</div>
+    <h2>Who Am I?</h2>
+    <p>Listen to the clues, then guess the number.</p>
+  </div>
+  <div class="card">
+    <ul class="clue-list" id="s9Clues"></ul>
+    <div class="row-center">
+      <button class="audio-btn" id="s9Play"><span class="icon">🔎</span> Hear the Clues</button>
+    </div>
+    <div id="s9Stage1">
+      <div class="options grid3" id="s9NumberOptions"></div>
+    </div>
+    <div id="s9Stage2" style="display:none;">
+      <p style="text-align:center;font-weight:800;color:#7a3a5a;margin-top:16px;">Now show my expanded form:</p>
+      <div class="options" id="s9ExpandOptions"></div>
+    </div>
+    <div class="feedback" id="s9Feedback"></div>
+  </div>
+</section>`);
+(function setupS9(){
+  const clues = [
+    `I have ${s9Parts.h/100} hundreds.`,
+    `I have ${s9Parts.t/10} tens.`,
+    `I have ${s9Parts.o} ones.`,
+  ];
+  const cluesList = document.getElementById('s9Clues');
+  clues.forEach(c => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="num">🔎</span> ${c}`;
+    cluesList.appendChild(li);
+  });
+  function speakClues(){
+    speakForStage('s9', clues.join(' '));
+  }
+  document.getElementById('s9Play').onclick = speakClues;
+  setTimeout(speakClues, 500);
+
+  const numOpts = shuffled([s9Answer, 653, 365]);
+  const numWrap = document.getElementById('s9NumberOptions');
+  numOpts.forEach(n => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = n;
+    b.onclick = () => {
+      document.querySelectorAll('#s9NumberOptions .opt-btn').forEach(x => x.disabled = true);
+      const fb = document.getElementById('s9Feedback');
+      if (n === s9Answer){
+        b.classList.add('correct');
+        fb.textContent = "That's me! 🎉";
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct! I am ' + s9Answer);
+        setTimeout(() => {
+          document.getElementById('s9Stage1').style.display = 'none';
+          document.getElementById('s9Stage2').style.display = 'block';
+          fb.textContent = '';
+          setupExpandStage();
+        }, 1200);
+      } else {
+        b.classList.add('wrong');
+        fb.textContent = 'Try again!';
+        fb.className = 'feedback bad';
+        speak('Try again.');
+      }
+    };
+    numWrap.appendChild(b);
+  });
+
+  function setupExpandStage(){
+    const expOpts = shuffled([expandedString(s9Answer), '600 + 3 + 5', '60 + 30 + 5']);
+    const expWrap = document.getElementById('s9ExpandOptions');
+    expWrap.innerHTML = '';
+    expOpts.forEach(exp => {
+      const b = document.createElement('button');
+      b.className = 'opt-btn';
+      b.textContent = exp;
+      b.onclick = () => {
+        document.querySelectorAll('#s9ExpandOptions .opt-btn').forEach(x => x.disabled = true);
+        const fb = document.getElementById('s9Feedback');
+        if (exp === expandedString(s9Answer)){
+          b.classList.add('correct');
+          fb.textContent = 'Excellent! 🏆';
+          fb.className = 'feedback good';
+          addStar(1);
+          speak('Excellent!');
+          setTimeout(() => showReward(), 1300);
+        } else {
+          b.classList.add('wrong');
+          fb.textContent = `It's ${expandedString(s9Answer)}.`;
+          fb.className = 'feedback bad';
+          speak('Not quite.');
+          setTimeout(() => showReward(), 1500);
+        }
+      };
+      expWrap.appendChild(b);
+    });
+  }
+})();
+
+/* ============================================================
+   REWARD
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="reward">
+  <div class="card reward-card">
+    <div class="badge-circle">🧱</div>
+    <h2>NUMBER BUILDER</h2>
+    <p>You can build numbers!</p>
+    <div class="stars-row" id="rewardStars"></div>
+    <div class="next-lesson-card">
+      <div class="lock-icon">🔓</div>
+      <div class="txt">
+        <small>Next Lesson</small>
+        <strong>Place Value</strong>
+      </div>
+    </div>
+  </div>
+</section>`);
+function showReward(){
+  goToStage(STAGES.length - 1);
+  const starsRow = document.getElementById('rewardStars');
+  starsRow.innerHTML = '';
+  for (let i=0;i<5;i++){
+    const s = document.createElement('span');
+    s.className = 'star-icon';
+    s.textContent = '⭐';
+    starsRow.appendChild(s);
+  }
+  saveStepDone('lesson3-complete');
+  speak('Great job! You can build numbers!');
+}
+
+/* ---------------- init ---------------- */
+renderProgressTrack();
+goToStage(0);
+</script>
+</body>
+</html>

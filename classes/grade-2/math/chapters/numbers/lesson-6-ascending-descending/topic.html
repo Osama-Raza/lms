@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lesson 6: Ascending &amp; Descending — Grade 2 Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-1:#fff3f7;
+    --pink-2:#ffe1ec;
+    --berry-1:#e94f8a;
+    --berry-2:#c22a68;
+    --berry-dark:#8f1c4f;
+    --butter:#ffcf5c;
+    --butter-dark:#e6a800;
+    --mint:#4fd6a8;
+    --sky:#5aa9ff;
+    --ink:#4a1030;
+    --shadow: 0 10px 24px rgba(196,42,104,.18);
+    --radius-lg: 26px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, var(--pink-2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 20%, #ffe9d6 0%, transparent 40%),
+      linear-gradient(180deg, var(--pink-1), #fff);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Fredoka',sans-serif;}
+  button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(135deg,var(--berry-1),var(--berry-2));
+    color:#fff;padding:10px 16px;
+    box-shadow:0 4px 14px rgba(143,28,79,.25);
+  }
+  .topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .topbar .lesson-title{font-family:'Fredoka';font-weight:600;font-size:1.05rem;flex:1;}
+  .topbar .lesson-title small{display:block;font-family:'Nunito';font-weight:700;font-size:.68rem;opacity:.85;letter-spacing:.04em;text-transform:uppercase;}
+  .stars-count{background:rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;font-weight:800;font-size:.85rem;display:flex;align-items:center;gap:4px;}
+  .back-btn{
+    display:inline-flex;align-items:center;gap:4px;flex-shrink:0;
+    background:rgba(255,255,255,.18);color:#fff;text-decoration:none;
+    font-family:'Fredoka';font-weight:700;font-size:.8rem;
+    padding:7px 14px;border-radius:20px;transition:background .15s ease;
+  }
+  .back-btn:hover{background:rgba(255,255,255,.3);}
+
+  .progress-track{max-width:900px;margin:8px auto 0;display:flex;gap:3px;padding:0 16px;}
+  .progress-dot{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.28);transition:background .3s ease;}
+  .progress-dot.done{background:var(--butter);}
+  .progress-dot.active{background:#fff;}
+
+  .stage-wrap{max-width:780px;margin:0 auto;padding:22px 16px 90px;min-height:70vh;}
+  .stage{display:none;animation:fadeUp .45s ease both;}
+  .stage.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .stage-header{text-align:center;margin-bottom:18px;}
+  .stage-eyebrow{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--pink-2);color:var(--berry-dark);
+    font-weight:800;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;
+    padding:5px 14px;border-radius:20px;margin-bottom:8px;
+  }
+  .stage-header h2{font-size:1.4rem;margin:0 0 4px;color:var(--berry-dark);}
+  .stage-header p{margin:0;font-weight:700;color:#7a3a5a;font-size:.9rem;}
+
+  .card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:22px;border:3px solid var(--pink-2);}
+
+  .audio-btn{
+    background:linear-gradient(135deg,var(--sky),#2f7fe0);color:#fff;font-weight:800;font-size:.85rem;
+    padding:10px 18px;border-radius:30px;display:inline-flex;align-items:center;gap:8px;
+    box-shadow:0 6px 14px rgba(47,127,224,.3);transition:transform .15s ease;
+  }
+  .audio-btn:active{transform:scale(.94);}
+  .audio-btn.small{padding:7px 14px;font-size:.78rem;}
+  .audio-btn .icon{font-size:1.1rem;}
+
+  .row-center{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+
+  .btn{font-weight:800;font-size:.95rem;padding:12px 26px;border-radius:30px;transition:transform .15s ease, box-shadow .15s ease;}
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:linear-gradient(135deg,var(--berry-1),var(--berry-2));color:#fff;box-shadow:0 8px 18px rgba(196,42,104,.3);}
+  .btn-primary[disabled]{opacity:.4;pointer-events:none;}
+  .center-btn-row{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap;}
+
+  .feedback{text-align:center;font-weight:800;font-family:'Fredoka';font-size:1.02rem;min-height:1.6rem;margin-top:12px;}
+  .feedback.good{color:#1a8a63;}
+  .feedback.bad{color:#c23c3c;}
+  .q-progress{text-align:center;font-weight:800;color:#a85778;font-size:.78rem;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;}
+
+  /* ---------- Emoji object groups (visual concept stages) ---------- */
+  .emoji-stack-row{display:flex;justify-content:center;align-items:flex-end;gap:16px;margin:16px 0;flex-wrap:wrap;}
+  .emoji-group-card{
+    flex:1;min-width:110px;max-width:180px;padding:16px 12px;border-radius:18px;
+    background:#fff8fb;border:3px solid var(--pink-2);text-align:center;cursor:pointer;
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .emoji-group-card:hover{transform:scale(1.03);border-color:var(--berry-1);}
+  .emoji-group-card.correct-pick{background:#e3fbf3;border-color:var(--mint);}
+  .emoji-group-card.wrong-pick{background:#ffe9e9;border-color:#f08a8a;}
+  .emoji-row{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;font-size:1.5rem;line-height:1;margin-bottom:6px;}
+  .emoji-group-card .count-label{font-family:'Fredoka';font-weight:700;font-size:1.1rem;color:var(--berry-dark);}
+
+  .equation-row{
+    display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;
+    font-family:'Fredoka';font-weight:700;font-size:1.7rem;margin:14px 0;color:var(--berry-2);
+    opacity:0;transform:translateY(8px);transition:opacity .4s ease, transform .4s ease;
+  }
+  .equation-row.show{opacity:1;transform:translateY(0);}
+  .equation-row .arrow{color:#c98cae;font-size:1.3rem;}
+
+  .direction-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 22px;border-radius:30px;font-family:'Fredoka';font-weight:700;font-size:1.15rem;
+    margin:10px 0;opacity:0;transform:scale(.85);transition:opacity .4s ease, transform .4s ease;
+  }
+  .direction-badge.show{opacity:1;transform:scale(1);}
+  .direction-badge.asc{background:#e3fbf3;color:#1a8a63;}
+  .direction-badge.desc{background:#ffe9e9;color:#c23c3c;}
+
+  .staircase{display:flex;align-items:flex-end;justify-content:center;gap:8px;margin:14px 0;height:90px;}
+  .staircase .step{
+    width:52px;border-radius:8px 8px 0 0;background:linear-gradient(180deg,var(--berry-1),var(--berry-2));
+    display:flex;align-items:flex-start;justify-content:center;padding-top:6px;
+    font-family:'Fredoka';font-weight:700;color:#fff;font-size:.95rem;
+    opacity:0;transform:translateY(10px);transition:opacity .4s ease, transform .4s ease;
+  }
+  .staircase .step.show{opacity:1;transform:translateY(0);}
+
+  /* ---------- Big direction buttons (Visual Memory) ---------- */
+  .direction-buttons-row{display:flex;justify-content:center;gap:18px;margin:18px 0;flex-wrap:wrap;}
+  .direction-btn{
+    flex:1;min-width:160px;max-width:220px;padding:22px 16px;border-radius:20px;
+    background:#fff8fb;border:3px solid var(--pink-2);text-align:center;cursor:pointer;
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .direction-btn:hover{transform:scale(1.03);border-color:var(--berry-1);}
+  .direction-btn .big-icon{font-size:2.4rem;display:block;margin-bottom:6px;}
+  .direction-btn .dir-name{font-family:'Fredoka';font-weight:700;font-size:1.15rem;color:var(--berry-dark);}
+  .direction-btn .dir-sub{font-weight:700;color:#a85778;font-size:.8rem;margin-top:2px;}
+  .direction-btn.correct-pick{background:#e3fbf3;border-color:var(--mint);}
+  .direction-btn.wrong-pick{background:#ffe9e9;border-color:#f08a8a;}
+
+  /* ---------- Ordering slots + tappable cards (shared by Train/Race/DragDrop/Doors/Mystery/Practice) ---------- */
+  .order-slots{display:flex;justify-content:center;align-items:center;gap:10px;margin:16px 0;flex-wrap:wrap;}
+  .order-slot{
+    min-width:64px;height:56px;border:2.5px dashed #f3b8d0;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.2rem;color:#c98cae;background:#fff8fb;
+  }
+  .order-slot.filled{border-style:solid;border-color:var(--mint);background:#e3fbf3;color:#1a8a63;}
+  .order-slot.filled-neutral{border-style:solid;border-color:var(--berry-1);background:var(--pink-2);color:var(--berry-dark);}
+  .order-arrow{color:#c98cae;font-family:'Fredoka';font-weight:700;font-size:1.1rem;}
+
+  .order-cards-row{display:flex;justify-content:center;gap:12px;margin-top:14px;flex-wrap:wrap;}
+  .order-card{
+    min-width:74px;padding:14px 10px;border-radius:16px;text-align:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.25rem;cursor:pointer;
+    transition:transform .15s ease, border-color .15s ease, opacity .2s ease;
+    background:#fff8fb;border:3px solid var(--pink-2);color:var(--berry-dark);
+  }
+  .order-card:hover{transform:scale(1.05);border-color:var(--berry-1);}
+  .order-card.locked{opacity:0;pointer-events:none;}
+  .order-card.wrong-flash{background:#ffe9e9;border-color:#f08a8a;}
+  .order-card .emoji-top{display:block;font-size:1.6rem;margin-bottom:2px;}
+
+  /* ---------- Doors ---------- */
+  .door{
+    width:90px;height:126px;border-radius:14px 14px 8px 8px;
+    background:linear-gradient(180deg,#c9793e,#a85a26);border:4px solid #7a3c15;
+    display:flex;align-items:flex-end;justify-content:center;color:#fff5e6;
+    font-family:'Fredoka';font-weight:700;font-size:1.15rem;padding-bottom:10px;position:relative;
+    box-shadow:0 6px 14px rgba(0,0,0,.2);
+  }
+  .door::before{content:'';position:absolute;top:16px;width:60%;height:60%;background:rgba(255,255,255,.08);border-radius:8px;}
+  .door.open{background:linear-gradient(180deg,#4fd6a8,#1a8a63);}
+
+  /* ---------- Options (Choose the Correct Order) ---------- */
+  .order-options{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+  .order-opt-btn{
+    background:#fff;border:2.5px solid var(--pink-2);color:var(--ink);border-radius:14px;
+    padding:14px 16px;font-family:'Fredoka';font-weight:700;font-size:1.1rem;text-align:center;
+  }
+  .order-opt-btn:hover{border-color:var(--berry-1);}
+  .order-opt-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .order-opt-btn.selected{background:var(--pink-2);border-color:var(--berry-1);color:var(--berry-dark);}
+  .feedback.neutral{color:var(--berry-dark);}
+  .order-opt-btn.wrong{background:#ffe9e9;border-color:#f08a8a;color:#c23c3c;}
+  .order-opt-btn[disabled]{pointer-events:none;}
+
+  .stars-row{display:flex;justify-content:center;gap:4px;margin:6px 0;}
+  .star-icon{font-size:1.3rem;}
+
+  .reward-card{text-align:center;padding:36px 22px;background:linear-gradient(160deg,#fff,var(--pink-1));}
+  .badge-circle{
+    width:130px;height:130px;border-radius:50%;margin:0 auto 16px;
+    background:linear-gradient(135deg,var(--butter),var(--butter-dark));
+    display:flex;align-items:center;justify-content:center;font-size:3.4rem;
+    box-shadow:0 14px 26px rgba(230,168,0,.4);border:6px solid #fff;
+  }
+  .reward-card h2{color:var(--berry-dark);font-size:1.7rem;margin:0 0 4px;}
+  .reward-card p{color:#7a3a5a;font-weight:700;margin:0 0 10px;}
+  .next-lesson-card{
+    margin-top:22px;background:#fff;border:2.5px solid var(--pink-2);border-radius:18px;
+    padding:16px;display:flex;align-items:center;gap:14px;text-align:left;
+  }
+  .next-lesson-card .lock-icon{font-size:1.6rem;}
+  .next-lesson-card .txt small{display:block;color:#a85778;font-weight:800;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;}
+  .next-lesson-card .txt strong{font-family:'Fredoka';color:var(--berry-dark);font-size:1.05rem;}
+
+  @media (max-width:480px){
+    .order-card{min-width:62px;font-size:1.05rem;padding:12px 8px;}
+    .order-slot{min-width:52px;height:48px;font-size:1rem;}
+    .door{width:74px;height:104px;font-size:1rem;}
+    .direction-btn{min-width:130px;padding:16px 10px;}
+    .emoji-row{font-size:1.2rem;}
+  }
+  @media (prefers-reduced-motion: reduce){ .stage{animation:none;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="../lessons.html">&larr; Chapter</a>
+    <div class="lesson-title">
+      <small>Grade 2 · Math · Chapter 1: Numbers</small>
+      🏃 Lesson 6: Ascending &amp; Descending
+    </div>
+    <div class="stars-count"><span id="starTotal">0</span> ⭐</div>
+  </div>
+  <div class="progress-track" id="progressTrack"></div>
+</div>
+
+<div class="stage-wrap" id="stageWrap"></div>
+
+<script>
+/* ============================================================
+   LESSON 6: ASCENDING & DESCENDING — self-contained, no shared
+   engine.js. Progress saved via ../../../../../../assets/js/progress.js
+   (falls back to local localStorage if that file is unavailable)
+
+   NOTE ON STYLING: this continues the pink/berry Math palette used
+   throughout Chapter 1: Numbers (Lessons 2–5), matching Lesson 1's
+   own rule that every subject/topic gets its own color palette and
+   is never reused (Lesson 1 — Grade 2 Science — uses green/leaf
+   tones). Fonts (Fredoka/Nunito), self-contained single-file
+   structure, tap-based interaction (no HTML5/pointer drag, per the
+   Lesson 4 drag-bug lessons), en-IN speech, and the Back to Chapter
+   button all match Lesson 1's established design system.
+
+   Carried-forward fixes from earlier lessons:
+   - speakForStage() guard: only the currently visible stage may
+     narrate itself (prevents the multi-voice-overlap bug found and
+     fixed in Lessons 2–5).
+   - Every MCQ/tap activity retries until correct: a wrong pick
+     disables only that option and encourages another try.
+============================================================ */
+const TOPIC_ID = "grade2-math-ch1-lesson6-ascending-descending";
+let totalStars = 0;
+
+(function loadProgressHelper(){
+  try{
+    const s = document.createElement('script');
+    s.src = "../../../../../../assets/js/progress.js";
+    document.head.appendChild(s);
+  }catch(e){ /* no-op: local fallback below still works */ }
+})();
+function saveStepDone(step){
+  try{
+    if (typeof setStepDone === 'function'){ setStepDone(TOPIC_ID, step, true); return; }
+  }catch(e){}
+  try{
+    const key = 'progress:' + TOPIC_ID;
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data[step] = true;
+    localStorage.setItem(key, JSON.stringify(data));
+  }catch(e){ /* storage unavailable — fail silently, never block the lesson */ }
+}
+
+/* ---------------- Speech ---------------- */
+let enVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  enVoice = voices.find(v => v.lang === 'en-IN') ||
+            voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+}
+if ('speechSynthesis' in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speak(text){
+  try{
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (enVoice) u.voice = enVoice;
+    u.rate = 0.88;
+    u.lang = 'en-IN';
+    speechSynthesis.speak(u);
+  }catch(e){ /* speech unavailable — visuals still work */ }
+}
+function isStageActive(stageId){
+  const el = document.getElementById(stageId);
+  return !!(el && el.classList.contains('active'));
+}
+function speakForStage(stageId, text){
+  if (isStageActive(stageId)) speak(text);
+}
+
+function addStar(n=1){
+  totalStars += n;
+  document.getElementById('starTotal').textContent = totalStars;
+}
+function shuffled(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+/* ---------------- Stage machine ---------------- */
+const STAGES = [
+  {id:'s1'}, {id:'s2'},           // ascending: visual, quick try
+  {id:'s3'}, {id:'s4'},           // descending: visual, quick try
+  {id:'s5'},                      // visual memory
+  {id:'s6'},                      // number train (asc + desc)
+  {id:'s7'},                      // number race (asc + desc)
+  {id:'s8'},                      // choose the correct order
+  {id:'s9'},                      // drag & drop (asc + desc)
+  {id:'s10'},                     // number doors (asc + desc)
+  {id:'s11'},                     // practice
+  {id:'s12'},                     // mystery challenge (asc + desc)
+  {id:'reward'},
+];
+let currentStageIndex = 0;
+
+function renderProgressTrack(){
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  STAGES.forEach((st, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i < currentStageIndex ? ' done' : '') + (i === currentStageIndex ? ' active' : '');
+    track.appendChild(d);
+  });
+}
+function goToStage(index){
+  currentStageIndex = index;
+  document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(STAGES[index].id);
+  if (target) target.classList.add('active');
+  renderProgressTrack();
+  saveStepDone(STAGES[index].id);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function completeStage(){
+  if (currentStageIndex < STAGES.length - 1) goToStage(currentStageIndex + 1);
+}
+
+const wrap = document.getElementById('stageWrap');
+
+/* ============================================================
+   Reusable: tap-in-order widget (used by Train/Race/DragDrop/
+   Doors/Mystery/Practice — each just supplies its own card look)
+============================================================ */
+function wireOrderRound(opts){
+  // opts: {slotsEl, cardsEl, numbers, direction, cardBuilder(n),
+  //        feedbackEl, stageId, onCorrectStep, onWrongStep, onComplete}
+  const sorted = [...opts.numbers].sort((a,b) => opts.direction === 'asc' ? a-b : b-a);
+  let nextIdx = 0;
+  opts.slotsEl.innerHTML = '';
+  sorted.forEach((n, i) => {
+    if (i > 0){
+      const arrow = document.createElement('span');
+      arrow.className = 'order-arrow';
+      arrow.textContent = '→';
+      opts.slotsEl.appendChild(arrow);
+    }
+    const slot = document.createElement('div');
+    slot.className = 'order-slot';
+    slot.dataset.index = i;
+    opts.slotsEl.appendChild(slot);
+  });
+  opts.cardsEl.innerHTML = '';
+  shuffled(opts.numbers).forEach(n => {
+    const card = opts.cardBuilder(n);
+    card.onclick = () => {
+      if (card.classList.contains('locked')) return;
+      if (n === sorted[nextIdx]){
+        const slot = opts.slotsEl.querySelector(`.order-slot[data-index="${nextIdx}"]`);
+        slot.textContent = n;
+        slot.classList.add('filled');
+        card.classList.add('locked');
+        if (opts.onCorrectStep) opts.onCorrectStep(n, nextIdx);
+        nextIdx++;
+        if (nextIdx === sorted.length && opts.onComplete) opts.onComplete(sorted);
+      } else {
+        card.classList.add('wrong-flash');
+        if (opts.onWrongStep) opts.onWrongStep(n);
+        setTimeout(() => card.classList.remove('wrong-flash'), 500);
+      }
+    };
+    opts.cardsEl.appendChild(card);
+  });
+}
+
+/* ============================================================
+   Reusable: FREE-order tap widget — used only in Practice.
+   Unlike wireOrderRound, this never reveals correctness per tap:
+   cards fill the next open slot in whatever order the student
+   taps them, and only once every slot is filled does the caller
+   find out (silently) whether the final order was correct.
+============================================================ */
+function wireFreeOrderRound(opts){
+  // opts: {slotsEl, cardsEl, numbers, direction, cardBuilder, onAllFilled(isCorrect, placedOrder)}
+  const sortedCorrect = [...opts.numbers].sort((a,b) => opts.direction === 'asc' ? a-b : b-a);
+  const placedOrder = [];
+  opts.slotsEl.innerHTML = '';
+  opts.numbers.forEach((_, i) => {
+    if (i > 0){
+      const arrow = document.createElement('span');
+      arrow.className = 'order-arrow';
+      arrow.textContent = '→';
+      opts.slotsEl.appendChild(arrow);
+    }
+    const slot = document.createElement('div');
+    slot.className = 'order-slot';
+    slot.dataset.index = i;
+    opts.slotsEl.appendChild(slot);
+  });
+  opts.cardsEl.innerHTML = '';
+  shuffled(opts.numbers).forEach(n => {
+    const card = opts.cardBuilder(n);
+    card.onclick = () => {
+      if (card.classList.contains('locked')) return;
+      const idx = placedOrder.length;
+      const slot = opts.slotsEl.querySelector(`.order-slot[data-index="${idx}"]`);
+      slot.textContent = n;
+      slot.classList.add('filled-neutral');
+      card.classList.add('locked');
+      placedOrder.push(n);
+      if (placedOrder.length === opts.numbers.length){
+        const isCorrect = placedOrder.every((v, i) => v === sortedCorrect[i]);
+        if (opts.onAllFilled) opts.onAllFilled(isCorrect, placedOrder);
+      }
+    };
+    opts.cardsEl.appendChild(card);
+  });
+}
+
+/* ============================================================
+   PART 1 — Visual Introduction: Growing Numbers (Ascending)
+============================================================ */
+const s1Groups = [2, 4, 6];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s1">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 1 · Growing Numbers</div>
+    <h2>Which Has the Fewest?</h2>
+    <p>Tap the group with the fewest apples.</p>
+  </div>
+  <div class="card">
+    <div class="row-center"><button class="audio-btn small" id="s1Play"><span class="icon">🔊</span> Which has the fewest?</button></div>
+    <div class="emoji-stack-row" id="s1Groups"></div>
+    <div class="direction-badge asc" id="s1Badge">⬆️ ASCENDING — Small to Big</div>
+    <div class="staircase" id="s1Staircase"></div>
+    <div class="equation-row" id="s1Equation"></div>
+    <div class="feedback" id="s1Feedback"></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s1Next" disabled>Next ➜</button></div>
+  </div>
+</section>`);
+(function setupS1(){
+  const groupsWrap = document.getElementById('s1Groups');
+  const fewest = Math.min(...s1Groups);
+  s1Groups.forEach(count => {
+    const card = document.createElement('div');
+    card.className = 'emoji-group-card';
+    const row = document.createElement('div');
+    row.className = 'emoji-row';
+    for (let i=0;i<count;i++){ const s = document.createElement('span'); s.textContent = '🍎'; row.appendChild(s); }
+    card.appendChild(row);
+    const label = document.createElement('div');
+    label.className = 'count-label';
+    label.textContent = count;
+    card.appendChild(label);
+    card.onclick = () => {
+      const fb = document.getElementById('s1Feedback');
+      if (count === fewest){
+        document.querySelectorAll('#s1Groups .emoji-group-card').forEach(c => c.onclick = null);
+        card.classList.add('correct-pick');
+        fb.textContent = 'Great! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        document.getElementById('s1Badge').classList.add('show');
+        const stair = document.getElementById('s1Staircase');
+        [...s1Groups].sort((a,b)=>a-b).forEach((n, i) => {
+          const step = document.createElement('div');
+          step.className = 'step';
+          step.style.height = (26 + i*22) + 'px';
+          step.textContent = n;
+          stair.appendChild(step);
+          setTimeout(() => step.classList.add('show'), 200 + i*250);
+        });
+        const eq = document.getElementById('s1Equation');
+        setTimeout(() => {
+          eq.innerHTML = `2 <span class="arrow">→</span> 4 <span class="arrow">→</span> 6`;
+          eq.classList.add('show');
+        }, 900);
+        speakForStage('s1', 'Ascending means small to big. 2 then 4 then 6.');
+        document.getElementById('s1Next').disabled = false;
+      } else {
+        card.classList.add('wrong-pick');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+        setTimeout(() => card.classList.remove('wrong-pick'), 700);
+      }
+    };
+    groupsWrap.appendChild(card);
+  });
+  document.getElementById('s1Play').onclick = () => speak('Which has the fewest?');
+  setTimeout(() => speakForStage('s1', 'Which has the fewest?'), 400);
+})();
+document.getElementById('s1Next').onclick = () => completeStage();
+
+/* ============================================================
+   PART 1b — Quick Try: order 3, 7, 5 ascending
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s2">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 1 · Quick Try</div>
+    <h2>Small to Big</h2>
+    <p>Tap the numbers in order — smallest first.</p>
+  </div>
+  <div class="card">
+    <div class="row-center"><button class="audio-btn small" id="s2Play"><span class="icon">🔊</span> Small to big</button></div>
+    <div class="order-slots" id="s2Slots"></div>
+    <div class="order-cards-row" id="s2Cards"></div>
+    <div class="feedback" id="s2Feedback"></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s2Next" disabled>Next ➜</button></div>
+  </div>
+</section>`);
+(function setupS2(){
+  document.getElementById('s2Play').onclick = () => speak('Small to big.');
+  setTimeout(() => speakForStage('s2', 'Small to big.'), 400);
+  wireOrderRound({
+    slotsEl: document.getElementById('s2Slots'),
+    cardsEl: document.getElementById('s2Cards'),
+    numbers: [3,7,5],
+    direction: 'asc',
+    cardBuilder: n => { const c = document.createElement('div'); c.className = 'order-card'; c.textContent = n; return c; },
+    onCorrectStep: () => { addStar(1); const fb = document.getElementById('s2Feedback'); fb.textContent = 'Nice!'; fb.className = 'feedback good'; speak('Nice!'); },
+    onWrongStep: () => { const fb = document.getElementById('s2Feedback'); fb.textContent = 'Try again, you are very close!'; fb.className = 'feedback bad'; speak('Try again, you are very close!'); },
+    onComplete: () => {
+      const fb = document.getElementById('s2Feedback');
+      fb.textContent = '🎉 3 → 5 → 7!';
+      fb.className = 'feedback good';
+      speak('Well done! 3, 5, 7.');
+      document.getElementById('s2Next').disabled = false;
+    },
+  });
+})();
+document.getElementById('s2Next').onclick = () => completeStage();
+
+/* ============================================================
+   PART 2 — Visual Introduction: Going Down (Descending)
+============================================================ */
+const s3Groups = [6, 4, 2];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s3">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 2 · Going Down</div>
+    <h2>Which Has the Most?</h2>
+    <p>Tap the group with the most apples.</p>
+  </div>
+  <div class="card">
+    <div class="row-center"><button class="audio-btn small" id="s3Play"><span class="icon">🔊</span> Which has the most?</button></div>
+    <div class="emoji-stack-row" id="s3Groups"></div>
+    <div class="direction-badge desc" id="s3Badge">⬇️ DESCENDING — Big to Small</div>
+    <div class="staircase" id="s3Staircase"></div>
+    <div class="equation-row" id="s3Equation"></div>
+    <div class="feedback" id="s3Feedback"></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s3Next" disabled>Next ➜</button></div>
+  </div>
+</section>`);
+(function setupS3(){
+  const groupsWrap = document.getElementById('s3Groups');
+  const most = Math.max(...s3Groups);
+  s3Groups.forEach(count => {
+    const card = document.createElement('div');
+    card.className = 'emoji-group-card';
+    const row = document.createElement('div');
+    row.className = 'emoji-row';
+    for (let i=0;i<count;i++){ const s = document.createElement('span'); s.textContent = '🍎'; row.appendChild(s); }
+    card.appendChild(row);
+    const label = document.createElement('div');
+    label.className = 'count-label';
+    label.textContent = count;
+    card.appendChild(label);
+    card.onclick = () => {
+      const fb = document.getElementById('s3Feedback');
+      if (count === most){
+        document.querySelectorAll('#s3Groups .emoji-group-card').forEach(c => c.onclick = null);
+        card.classList.add('correct-pick');
+        fb.textContent = 'Great! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        document.getElementById('s3Badge').classList.add('show');
+        const stair = document.getElementById('s3Staircase');
+        [...s3Groups].sort((a,b)=>b-a).forEach((n, i) => {
+          const step = document.createElement('div');
+          step.className = 'step';
+          step.style.height = (70 - i*22) + 'px';
+          step.textContent = n;
+          stair.appendChild(step);
+          setTimeout(() => step.classList.add('show'), 200 + i*250);
+        });
+        const eq = document.getElementById('s3Equation');
+        setTimeout(() => {
+          eq.innerHTML = `6 <span class="arrow">→</span> 4 <span class="arrow">→</span> 2`;
+          eq.classList.add('show');
+        }, 900);
+        speakForStage('s3', 'Descending means big to small. 6 then 4 then 2.');
+        document.getElementById('s3Next').disabled = false;
+      } else {
+        card.classList.add('wrong-pick');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+        setTimeout(() => card.classList.remove('wrong-pick'), 700);
+      }
+    };
+    groupsWrap.appendChild(card);
+  });
+  document.getElementById('s3Play').onclick = () => speak('Which has the most?');
+  setTimeout(() => speakForStage('s3', 'Which has the most?'), 400);
+})();
+document.getElementById('s3Next').onclick = () => completeStage();
+
+/* ============================================================
+   PART 2b — Quick Try: order 8, 3, 5 descending
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s4">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 2 · Quick Try</div>
+    <h2>Big to Small</h2>
+    <p>Tap the numbers in order — biggest first.</p>
+  </div>
+  <div class="card">
+    <div class="row-center"><button class="audio-btn small" id="s4Play"><span class="icon">🔊</span> Big to small</button></div>
+    <div class="order-slots" id="s4Slots"></div>
+    <div class="order-cards-row" id="s4Cards"></div>
+    <div class="feedback" id="s4Feedback"></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s4Next" disabled>Next ➜</button></div>
+  </div>
+</section>`);
+(function setupS4(){
+  document.getElementById('s4Play').onclick = () => speak('Big to small.');
+  setTimeout(() => speakForStage('s4', 'Big to small.'), 400);
+  wireOrderRound({
+    slotsEl: document.getElementById('s4Slots'),
+    cardsEl: document.getElementById('s4Cards'),
+    numbers: [8,3,5],
+    direction: 'desc',
+    cardBuilder: n => { const c = document.createElement('div'); c.className = 'order-card'; c.textContent = n; return c; },
+    onCorrectStep: () => { addStar(1); const fb = document.getElementById('s4Feedback'); fb.textContent = 'Nice!'; fb.className = 'feedback good'; speak('Nice!'); },
+    onWrongStep: () => { const fb = document.getElementById('s4Feedback'); fb.textContent = 'Try again, you are very close!'; fb.className = 'feedback bad'; speak('Try again, you are very close!'); },
+    onComplete: () => {
+      const fb = document.getElementById('s4Feedback');
+      fb.textContent = '🎉 8 → 5 → 3!';
+      fb.className = 'feedback good';
+      speak('Well done! 8, 5, 3.');
+      document.getElementById('s4Next').disabled = false;
+    },
+  });
+})();
+document.getElementById('s4Next').onclick = () => completeStage();
+
+/* ============================================================
+   PART 3 — Visual Memory (2 rounds)
+============================================================ */
+const s5Rounds = [
+  {prompt:'Which one means small to big?', answer:'asc'},
+  {prompt:'Which one means big to small?', answer:'desc'},
+];
+let s5Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s5">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 3 · Visual Memory</div>
+    <h2>Remember the Two Directions</h2>
+    <p id="s5Prompt"></p>
+  </div>
+  <div class="card">
+    <div class="direction-buttons-row" id="s5Buttons"></div>
+    <div class="feedback" id="s5Feedback"></div>
+  </div>
+</section>`);
+function renderS5(){
+  const r = s5Rounds[s5Index];
+  document.getElementById('s5Prompt').textContent = r.prompt;
+  document.getElementById('s5Feedback').textContent = '';
+  const btnWrap = document.getElementById('s5Buttons');
+  btnWrap.innerHTML = '';
+  const options = [
+    {key:'asc', icon:'⬆️🚶', name:'ASCENDING', sub:'Small → Big'},
+    {key:'desc', icon:'⬇️🚶', name:'DESCENDING', sub:'Big → Small'},
+  ];
+  options.forEach(opt => {
+    const btn = document.createElement('div');
+    btn.className = 'direction-btn';
+    btn.innerHTML = `<span class="big-icon">${opt.icon}</span><div class="dir-name">${opt.name}</div><div class="dir-sub">${opt.sub}</div>`;
+    btn.onclick = () => {
+      const fb = document.getElementById('s5Feedback');
+      if (opt.key === r.answer){
+        document.querySelectorAll('#s5Buttons .direction-btn').forEach(b => b.onclick = null);
+        btn.classList.add('correct-pick');
+        fb.textContent = 'Correct! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct! ' + opt.name.toLowerCase());
+        setTimeout(() => {
+          s5Index++;
+          if (s5Index >= s5Rounds.length) completeStage();
+          else renderS5();
+        }, 1400);
+      } else {
+        btn.classList.add('wrong-pick');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+        setTimeout(() => btn.classList.remove('wrong-pick'), 700);
+      }
+    };
+    btnWrap.appendChild(btn);
+  });
+  speakForStage('s5', r.prompt);
+}
+renderS5();
+
+/* ============================================================
+   Reusable: two-round (asc then desc) themed ordering stage
+   used by Number Train, Number Race, Drag & Drop, Number Doors,
+   and Mystery Challenge — same tap-in-order mechanic, different
+   card visuals and copy per activity.
+============================================================ */
+function buildTwoRoundStage(opts){
+  // opts: {stageId, eyebrow, title, numbers, cardBuilder(n),
+  //        ascPrompt, descPrompt, ascSpeak, descSpeak, rewardWord}
+  let roundIndex = 0; // 0 = ascending, 1 = descending
+  const rounds = [
+    {direction:'asc', prompt: opts.ascPrompt, say: opts.ascSpeak},
+    {direction:'desc', prompt: opts.descPrompt, say: opts.descSpeak},
+  ];
+  wrap.insertAdjacentHTML('beforeend', `
+  <section class="stage" id="${opts.stageId}">
+    <div class="stage-header">
+      <div class="stage-eyebrow">${opts.eyebrow}</div>
+      <h2>${opts.title}</h2>
+      <p id="${opts.stageId}Prompt"></p>
+    </div>
+    <div class="card">
+      <div class="row-center"><button class="audio-btn small" id="${opts.stageId}Play"><span class="icon">🔊</span> Hear It Again</button></div>
+      <div class="order-slots" id="${opts.stageId}Slots"></div>
+      <div class="order-cards-row" id="${opts.stageId}Cards"></div>
+      <div class="feedback" id="${opts.stageId}Feedback"></div>
+    </div>
+  </section>`);
+  function renderRound(){
+    const r = rounds[roundIndex];
+    document.getElementById(opts.stageId + 'Prompt').textContent = r.prompt;
+    document.getElementById(opts.stageId + 'Feedback').textContent = '';
+    document.getElementById(opts.stageId + 'Play').onclick = () => speak(r.say);
+    setTimeout(() => speakForStage(opts.stageId, r.say), 400);
+    wireOrderRound({
+      slotsEl: document.getElementById(opts.stageId + 'Slots'),
+      cardsEl: document.getElementById(opts.stageId + 'Cards'),
+      numbers: opts.numbers,
+      direction: r.direction,
+      cardBuilder: opts.cardBuilder,
+      onCorrectStep: () => {
+        addStar(1);
+        const fb = document.getElementById(opts.stageId + 'Feedback');
+        fb.textContent = 'Nice!';
+        fb.className = 'feedback good';
+      },
+      onWrongStep: () => {
+        const fb = document.getElementById(opts.stageId + 'Feedback');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      },
+      onComplete: (sorted) => {
+        const fb = document.getElementById(opts.stageId + 'Feedback');
+        fb.textContent = `🎉 ${sorted.join(' → ')}`;
+        fb.className = 'feedback good';
+        speak('Great job!');
+        setTimeout(() => {
+          roundIndex++;
+          if (roundIndex >= rounds.length) completeStage();
+          else renderRound();
+        }, 1600);
+      },
+    });
+  }
+  renderRound();
+}
+
+/* ============================================================
+   PART 4 — Number Train
+============================================================ */
+buildTwoRoundStage({
+  stageId:'s6', eyebrow:'Part 4 · Number Train',
+  title:'🚂 Put the Carriages in Order',
+  numbers:[125,325,225],
+  cardBuilder: n => { const c = document.createElement('div'); c.className='order-card'; c.innerHTML = `<span class="emoji-top">🚃</span>${n}`; return c; },
+  ascPrompt:'Put the numbers from small to big!', descPrompt:'Now big to small!',
+  ascSpeak:'Put the numbers from small to big!', descSpeak:'Now big to small!',
+});
+
+/* ============================================================
+   PART 5 — Number Race
+============================================================ */
+buildTwoRoundStage({
+  stageId:'s7', eyebrow:'Part 5 · Number Race',
+  title:'🏃 Who Comes First?',
+  numbers:[245,125,345],
+  cardBuilder: n => { const c = document.createElement('div'); c.className='order-card'; c.innerHTML = `<span class="emoji-top">🏃</span>${n}`; return c; },
+  ascPrompt:'Who comes first? Put them in order, small to big.', descPrompt:'Now go backwards! Big to small.',
+  ascSpeak:'Who comes first?', descSpeak:'Now go backwards!',
+});
+
+/* ============================================================
+   PART 6 — Choose the Correct Order (2 questions)
+============================================================ */
+const s8Questions = [
+  {numbers:[200,100,300], question:'Which is ascending?', options:['100 → 200 → 300','300 → 200 → 100','200 → 300 → 100'], answer:'100 → 200 → 300'},
+  {numbers:[400,600,500], question:'Which is descending?', options:['400 → 500 → 600','600 → 500 → 400','500 → 400 → 600'], answer:'600 → 500 → 400'},
+];
+let s8Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s8">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 6 · Choose the Order</div>
+    <h2>Pick the Correct Order</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s8Progress"></div>
+    <div id="s8Question" style="text-align:center;font-family:'Fredoka';font-weight:700;font-size:1.15rem;color:var(--berry-dark);margin-bottom:10px;"></div>
+    <div class="order-options" id="s8Options"></div>
+    <div class="feedback" id="s8Feedback"></div>
+  </div>
+</section>`);
+function renderS8(){
+  const q = s8Questions[s8Index];
+  document.getElementById('s8Progress').textContent = `Question ${s8Index+1} of ${s8Questions.length}`;
+  document.getElementById('s8Question').textContent = q.question;
+  document.getElementById('s8Feedback').textContent = '';
+  const optsWrap = document.getElementById('s8Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'order-opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      const fb = document.getElementById('s8Feedback');
+      if (opt === q.answer){
+        document.querySelectorAll('#s8Options .order-opt-btn').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        fb.textContent = 'Correct! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct!');
+        setTimeout(() => {
+          s8Index++;
+          if (s8Index >= s8Questions.length) completeStage();
+          else renderS8();
+        }, 1500);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s8', q.question);
+}
+renderS8();
+
+/* ============================================================
+   PART 7 — Drag & Drop (4 cards, tap-based)
+============================================================ */
+buildTwoRoundStage({
+  stageId:'s9', eyebrow:'Part 7 · Drag & Drop',
+  title:'🧩 Arrange the Number Cards',
+  numbers:[450,125,325,225],
+  cardBuilder: n => { const c = document.createElement('div'); c.className='order-card'; c.textContent = n; return c; },
+  ascPrompt:'Small to big — tap the cards in order.', descPrompt:'Now big to small.',
+  ascSpeak:'Small to big.', descSpeak:'Big to small.',
+});
+
+/* ============================================================
+   PART 8 — Number Doors
+============================================================ */
+buildTwoRoundStage({
+  stageId:'s10', eyebrow:'Part 8 · Number Doors',
+  title:'🚪 Open the Doors in Order',
+  numbers:[125,425,225],
+  cardBuilder: n => { const c = document.createElement('div'); c.className='order-card door'; c.textContent = n; return c; },
+  ascPrompt:'Open the doors from small to big.', descPrompt:'Now big to small!',
+  ascSpeak:'Open the doors from small to big.', descSpeak:'Now big to small!',
+});
+
+/* ============================================================
+   PART 9 — Practice (5 questions, mixed, with score summary)
+============================================================ */
+const s11Questions = [
+  {type:'order', numbers:[245,125,345], direction:'asc'},
+  {type:'order', numbers:[500,200,400], direction:'desc'},
+  {type:'order', numbers:[321,123,213], direction:'asc'},
+  {type:'order', numbers:[725,527,752], direction:'desc'},
+  {type:'choice', prompt:'Which is ascending?', options:['100 → 300 → 200','100 → 200 → 300'], answer:'100 → 200 → 300'},
+];
+let s11Index = 0;
+let s11CorrectCount = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s11">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 9 · Practice</div>
+    <h2>Quick Practice</h2>
+    <p>Five short questions.</p>
+  </div>
+  <div class="card" id="s11Intro">
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">You're going to answer 5 questions on your own now. Take your time and do your best!</p>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s11Start">Start Practice ▶</button></div>
+  </div>
+  <div class="card" id="s11Quiz" style="display:none;">
+    <div class="q-progress" id="s11Progress"></div>
+    <div id="s11Prompt" style="text-align:center;font-family:'Fredoka';font-weight:700;font-size:1.1rem;color:var(--berry-dark);margin-bottom:6px;"></div>
+    <div class="order-slots" id="s11Slots"></div>
+    <div class="order-cards-row" id="s11Cards"></div>
+    <div class="order-options" id="s11Options"></div>
+    <div class="feedback" id="s11Feedback"></div>
+  </div>
+</section>`);
+document.getElementById('s11Start').onclick = () => {
+  document.getElementById('s11Intro').style.display = 'none';
+  document.getElementById('s11Quiz').style.display = 'block';
+  speak("Now you're going to answer some questions on your own. Let's begin!");
+  renderS11();
+};
+function renderS11(){
+  const q = s11Questions[s11Index];
+  document.getElementById('s11Progress').textContent = `Question ${s11Index+1} of ${s11Questions.length}`;
+  document.getElementById('s11Feedback').textContent = '';
+  document.getElementById('s11Slots').innerHTML = '';
+  document.getElementById('s11Cards').innerHTML = '';
+  document.getElementById('s11Options').innerHTML = '';
+
+  if (q.type === 'order'){
+    document.getElementById('s11Prompt').textContent = q.direction === 'asc' ? 'Order them: small to big.' : 'Order them: big to small.';
+    speakForStage('s11', document.getElementById('s11Prompt').textContent);
+    wireFreeOrderRound({
+      slotsEl: document.getElementById('s11Slots'),
+      cardsEl: document.getElementById('s11Cards'),
+      numbers: q.numbers,
+      direction: q.direction,
+      cardBuilder: n => { const c = document.createElement('div'); c.className = 'order-card'; c.textContent = n; return c; },
+      onAllFilled: (isCorrect) => {
+        if (isCorrect) s11CorrectCount++;
+        const fb = document.getElementById('s11Feedback');
+        fb.textContent = 'Got it! Next question…';
+        fb.className = 'feedback neutral';
+        speak('Got it. Next question.');
+        setTimeout(advanceS11, 1100);
+      },
+    });
+  } else {
+    document.getElementById('s11Prompt').textContent = q.prompt;
+    speakForStage('s11', q.prompt);
+    const optsWrap = document.getElementById('s11Options');
+    shuffled(q.options).forEach(opt => {
+      const b = document.createElement('button');
+      b.className = 'order-opt-btn';
+      b.textContent = opt;
+      b.onclick = () => {
+        if (b.disabled) return;
+        document.querySelectorAll('#s11Options .order-opt-btn').forEach(x => x.disabled = true);
+        b.classList.add('selected');
+        if (opt === q.answer) s11CorrectCount++;
+        const fb = document.getElementById('s11Feedback');
+        fb.textContent = 'Got it! Next question…';
+        fb.className = 'feedback neutral';
+        speak('Got it. Next question.');
+        setTimeout(advanceS11, 1100);
+      };
+      optsWrap.appendChild(b);
+    });
+  }
+}
+function advanceS11(){
+  s11Index++;
+  if (s11Index >= s11Questions.length) showS11Summary();
+  else renderS11();
+}
+function showS11Summary(){
+  document.getElementById('s11Progress').textContent = 'Practice Complete!';
+  document.getElementById('s11Prompt').textContent = `You got ${s11CorrectCount} out of ${s11Questions.length} correct!`;
+  document.getElementById('s11Slots').innerHTML = '';
+  document.getElementById('s11Cards').innerHTML = '';
+  const optsWrap = document.getElementById('s11Options');
+  optsWrap.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.textContent = 'Continue ➜';
+  btn.onclick = () => completeStage();
+  optsWrap.appendChild(btn);
+  addStar(s11CorrectCount);
+  document.getElementById('s11Feedback').textContent =
+    s11CorrectCount === s11Questions.length ? 'Perfect score! 🌟' : 'Great effort! 🎉';
+  document.getElementById('s11Feedback').className = 'feedback good';
+  speak(`You got ${s11CorrectCount} out of ${s11Questions.length} correct!`);
+}
+
+
+/* ============================================================
+   PART 10 — Mystery Challenge (asc + desc, 4 numbers)
+============================================================ */
+(function setupS12(){
+  let roundIndex = 0;
+  const numbers = [678,567,786,657];
+  const rounds = [
+    {direction:'asc', prompt:'Small to big!'},
+    {direction:'desc', prompt:'Big to small!'},
+  ];
+  wrap.insertAdjacentHTML('beforeend', `
+  <section class="stage" id="s12">
+    <div class="stage-header">
+      <div class="stage-eyebrow">Part 10 · Mystery Challenge</div>
+      <h2>⭐ Final Challenge</h2>
+      <p id="s12Prompt"></p>
+    </div>
+    <div class="card">
+      <div class="row-center"><button class="audio-btn small" id="s12Play"><span class="icon">🔊</span> Hear It Again</button></div>
+      <div class="order-slots" id="s12Slots"></div>
+      <div class="order-cards-row" id="s12Cards"></div>
+      <div class="feedback" id="s12Feedback"></div>
+    </div>
+  </section>`);
+  function renderRound(){
+    const r = rounds[roundIndex];
+    document.getElementById('s12Prompt').textContent = r.prompt;
+    document.getElementById('s12Feedback').textContent = '';
+    document.getElementById('s12Play').onclick = () => speak(r.prompt);
+    setTimeout(() => speakForStage('s12', r.prompt), 400);
+    wireOrderRound({
+      slotsEl: document.getElementById('s12Slots'),
+      cardsEl: document.getElementById('s12Cards'),
+      numbers: numbers,
+      direction: r.direction,
+      cardBuilder: n => { const c = document.createElement('div'); c.className = 'order-card'; c.textContent = n; return c; },
+      onCorrectStep: () => addStar(1),
+      onWrongStep: () => {
+        const fb = document.getElementById('s12Feedback');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      },
+      onComplete: (sorted) => {
+        const fb = document.getElementById('s12Feedback');
+        fb.textContent = `🎉 ${sorted.join(' → ')}`;
+        fb.className = 'feedback good';
+        speak('Double challenge complete!');
+        setTimeout(() => {
+          roundIndex++;
+          if (roundIndex >= rounds.length) showReward();
+          else renderRound();
+        }, 1700);
+      },
+    });
+  }
+  renderRound();
+})();
+
+/* ============================================================
+   REWARD
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="reward">
+  <div class="card reward-card">
+    <div class="badge-circle">🏃</div>
+    <h2>NUMBER RACER</h2>
+    <p>You can put numbers in order!</p>
+    <div class="stars-row" id="rewardStars"></div>
+    <div class="next-lesson-card">
+      <div class="lock-icon">🔓</div>
+      <div class="txt">
+        <small>Next Lesson</small>
+        <strong>Even &amp; Odd</strong>
+      </div>
+    </div>
+  </div>
+</section>`);
+function showReward(){
+  goToStage(STAGES.length - 1);
+  const starsRow = document.getElementById('rewardStars');
+  starsRow.innerHTML = '';
+  for (let i=0;i<5;i++){
+    const s = document.createElement('span');
+    s.className = 'star-icon';
+    s.textContent = '⭐';
+    starsRow.appendChild(s);
+  }
+  saveStepDone('lesson6-complete');
+  speak('Great job! You can put numbers in order!');
+}
+
+/* ---------------- init ---------------- */
+renderProgressTrack();
+goToStage(0);
+</script>
+</body>
+</html>
