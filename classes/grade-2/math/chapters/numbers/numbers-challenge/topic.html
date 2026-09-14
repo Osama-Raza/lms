@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Chapter 1 Numbers Challenge — Numbers Adventure — Grade 2 Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-1:#fff3f7; --pink-2:#ffe1ec; --berry-1:#e94f8a; --berry-2:#c22a68; --berry-dark:#8f1c4f;
+    --butter:#ffcf5c; --butter-dark:#e6a800; --mint:#4fd6a8; --sky:#5aa9ff; --ink:#4a1030;
+    --shadow: 0 10px 24px rgba(196,42,104,.18); --radius-lg: 26px;
+    --even:#4fd6a8; --odd:#ff9d5c; --bronze:#cd7f32; --silver:#b0b8c1; --gold:#e6a800;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:radial-gradient(circle at 10% 10%, var(--pink-2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 20%, #ffe9d6 0%, transparent 40%),
+      linear-gradient(180deg, var(--pink-1), #fff);
+    color:var(--ink); min-height:100vh; overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Fredoka',sans-serif;}
+  button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+
+  .topbar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--berry-1),var(--berry-2));color:#fff;padding:10px 16px;box-shadow:0 4px 14px rgba(143,28,79,.25);}
+  .topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .topbar .lesson-title{font-family:'Fredoka';font-weight:600;font-size:1.02rem;flex:1;}
+  .topbar .lesson-title small{display:block;font-family:'Nunito';font-weight:700;font-size:.66rem;opacity:.85;letter-spacing:.04em;text-transform:uppercase;}
+  .stars-count{background:rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;font-weight:800;font-size:.85rem;display:flex;align-items:center;gap:4px;}
+  .back-btn{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;background:rgba(255,255,255,.18);color:#fff;text-decoration:none;font-family:'Fredoka';font-weight:700;font-size:.8rem;padding:7px 14px;border-radius:20px;transition:background .15s ease;}
+  .back-btn:hover{background:rgba(255,255,255,.3);}
+  .progress-track{max-width:900px;margin:8px auto 0;display:flex;gap:2px;padding:0 16px;}
+  .progress-dot{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.28);transition:background .3s ease;}
+  .progress-dot.done{background:var(--butter);}
+  .progress-dot.active{background:#fff;}
+
+  .stage-wrap{max-width:780px;margin:0 auto;padding:22px 16px 90px;min-height:70vh;}
+  .stage{display:none;animation:fadeUp .45s ease both;}
+  .stage.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .stage-header{text-align:center;margin-bottom:16px;}
+  .stage-eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--pink-2);color:var(--berry-dark);font-weight:800;font-size:.7rem;letter-spacing:.05em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:8px;}
+  .stage-header h2{font-size:1.35rem;margin:0 0 4px;color:var(--berry-dark);}
+  .stage-header p{margin:0;font-weight:700;color:#7a3a5a;font-size:.88rem;}
+
+  .card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:20px;border:3px solid var(--pink-2);margin-bottom:14px;}
+  .audio-btn{background:linear-gradient(135deg,var(--sky),#2f7fe0);color:#fff;font-weight:800;font-size:.85rem;padding:10px 18px;border-radius:30px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 14px rgba(47,127,224,.3);transition:transform .15s ease;}
+  .audio-btn:active{transform:scale(.94);}
+  .audio-btn.small{padding:7px 14px;font-size:.78rem;}
+  .row-center{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+  .btn{font-weight:800;font-size:.95rem;padding:12px 26px;border-radius:30px;transition:transform .15s ease, box-shadow .15s ease;}
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:linear-gradient(135deg,var(--berry-1),var(--berry-2));color:#fff;box-shadow:0 8px 18px rgba(196,42,104,.3);}
+  .btn-primary[disabled]{opacity:.4;pointer-events:none;}
+  .center-btn-row{display:flex;justify-content:center;gap:10px;margin-top:16px;flex-wrap:wrap;}
+  .feedback{text-align:center;font-weight:800;font-family:'Fredoka';font-size:1rem;min-height:1.5rem;margin-top:10px;}
+  .feedback.good{color:#1a8a63;}
+  .feedback.bad{color:#c23c3c;}
+  .feedback.neutral{color:var(--berry-dark);}
+  .q-progress{text-align:center;font-weight:800;color:#a85778;font-size:.76rem;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;}
+  .sub-label{text-align:center;font-weight:800;color:#a85778;font-size:.74rem;letter-spacing:.02em;text-transform:uppercase;margin:14px 0 4px;}
+
+  /* sequences / numbers */
+  .num-sequence{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:14px 0;font-family:'Fredoka';font-weight:700;font-size:1.4rem;color:var(--berry-dark);}
+  .num-sequence span{background:var(--pink-1);border:2px solid var(--pink-2);border-radius:12px;padding:7px 13px;min-width:40px;text-align:center;}
+  .num-sequence span.blank{background:var(--butter);border-color:var(--butter-dark);color:#5a3d00;}
+  .big-number{font-family:'Fredoka';font-weight:700;font-size:2.6rem;text-align:center;color:var(--berry-2);margin:8px 0;text-shadow:0 3px 0 var(--pink-2);}
+
+  /* options */
+  .options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:14px;}
+  .options.two{grid-template-columns:1fr 1fr;}
+  .options.stack{grid-template-columns:1fr;}
+  .opt-btn{background:#fff;border:2.5px solid var(--pink-2);color:var(--ink);border-radius:14px;padding:12px 8px;font-family:'Fredoka';font-weight:600;font-size:1.02rem;text-align:center;}
+  .opt-btn:hover{border-color:var(--berry-1);}
+  .opt-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .opt-btn.wrong{background:#ffe9e9;border-color:#f08a8a;color:#c23c3c;}
+  .opt-btn.selected{background:var(--pink-2);border-color:var(--berry-1);color:var(--berry-dark);}
+  .opt-btn[disabled]{pointer-events:none;}
+
+  /* sign buttons */
+  .sign-row{display:flex;justify-content:center;gap:12px;margin-top:14px;flex-wrap:wrap;}
+  .sign-btn{width:62px;height:62px;border-radius:16px;background:#fff;border:2.5px solid var(--pink-2);font-family:'Fredoka';font-weight:700;font-size:1.6rem;color:var(--berry-dark);}
+  .sign-btn:hover{border-color:var(--berry-1);}
+  .sign-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .sign-btn.wrong{background:#ffe9e9;border-color:#f08a8a;color:#c23c3c;}
+  .sign-btn[disabled]{pointer-events:none;}
+  .compare-row{display:flex;justify-content:center;align-items:center;gap:16px;margin:12px 0;flex-wrap:wrap;}
+  .num-card{min-width:80px;padding:14px 16px;border-radius:16px;background:#fff8fb;border:3px solid var(--pink-2);font-family:'Fredoka';font-weight:700;font-size:1.6rem;text-align:center;color:var(--berry-dark);}
+  .vs-tag{font-family:'Fredoka';font-weight:700;color:#c98cae;font-size:1rem;}
+
+  /* even/odd baskets */
+  .basket-row{display:flex;justify-content:center;gap:16px;margin-top:14px;flex-wrap:wrap;}
+  .basket-btn{flex:1;min-width:120px;max-width:180px;padding:16px 12px;border-radius:18px;text-align:center;font-family:'Fredoka';font-weight:700;font-size:1.05rem;cursor:pointer;border:3px solid var(--pink-2);background:#fff8fb;transition:transform .15s ease;}
+  .basket-btn:hover{transform:scale(1.03);}
+  .basket-btn.even{color:#1a8a63;} .basket-btn.odd{color:#c2650e;}
+  .basket-btn.correct{background:#e3fbf3;border-color:var(--mint);}
+  .basket-btn.wrong{background:#ffe9e9;border-color:#f08a8a;}
+  .basket-btn[disabled]{pointer-events:none;}
+  .ball-row{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;font-size:1.4rem;margin:10px 0;}
+
+  /* emoji groups */
+  .emoji-row-static{display:flex;justify-content:center;gap:2px;font-size:1.4rem;flex-wrap:wrap;}
+  .compare-visual{display:flex;justify-content:center;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap;font-family:'Fredoka';font-weight:700;color:var(--berry-dark);}
+
+  /* generic tap-in-order widget */
+  .order-slots{display:flex;justify-content:center;align-items:center;gap:7px;margin:14px 0;flex-wrap:wrap;}
+  .order-slot{min-width:50px;height:46px;border:2.5px dashed #f3b8d0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka';font-weight:700;font-size:.98rem;color:#c98cae;background:#fff8fb;}
+  .order-slot.filled{border-style:solid;border-color:var(--mint);background:#e3fbf3;color:#1a8a63;}
+  .order-arrow{color:#c98cae;font-family:'Fredoka';font-weight:700;font-size:.95rem;}
+  .tap-tile-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:12px;}
+  .tap-tile{padding:12px 16px;border-radius:14px;font-family:'Fredoka';font-weight:700;font-size:1.05rem;cursor:pointer;background:#fff8fb;border:3px solid var(--pink-2);color:var(--berry-dark);transition:transform .15s ease, border-color .15s ease;}
+  .tap-tile:hover{transform:scale(1.05);border-color:var(--berry-1);}
+  .tap-tile.locked{opacity:0;pointer-events:none;}
+  .tap-tile.wrong-flash{background:#ffe9e9;border-color:#f08a8a;}
+
+  /* station indicator (Numbers Adventure) */
+  .station-track{display:flex;justify-content:center;gap:5px;margin:0 0 14px;flex-wrap:wrap;}
+  .station-dot{width:26px;height:26px;border-radius:50%;background:var(--pink-2);color:var(--berry-dark);display:flex;align-items:center;justify-content:center;font-family:'Fredoka';font-weight:700;font-size:.75rem;}
+  .station-dot.done{background:var(--mint);color:#fff;}
+  .station-dot.active{background:var(--berry-1);color:#fff;}
+
+  .stars-row{display:flex;justify-content:center;gap:4px;margin:6px 0;}
+  .star-icon{font-size:1.3rem;}
+
+  .reward-card{text-align:center;padding:34px 20px;background:linear-gradient(160deg,#fff,var(--pink-1));}
+  .badge-circle{width:130px;height:130px;border-radius:50%;margin:0 auto 16px;background:linear-gradient(135deg,var(--butter),var(--butter-dark));display:flex;align-items:center;justify-content:center;font-size:3.4rem;box-shadow:0 14px 26px rgba(230,168,0,.4);border:6px solid #fff;}
+  .reward-card h2{color:var(--berry-dark);font-size:1.6rem;margin:0 0 4px;}
+  .reward-card p{color:#7a3a5a;font-weight:700;margin:0 0 8px;}
+  .tier-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:30px;font-family:'Fredoka';font-weight:700;font-size:1.1rem;color:#fff;margin:10px 0;}
+  .tier-badge.bronze{background:linear-gradient(135deg,#cd7f32,#a85a26);}
+  .tier-badge.silver{background:linear-gradient(135deg,#b0b8c1,#8a94a0);}
+  .tier-badge.gold{background:linear-gradient(135deg,#ffd76a,var(--butter-dark));}
+  .chapter-complete{margin-top:20px;background:#fff8fb;border:2.5px solid var(--pink-2);border-radius:20px;padding:18px;text-align:left;}
+  .chapter-complete h3{text-align:center;font-size:1.05rem;color:var(--berry-dark);margin:0 0 12px;}
+  .chapter-checklist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:7px;}
+  .chapter-checklist li{display:flex;align-items:center;gap:10px;font-family:'Fredoka';font-weight:600;color:var(--berry-dark);background:#e3fbf3;border-radius:12px;padding:7px 12px;font-size:.9rem;}
+
+  @media (max-width:480px){
+    .options{grid-template-columns:1fr 1fr;}
+    .num-sequence{font-size:1.15rem;}
+    .num-sequence span{padding:5px 9px;}
+    .basket-btn{min-width:100px;}
+  }
+  @media (prefers-reduced-motion: reduce){ .stage{animation:none;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="../lessons.html">&larr; Chapter</a>
+    <div class="lesson-title">
+      <small>Grade 2 · Math · Chapter 1: Numbers</small>
+      🗺️ Numbers Adventure — Chapter Challenge
+    </div>
+    <div class="stars-count"><span id="starTotal">0</span> ⭐</div>
+  </div>
+  <div class="progress-track" id="progressTrack"></div>
+</div>
+
+<div class="stage-wrap" id="stageWrap"></div>
+
+<script>
+/* ============================================================
+   CHAPTER 1 NUMBERS CHALLENGE — "Numbers Adventure"
+   A whole-chapter memory-recall revision of Lessons 1–9, built
+   as short mini-games per sub-topic, then a 9-station mixed
+   "Adventure", then a 10-question silently-scored Final Challenge
+   ("Can You Remember?"). Self-contained, no shared engine.js.
+
+   Progress saved via ../../../../../../assets/js/progress.js
+   (falls back to local localStorage if that file is unavailable)
+
+   Carries forward every fix from Lessons 5–9:
+   - speakForStage() guard + stageEnterActions registry, so a
+     stage's opening narration fires exactly once, only when it
+     genuinely becomes visible (not at page-load construction).
+   - Retry-until-correct on every revision mini-activity: a wrong
+     pick disables only that option and encourages another try.
+   - The Final Challenge uses the Quick-Practice pattern (intro
+     alert, no live right/wrong reveal, score revealed only at
+     the end) since this is a genuine memory-recall assessment,
+     not a guided activity — telling the student the answer
+     immediately would defeat the point of testing recall.
+   - Explicit, concrete instructions; tap-based interactions only.
+============================================================ */
+const TOPIC_ID = "grade2-math-ch1-numbers-challenge";
+let totalStars = 0;
+
+(function loadProgressHelper(){
+  try{
+    const s = document.createElement('script');
+    s.src = "../../../../../../assets/js/progress.js";
+    document.head.appendChild(s);
+  }catch(e){}
+})();
+function saveStepDone(step){
+  try{ if (typeof setStepDone === 'function'){ setStepDone(TOPIC_ID, step, true); return; } }catch(e){}
+  try{
+    const key = 'progress:' + TOPIC_ID;
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data[step] = true;
+    localStorage.setItem(key, JSON.stringify(data));
+  }catch(e){}
+}
+
+let enVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  enVoice = voices.find(v => v.lang === 'en-IN') || voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+}
+if ('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(text){
+  try{
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (enVoice) u.voice = enVoice;
+    u.rate = 0.88; u.lang = 'en-IN';
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function isStageActive(stageId){ const el = document.getElementById(stageId); return !!(el && el.classList.contains('active')); }
+function speakForStage(stageId, text){ if (isStageActive(stageId)) speak(text); }
+
+function addStar(n=1){ totalStars += n; document.getElementById('starTotal').textContent = totalStars; }
+function shuffled(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+const STAGES = [
+  {id:'s1'},{id:'s2'},{id:'s3'},{id:'s4'},{id:'s5'},{id:'s6'},{id:'s7'},{id:'s8'},{id:'s9'},
+  {id:'s10'},{id:'s11'},{id:'reward'},
+];
+let currentStageIndex = 0;
+function renderProgressTrack(){
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  STAGES.forEach((st, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i < currentStageIndex ? ' done' : '') + (i === currentStageIndex ? ' active' : '');
+    track.appendChild(d);
+  });
+}
+const stageEnterActions = {};
+function goToStage(index){
+  currentStageIndex = index;
+  document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(STAGES[index].id);
+  if (target) target.classList.add('active');
+  renderProgressTrack();
+  saveStepDone(STAGES[index].id);
+  window.scrollTo({top:0, behavior:'smooth'});
+  const action = stageEnterActions[STAGES[index].id];
+  if (action) action();
+}
+function completeStage(){ if (currentStageIndex < STAGES.length - 1) goToStage(currentStageIndex + 1); }
+
+const wrap = document.getElementById('stageWrap');
+
+/* shared MCQ helper (retry-until-correct) */
+function renderRetryOptions(container, options, answer, onCorrect, cls){
+  container.innerHTML = '';
+  shuffled(options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = cls || 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      if (String(opt) === String(answer)){
+        container.querySelectorAll('button').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        onCorrect(b);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+      }
+    };
+    container.appendChild(b);
+  });
+}
+function wireRetryFeedback(containerId, feedbackId){
+  document.querySelectorAll(`#${containerId} button`).forEach(b => {
+    const orig = b.onclick;
+    b.onclick = (e) => {
+      orig(e);
+      if (b.classList.contains('wrong')){
+        const fb = document.getElementById(feedbackId);
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+  });
+}
+/* generic sequential-question runner: qs = [{...}], render(q) must build
+   the DOM + call renderRetryOptions/onCorrect itself; used to cut down
+   repetition across the many short revision stages below. */
+function runSequentialQuestions(stageId, qs, index, renderFn, onAllDone){
+  if (index >= qs.length){ onAllDone(); return; }
+  renderFn(qs[index], index, () => runSequentialQuestions(stageId, qs, index + 1, renderFn, onAllDone));
+}
+
+/* ============================================================
+   PART 1 — Numbers to 1000 (Number Hunt)
+============================================================ */
+const s1Qs = [
+  {type:'find', target:356, options:[356,365,536,635], prompt:'Find 356!'},
+  {type:'find', target:720, options:[720,702,270,207], prompt:'Find 720!'},
+  {type:'recall', prompt:'Which number comes after 499?', options:[498,500,501], answer:500},
+];
+let s1Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s1">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 1 · Numbers to 1000</div>
+    <h2>🔎 Number Hunt</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s1Progress"></div>
+    <div class="big-number" id="s1Prompt"></div>
+    <div class="options" id="s1Options"></div>
+    <div class="feedback" id="s1Feedback"></div>
+  </div>
+</section>`);
+function renderS1(){
+  const q = s1Qs[s1Idx];
+  document.getElementById('s1Progress').textContent = `Question ${s1Idx+1} of ${s1Qs.length}`;
+  document.getElementById('s1Feedback').textContent = '';
+  document.getElementById('s1Prompt').textContent = q.type === 'find' ? q.prompt : '';
+  if (q.type === 'recall'){
+    document.getElementById('s1Prompt').innerHTML = `<span style="font-size:1.1rem;">${q.prompt}</span>`;
+  }
+  const opts = q.type === 'find' ? q.options : q.options;
+  const answer = q.type === 'find' ? q.target : q.answer;
+  renderRetryOptions(document.getElementById('s1Options'), opts, answer, () => {
+    const fb = document.getElementById('s1Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => { s1Idx++; if (s1Idx >= s1Qs.length) completeStage(); else renderS1(); }, 1300);
+  });
+  wireRetryFeedback('s1Options', 's1Feedback');
+  speakForStage('s1', q.prompt);
+}
+renderS1();
+stageEnterActions.s1 = () => speak(s1Qs[s1Idx].prompt);
+
+/* ============================================================
+   PART 2 — Number Names (Match It)
+============================================================ */
+const s2Qs = [
+  {say:'Two hundred forty-five.', prompt:'245', options:['Two hundred forty-five','Two hundred fifty-four','Two hundred forty'], answer:'Two hundred forty-five'},
+  {say:'Three hundred twelve.', prompt:'"Three hundred twelve"', options:[312,321,302], answer:312},
+];
+let s2Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s2">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 2 · Number Names</div>
+    <h2>🎧 Match It</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s2Progress"></div>
+    <div class="row-center"><button class="audio-btn small" id="s2Play"><span>🔊</span> Hear It Again</button></div>
+    <div class="big-number" id="s2Prompt" style="font-size:2rem;"></div>
+    <div class="options stack" id="s2Options"></div>
+    <div class="feedback" id="s2Feedback"></div>
+  </div>
+</section>`);
+function renderS2(){
+  const q = s2Qs[s2Idx];
+  document.getElementById('s2Progress').textContent = `Question ${s2Idx+1} of ${s2Qs.length}`;
+  document.getElementById('s2Prompt').textContent = q.prompt;
+  document.getElementById('s2Feedback').textContent = '';
+  document.getElementById('s2Play').onclick = () => speak(q.say);
+  renderRetryOptions(document.getElementById('s2Options'), q.options, q.answer, () => {
+    const fb = document.getElementById('s2Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => { s2Idx++; if (s2Idx >= s2Qs.length) completeStage(); else renderS2(); }, 1300);
+  });
+  wireRetryFeedback('s2Options', 's2Feedback');
+  speakForStage('s2', q.say);
+}
+renderS2();
+stageEnterActions.s2 = () => speak(s2Qs[s2Idx].say);
+
+/* ============================================================
+   PART 3 — Expanded Form (Break the Number / Build It)
+============================================================ */
+const s3Qs = [
+  {prompt:'526 = ?', options:['500 + 20 + 6','500 + 60 + 2','50 + 20 + 6'], answer:'500 + 20 + 6', say:'526 equals what?'},
+  {prompt:'400 + 30 + 8 = ?', options:[438,483,408], answer:438, say:'400 plus 30 plus 8 equals what?'},
+];
+let s3Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s3">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 3 · Expanded Form</div>
+    <h2>🧩 Break the Number</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s3Progress"></div>
+    <div class="big-number" id="s3Prompt" style="font-size:1.7rem;"></div>
+    <div class="options stack" id="s3Options"></div>
+    <div class="feedback" id="s3Feedback"></div>
+  </div>
+</section>`);
+function renderS3(){
+  const q = s3Qs[s3Idx];
+  document.getElementById('s3Progress').textContent = `Question ${s3Idx+1} of ${s3Qs.length}`;
+  document.getElementById('s3Prompt').textContent = q.prompt;
+  document.getElementById('s3Feedback').textContent = '';
+  renderRetryOptions(document.getElementById('s3Options'), q.options, q.answer, () => {
+    const fb = document.getElementById('s3Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => { s3Idx++; if (s3Idx >= s3Qs.length) completeStage(); else renderS3(); }, 1300);
+  });
+  wireRetryFeedback('s3Options', 's3Feedback');
+  speakForStage('s3', q.say);
+}
+renderS3();
+stageEnterActions.s3 = () => speak(s3Qs[s3Idx].say);
+
+/* ============================================================
+   PART 4 — Place Value (Place Value House)
+============================================================ */
+const s4Number = 462;
+const s4Qs = [
+  {digit:6, prompt:'What is the value of 6 in 462?', options:[6,60,600], answer:60},
+  {digit:4, prompt:'What is the value of 4 in 462?', options:[4,40,400], answer:400},
+];
+let s4Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s4">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 4 · Place Value</div>
+    <h2>🏠 Place Value House</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s4Progress"></div>
+    <div class="big-number">462</div>
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;" id="s4Prompt"></p>
+    <div class="options" id="s4Options"></div>
+    <div class="feedback" id="s4Feedback"></div>
+  </div>
+</section>`);
+function renderS4(){
+  const q = s4Qs[s4Idx];
+  document.getElementById('s4Progress').textContent = `Question ${s4Idx+1} of ${s4Qs.length}`;
+  document.getElementById('s4Prompt').textContent = q.prompt;
+  document.getElementById('s4Feedback').textContent = '';
+  renderRetryOptions(document.getElementById('s4Options'), q.options, q.answer, () => {
+    const fb = document.getElementById('s4Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => { s4Idx++; if (s4Idx >= s4Qs.length) completeStage(); else renderS4(); }, 1300);
+  });
+  wireRetryFeedback('s4Options', 's4Feedback');
+  speakForStage('s4', q.prompt);
+}
+renderS4();
+stageEnterActions.s4 = () => speak(s4Qs[s4Idx].prompt);
+
+/* ============================================================
+   PART 5 — Compare Numbers (visual reminder + Choose the Sign)
+============================================================ */
+const s5Qs = [
+  {a:45,b:54,answer:'<'},
+  {a:72,b:72,answer:'='},
+  {a:98,b:89,answer:'>'},
+];
+let s5Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s5">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 5 · Compare Numbers</div>
+    <h2>🍎 Quick Reminder</h2>
+  </div>
+  <div class="card">
+    <div class="compare-visual">🍎🍎🍎🍎🍎 &gt; 🍎🍎🍎</div>
+    <div class="compare-visual">🍎🍎 &lt; 🍎🍎🍎🍎</div>
+    <div class="compare-visual">🍎🍎🍎 = 🍎🍎🍎</div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s5Continue">Got It ➜</button></div>
+  </div>
+  <div class="card" id="s5QuizCard" style="display:none;">
+    <div class="q-progress" id="s5Progress"></div>
+    <div class="compare-row" id="s5Pair"></div>
+    <div class="sign-row" id="s5Options"></div>
+    <div class="feedback" id="s5Feedback"></div>
+  </div>
+</section>`);
+function renderS5(){
+  const q = s5Qs[s5Idx];
+  document.getElementById('s5Progress').textContent = `Question ${s5Idx+1} of ${s5Qs.length}`;
+  document.getElementById('s5Feedback').textContent = '';
+  document.getElementById('s5Pair').innerHTML = `<div class="num-card">${q.a}</div><div class="vs-tag">?</div><div class="num-card">${q.b}</div>`;
+  renderRetryOptions(document.getElementById('s5Options'), ['<','>','='], q.answer, () => {
+    const fb = document.getElementById('s5Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => { s5Idx++; if (s5Idx >= s5Qs.length) completeStage(); else renderS5(); }, 1300);
+  }, 'sign-btn');
+  wireRetryFeedback('s5Options', 's5Feedback');
+  speakForStage('s5', `${q.a} question mark ${q.b}`);
+}
+document.getElementById('s5Continue').onclick = () => {
+  document.getElementById('s5QuizCard').style.display = 'block';
+  document.querySelector('#s5 .card').style.display = 'none';
+  renderS5();
+};
+stageEnterActions.s5 = () => speak('Here is a quick reminder about greater than, less than, and equal to.');
+
+/* ============================================================
+   PART 6 — Ascending & Descending (Number Steps)
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s6">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 6 · Ascending &amp; Descending</div>
+    <h2>🪜 Number Steps</h2>
+    <p id="s6Sub"></p>
+  </div>
+  <div class="card" id="s6DirCard">
+    <div class="num-sequence" id="s6Seq"></div>
+    <div class="options two" id="s6DirOptions"></div>
+    <div class="feedback" id="s6Feedback"></div>
+  </div>
+  <div class="card" id="s6OrderCard" style="display:none;">
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">Tap in ascending order: 34, 12, 56, 27</p>
+    <div class="order-slots" id="s6Slots"></div>
+    <div class="tap-tile-row" id="s6Tiles"></div>
+    <div class="feedback" id="s6OrderFeedback"></div>
+  </div>
+</section>`);
+const s6Rounds = [
+  {seq:[23,41,67,89], answer:'Ascending'},
+  {seq:[95,72,48,21], answer:'Descending'},
+];
+let s6Idx = 0;
+function renderS6(){
+  const r = s6Rounds[s6Idx];
+  document.getElementById('s6Sub').textContent = `Question ${s6Idx+1} of 2`;
+  document.getElementById('s6Feedback').textContent = '';
+  const seqWrap = document.getElementById('s6Seq');
+  seqWrap.innerHTML = '';
+  r.seq.forEach(n => { const el = document.createElement('span'); el.textContent = n; seqWrap.appendChild(el); });
+  renderRetryOptions(document.getElementById('s6DirOptions'), ['Ascending','Descending'], r.answer, () => {
+    const fb = document.getElementById('s6Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! ' + r.answer + '!');
+    setTimeout(() => {
+      s6Idx++;
+      if (s6Idx >= s6Rounds.length){
+        document.getElementById('s6DirCard').style.display = 'none';
+        document.getElementById('s6OrderCard').style.display = 'block';
+        setupS6Order();
+      } else renderS6();
+    }, 1400);
+  });
+  wireRetryFeedback('s6DirOptions', 's6Feedback');
+  speakForStage('s6', r.seq.join(', ') + '. Is this ascending or descending?');
+}
+function setupS6Order(){
+  const nums = [34,12,56,27];
+  const sorted = [...nums].sort((a,b) => a-b);
+  const slotsWrap = document.getElementById('s6Slots');
+  slotsWrap.innerHTML = '';
+  sorted.forEach((_, i) => {
+    if (i > 0){ const arrow = document.createElement('span'); arrow.className = 'order-arrow'; arrow.textContent = '→'; slotsWrap.appendChild(arrow); }
+    const slot = document.createElement('div'); slot.className = 'order-slot'; slot.dataset.index = i; slotsWrap.appendChild(slot);
+  });
+  const tilesWrap = document.getElementById('s6Tiles');
+  tilesWrap.innerHTML = '';
+  let nextIdx = 0;
+  shuffled(nums).forEach(n => {
+    const tile = document.createElement('div');
+    tile.className = 'tap-tile';
+    tile.textContent = n;
+    tile.onclick = () => {
+      if (tile.classList.contains('locked')) return;
+      const fb = document.getElementById('s6OrderFeedback');
+      if (n === sorted[nextIdx]){
+        const slot = slotsWrap.querySelector(`.order-slot[data-index="${nextIdx}"]`);
+        slot.textContent = n; slot.classList.add('filled'); tile.classList.add('locked');
+        fb.textContent = 'Nice!'; fb.className = 'feedback good';
+        nextIdx++;
+        if (nextIdx === sorted.length){
+          addStar(1);
+          fb.textContent = `Correct! ${sorted.join(', ')} 🎉`;
+          speak('Correct!');
+          setTimeout(() => completeStage(), 1500);
+        }
+      } else {
+        tile.classList.add('wrong-flash');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+        setTimeout(() => tile.classList.remove('wrong-flash'), 500);
+      }
+    };
+    tilesWrap.appendChild(tile);
+  });
+  speakForStage('s6', 'Tap the numbers in order, smallest to biggest.');
+}
+renderS6();
+stageEnterActions.s6 = () => speak(s6Rounds[s6Idx] ? s6Rounds[s6Idx].seq.join(', ') + '. Is this ascending or descending?' : 'Tap the numbers in order.');
+
+/* ============================================================
+   PART 7 — Even & Odd (Sort the Numbers)
+============================================================ */
+const s7Nums = [17,24,31];
+let s7Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s7">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 7 · Even &amp; Odd</div>
+    <h2>🟢🟠 Sort the Numbers</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s7Progress"></div>
+    <div class="big-number" id="s7Num"></div>
+    <div class="basket-row">
+      <div class="basket-btn even" id="s7Even"><span style="font-size:1.6rem;display:block;">🟢</span>EVEN</div>
+      <div class="basket-btn odd" id="s7Odd"><span style="font-size:1.6rem;display:block;">🟠</span>ODD</div>
+    </div>
+    <div class="feedback" id="s7Feedback"></div>
+  </div>
+</section>`);
+function renderS7(){
+  const n = s7Nums[s7Idx];
+  document.getElementById('s7Progress').textContent = `Question ${s7Idx+1} of ${s7Nums.length}`;
+  document.getElementById('s7Num').textContent = n;
+  document.getElementById('s7Feedback').textContent = '';
+  const evenBtn = document.getElementById('s7Even');
+  const oddBtn = document.getElementById('s7Odd');
+  evenBtn.className = 'basket-btn even'; oddBtn.className = 'basket-btn odd';
+  evenBtn.disabled = false; oddBtn.disabled = false;
+  evenBtn.onclick = () => handleS7(true);
+  oddBtn.onclick = () => handleS7(false);
+  speakForStage('s7', `Is ${n} even or odd?`);
+}
+function handleS7(pickEven){
+  const n = s7Nums[s7Idx];
+  const isEven = n % 2 === 0;
+  const fb = document.getElementById('s7Feedback');
+  const evenBtn = document.getElementById('s7Even');
+  const oddBtn = document.getElementById('s7Odd');
+  if (pickEven === isEven){
+    evenBtn.disabled = true; oddBtn.disabled = true;
+    (pickEven ? evenBtn : oddBtn).classList.add('correct');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => { s7Idx++; if (s7Idx >= s7Nums.length) completeStage(); else renderS7(); }, 1300);
+  } else {
+    (pickEven ? evenBtn : oddBtn).classList.add('wrong');
+    fb.textContent = 'Try again, you are very close!';
+    fb.className = 'feedback bad';
+    speak('Try again, you are very close!');
+    setTimeout(() => (pickEven ? evenBtn : oddBtn).classList.remove('wrong'), 600);
+  }
+}
+renderS7();
+stageEnterActions.s7 = () => speak(`Is ${s7Nums[s7Idx]} even or odd?`);
+
+/* ============================================================
+   PART 8 — Skip Counting (Jump & Count)
+============================================================ */
+const s8Qs = [
+  {seq:['2','4','6','8','?'], options:[9,10,12], answer:10},
+  {seq:['5','10','15','?'], options:[18,20,25], answer:20},
+  {seq:['10','20','30','?'], options:[35,40,50], answer:40},
+  {seq:['100','200','300','?'], options:[350,400,500], answer:400},
+];
+let s8Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s8">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 8 · Skip Counting</div>
+    <h2>🦘 Jump &amp; Count</h2>
+  </div>
+  <div class="card" id="s8QuizCard">
+    <div class="q-progress" id="s8Progress"></div>
+    <div class="num-sequence" id="s8Seq"></div>
+    <div class="options" id="s8Options"></div>
+    <div class="feedback" id="s8Feedback"></div>
+  </div>
+  <div class="card" id="s8MemoryCard" style="display:none;">
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">Memory Challenge — count by 5s! Tap in order.</p>
+    <div class="order-slots" id="s8Slots"></div>
+    <div class="tap-tile-row" id="s8Tiles"></div>
+    <div class="feedback" id="s8MemoryFeedback"></div>
+  </div>
+</section>`);
+function renderS8(){
+  const q = s8Qs[s8Idx];
+  document.getElementById('s8Progress').textContent = `Question ${s8Idx+1} of ${s8Qs.length}`;
+  document.getElementById('s8Feedback').textContent = '';
+  const seqWrap = document.getElementById('s8Seq');
+  seqWrap.innerHTML = '';
+  q.seq.forEach(n => { const el = document.createElement('span'); el.textContent = n; if (n === '?') el.classList.add('blank'); seqWrap.appendChild(el); });
+  renderRetryOptions(document.getElementById('s8Options'), q.options, q.answer, () => {
+    const fb = document.getElementById('s8Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => {
+      s8Idx++;
+      if (s8Idx >= s8Qs.length){
+        document.getElementById('s8QuizCard').style.display = 'none';
+        document.getElementById('s8MemoryCard').style.display = 'block';
+        setupS8Memory();
+      } else renderS8();
+    }, 1300);
+  });
+  wireRetryFeedback('s8Options', 's8Feedback');
+  speakForStage('s8', q.seq.join(', ').replace('?','what comes next?'));
+}
+function setupS8Memory(){
+  const nums = [5,10,15,20,25];
+  const slotsWrap = document.getElementById('s8Slots');
+  slotsWrap.innerHTML = '';
+  nums.forEach((_, i) => {
+    if (i > 0){ const arrow = document.createElement('span'); arrow.className = 'order-arrow'; arrow.textContent = '→'; slotsWrap.appendChild(arrow); }
+    const slot = document.createElement('div'); slot.className = 'order-slot'; slot.dataset.index = i; slotsWrap.appendChild(slot);
+  });
+  const tilesWrap = document.getElementById('s8Tiles');
+  tilesWrap.innerHTML = '';
+  let nextIdx = 0;
+  shuffled(nums).forEach(n => {
+    const tile = document.createElement('div');
+    tile.className = 'tap-tile';
+    tile.textContent = n;
+    tile.onclick = () => {
+      if (tile.classList.contains('locked')) return;
+      const fb = document.getElementById('s8MemoryFeedback');
+      if (n === nums[nextIdx]){
+        const slot = slotsWrap.querySelector(`.order-slot[data-index="${nextIdx}"]`);
+        slot.textContent = n; slot.classList.add('filled'); tile.classList.add('locked');
+        fb.textContent = 'Nice!'; fb.className = 'feedback good';
+        nextIdx++;
+        if (nextIdx === nums.length){
+          addStar(1);
+          fb.textContent = '🎉 5, 10, 15, 20, 25!';
+          speak('Great job counting by 5!');
+          setTimeout(() => completeStage(), 1500);
+        }
+      } else {
+        tile.classList.add('wrong-flash');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+        setTimeout(() => tile.classList.remove('wrong-flash'), 500);
+      }
+    };
+    tilesWrap.appendChild(tile);
+  });
+  speakForStage('s8', 'Count by 5s! Tap the numbers in order.');
+}
+renderS8();
+stageEnterActions.s8 = () => speak(s8Qs[s8Idx] ? s8Qs[s8Idx].seq.join(', ').replace('?','what comes next?') : 'Count by 5s!');
+
+/* ============================================================
+   PART 9 — Number Patterns (Find the Rule)
+============================================================ */
+const s9Qs = [
+  {seq:['2','4','6','8','?'], options:['+2','+5','+10'], answer:'+2', say:'2, 4, 6, 8. What is happening?'},
+  {seq:['10','20','30','?'], options:['+2','+10','+100'], answer:'+10', say:'10, 20, 30. What is happening?'},
+  {seq:['100','200','300','?'], options:['+10','+100','+1'], answer:'+100', say:'100, 200, 300. What is happening?'},
+];
+let s9Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s9">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Part 9 · Number Patterns</div>
+    <h2>🤖 Find the Rule</h2>
+  </div>
+  <div class="card" id="s9RuleCard">
+    <div class="q-progress" id="s9Progress"></div>
+    <div class="num-sequence" id="s9Seq"></div>
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">What is happening?</p>
+    <div class="options" id="s9Options"></div>
+    <div class="feedback" id="s9Feedback"></div>
+  </div>
+  <div class="card" id="s9MissingCard" style="display:none;">
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">Missing Number</p>
+    <div class="num-sequence"><span>25</span><span>30</span><span>🟨</span><span>40</span></div>
+    <div class="options" id="s9MissingOptions"></div>
+    <div class="feedback" id="s9MissingFeedback"></div>
+  </div>
+</section>`);
+function renderS9(){
+  const q = s9Qs[s9Idx];
+  document.getElementById('s9Progress').textContent = `Question ${s9Idx+1} of ${s9Qs.length}`;
+  document.getElementById('s9Feedback').textContent = '';
+  const seqWrap = document.getElementById('s9Seq');
+  seqWrap.innerHTML = '';
+  q.seq.forEach(n => { const el = document.createElement('span'); el.textContent = n; if (n === '?') el.classList.add('blank'); seqWrap.appendChild(el); });
+  renderRetryOptions(document.getElementById('s9Options'), q.options, q.answer, () => {
+    const fb = document.getElementById('s9Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => {
+      s9Idx++;
+      if (s9Idx >= s9Qs.length){
+        document.getElementById('s9RuleCard').style.display = 'none';
+        document.getElementById('s9MissingCard').style.display = 'block';
+        setupS9Missing();
+      } else renderS9();
+    }, 1300);
+  });
+  wireRetryFeedback('s9Options', 's9Feedback');
+  speakForStage('s9', q.say);
+}
+function setupS9Missing(){
+  speakForStage('s9', '25, 30, blank, 40. Find the missing number.');
+  renderRetryOptions(document.getElementById('s9MissingOptions'), [32,35,38], 35, () => {
+    const fb = document.getElementById('s9MissingFeedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => completeStage(), 1400);
+  });
+  wireRetryFeedback('s9MissingOptions', 's9MissingFeedback');
+}
+renderS9();
+stageEnterActions.s9 = () => speak(s9Qs[s9Idx] ? s9Qs[s9Idx].say : '25, 30, blank, 40. Find the missing number.');
+
+/* ============================================================
+   PART 10 — Numbers Adventure: 9 mixed stations
+============================================================ */
+const s10Stations = [
+  {label:'Find the Number', render:(area, onCorrect) => {
+    area.innerHTML = `<div class="big-number" style="font-size:1.6rem;">Find 608!</div><div class="options" id="stOpts"></div>`;
+    renderRetryOptions(document.getElementById('stOpts'), [608,680,806,860], 608, onCorrect);
+    wireRetryFeedback('stOpts', 'stFeedback');
+    return 'Find 608!';
+  }},
+  {label:'Number Name', render:(area, onCorrect) => {
+    area.innerHTML = `<div class="big-number" style="font-size:1.5rem;">"Four hundred twenty-one"</div><div class="options" id="stOpts"></div>`;
+    renderRetryOptions(document.getElementById('stOpts'), [421,412,241], 421, onCorrect);
+    wireRetryFeedback('stOpts', 'stFeedback');
+    return 'Four hundred twenty-one. Which number is this?';
+  }},
+  {label:'Expanded Form', render:(area, onCorrect) => {
+    area.innerHTML = `<div class="big-number" style="font-size:1.7rem;">352 = ?</div><div class="options stack" id="stOpts"></div>`;
+    renderRetryOptions(document.getElementById('stOpts'), ['300 + 50 + 2','300 + 20 + 5','30 + 50 + 2'], '300 + 50 + 2', onCorrect);
+    wireRetryFeedback('stOpts', 'stFeedback');
+    return '352 equals what?';
+  }},
+  {label:'Place Value', render:(area, onCorrect) => {
+    area.innerHTML = `<div class="big-number" style="font-size:1.5rem;">Value of 7 in 274?</div><div class="options" id="stOpts"></div>`;
+    renderRetryOptions(document.getElementById('stOpts'), [7,70,700], 70, onCorrect);
+    wireRetryFeedback('stOpts', 'stFeedback');
+    return 'What is the value of 7 in 274?';
+  }},
+  {label:'Compare', render:(area, onCorrect) => {
+    area.innerHTML = `<div class="compare-row"><div class="num-card">456</div><div class="vs-tag">?</div><div class="num-card">465</div></div><div class="sign-row" id="stOpts"></div>`;
+    renderRetryOptions(document.getElementById('stOpts'), ['<','>','='], '<', onCorrect, 'sign-btn');
+    wireRetryFeedback('stOpts', 'stFeedback');
+    return '456 question mark 465';
+  }},
+  {label:'Order', render:(area, onCorrect) => {
+    area.innerHTML = `<p style="text-align:center;font-weight:700;color:#7a3a5a;">Put in ascending order: 45, 12, 31</p><div class="order-slots" id="stSlots"></div><div class="tap-tile-row" id="stTiles"></div>`;
+    const nums = [45,12,31];
+    const sorted = [...nums].sort((a,b)=>a-b);
+    const slotsWrap = document.getElementById('stSlots');
+    sorted.forEach((_, i) => {
+      if (i > 0){ const arrow = document.createElement('span'); arrow.className='order-arrow'; arrow.textContent='→'; slotsWrap.appendChild(arrow); }
+      const slot = document.createElement('div'); slot.className='order-slot'; slot.dataset.index=i; slotsWrap.appendChild(slot);
+    });
+    const tilesWrap = document.getElementById('stTiles');
+    let nextIdx = 0;
+    shuffled(nums).forEach(n => {
+      const tile = document.createElement('div');
+      tile.className = 'tap-tile';
+      tile.textContent = n;
+      tile.onclick = () => {
+        if (tile.classList.contains('locked')) return;
+        if (n === sorted[nextIdx]){
+          const slot = slotsWrap.querySelector(`.order-slot[data-index="${nextIdx}"]`);
+          slot.textContent = n; slot.classList.add('filled'); tile.classList.add('locked');
+          nextIdx++;
+          if (nextIdx === sorted.length) onCorrect();
+        } else {
+          tile.classList.add('wrong-flash');
+          const fb = document.getElementById('stFeedback');
+          fb.textContent = 'Try again, you are very close!';
+          fb.className = 'feedback bad';
+          speak('Try again, you are very close!');
+          setTimeout(() => tile.classList.remove('wrong-flash'), 500);
+        }
+      };
+      tilesWrap.appendChild(tile);
+    });
+    return 'Put 45, 12, 31 in ascending order.';
+  }},
+  {label:'Even or Odd', render:(area, onCorrect) => {
+    area.innerHTML = `<div class="big-number">67</div><div class="basket-row"><div class="basket-btn even" id="stEven"><span style="font-size:1.5rem;display:block;">🟢</span>EVEN</div><div class="basket-btn odd" id="stOdd"><span style="font-size:1.5rem;display:block;">🟠</span>ODD</div></div>`;
+    document.getElementById('stEven').onclick = () => {
+      document.getElementById('stEven').classList.add('wrong');
+      const fb = document.getElementById('stFeedback');
+      fb.textContent = 'Try again, you are very close!'; fb.className = 'feedback bad';
+      speak('Try again, you are very close!');
+      setTimeout(() => document.getElementById('stEven').classList.remove('wrong'), 500);
+    };
+    document.getElementById('stOdd').onclick = () => { document.getElementById('stEven').disabled = true; document.getElementById('stOdd').disabled = true; document.getElementById('stOdd').classList.add('correct'); onCorrect(); };
+    return 'Is 67 even or odd?';
+  }},
+  {label:'Skip Counting', render:(area, onCorrect) => {
+    area.innerHTML = `<div class="num-sequence"><span>10</span><span>20</span><span>30</span><span class="blank">?</span></div><div class="options" id="stOpts"></div>`;
+    renderRetryOptions(document.getElementById('stOpts'), [35,40,50], 40, onCorrect);
+    wireRetryFeedback('stOpts', 'stFeedback');
+    return '10, 20, 30, what comes next?';
+  }},
+  {label:'Pattern', render:(area, onCorrect) => {
+    area.innerHTML = `<div class="num-sequence"><span>5</span><span>10</span><span>15</span><span class="blank">?</span></div><div class="options" id="stOpts"></div>`;
+    renderRetryOptions(document.getElementById('stOpts'), [18,20,25], 20, onCorrect);
+    wireRetryFeedback('stOpts', 'stFeedback');
+    return '5, 10, 15, what comes next?';
+  }},
+];
+let s10Idx = 0;
+let s10CurrentSay = '';
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s10">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Numbers Adventure</div>
+    <h2 id="s10Title">🗺️ 9 Stations — One From Each Lesson</h2>
+    <p>No hints about which topic — just remember!</p>
+  </div>
+  <div class="card">
+    <div class="station-track" id="s10StationTrack"></div>
+    <div id="s10Area"></div>
+    <div class="feedback" id="stFeedback"></div>
+  </div>
+</section>`);
+function renderS10StationTrack(){
+  const track = document.getElementById('s10StationTrack');
+  track.innerHTML = '';
+  s10Stations.forEach((st, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'station-dot' + (i < s10Idx ? ' done' : '') + (i === s10Idx ? ' active' : '');
+    dot.textContent = i + 1;
+    track.appendChild(dot);
+  });
+}
+function renderS10(){
+  renderS10StationTrack();
+  document.getElementById('s10Title').textContent = `🏠 Station ${s10Idx + 1} of ${s10Stations.length}`;
+  document.getElementById('stFeedback').textContent = '';
+  const area = document.getElementById('s10Area');
+  const say = s10Stations[s10Idx].render(area, () => {
+    const fb = document.getElementById('stFeedback');
+    fb.textContent = 'Correct! ⭐';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => {
+      s10Idx++;
+      if (s10Idx >= s10Stations.length) completeStage();
+      else renderS10();
+    }, 1400);
+  });
+  s10CurrentSay = say;
+  speakForStage('s10', say);
+}
+renderS10();
+stageEnterActions.s10 = () => speak('Numbers Adventure! ' + s10CurrentSay);
+
+/* ============================================================
+   PART 11 — Final Challenge: "Can You Remember?" (10 Qs, silent scoring)
+============================================================ */
+const s11Questions = [
+  {prompt:'Which number comes after 699?', options:[698,700,701], answer:700},
+  {prompt:'Write the name of 305.', options:['Three hundred five','Three hundred fifty','Three hundred fifteen'], answer:'Three hundred five'},
+  {prompt:'400 + 20 + 7 = ?', options:[427,472,247], answer:427},
+  {prompt:'What is the value of 8 in 582?', options:[8,80,800], answer:80},
+  {prompt:'34 ? 43', options:['<','>','='], answer:'<', isSign:true, a:34, b:43},
+  {prompt:'Arrange 45, 12, 29 from small to big.', options:['12, 29, 45','45, 29, 12','12, 45, 29'], answer:'12, 29, 45'},
+  {prompt:'Is 76 even or odd?', options:['Even','Odd'], answer:'Even'},
+  {prompt:'2, 4, 6, 8, __', options:[9,10,12], answer:10},
+  {prompt:'100, 200, __, 400', options:[250,300,350], answer:300},
+  {prompt:'20, 25, 30, __', options:[32,35,40], answer:35},
+];
+let s11Index = 0;
+let s11CorrectCount = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s11">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Final Challenge</div>
+    <h2>🏆 Can You Remember?</h2>
+    <p>10 mixed questions — no topic names given!</p>
+  </div>
+  <div class="card" id="s11Intro">
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">This is the big one! You'll answer 10 questions on your own, covering everything from this chapter. Take your time and do your best!</p>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s11Start">Start Final Challenge ▶</button></div>
+  </div>
+  <div class="card" id="s11Quiz" style="display:none;">
+    <div class="q-progress" id="s11Progress"></div>
+    <div class="big-number" id="s11Prompt" style="font-size:1.5rem;"></div>
+    <div class="compare-row" id="s11SignPair" style="display:none;"></div>
+    <div class="options stack" id="s11Options"></div>
+    <div class="feedback" id="s11Feedback"></div>
+  </div>
+</section>`);
+document.getElementById('s11Start').onclick = () => {
+  document.getElementById('s11Intro').style.display = 'none';
+  document.getElementById('s11Quiz').style.display = 'block';
+  speak("Now for the big memory challenge. Let's begin!");
+  renderS11();
+};
+function renderS11(){
+  const q = s11Questions[s11Index];
+  document.getElementById('s11Progress').textContent = `Question ${s11Index+1} of ${s11Questions.length}`;
+  document.getElementById('s11Feedback').textContent = '';
+  document.getElementById('s11SignPair').style.display = 'none';
+  if (q.isSign){
+    document.getElementById('s11Prompt').textContent = '';
+    document.getElementById('s11SignPair').style.display = 'flex';
+    document.getElementById('s11SignPair').innerHTML = `<div class="num-card">${q.a}</div><div class="vs-tag">?</div><div class="num-card">${q.b}</div>`;
+  } else {
+    document.getElementById('s11Prompt').textContent = q.prompt;
+  }
+  const optsWrap = document.getElementById('s11Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      document.querySelectorAll('#s11Options .opt-btn').forEach(x => x.disabled = true);
+      b.classList.add('selected');
+      if (String(opt) === String(q.answer)) s11CorrectCount++;
+      const fb = document.getElementById('s11Feedback');
+      fb.textContent = 'Got it! Next question…';
+      fb.className = 'feedback neutral';
+      speak('Got it. Next question.');
+      setTimeout(() => { s11Index++; if (s11Index >= s11Questions.length) showS11Summary(); else renderS11(); }, 1100);
+    };
+    optsWrap.appendChild(b);
+  });
+}
+function showS11Summary(){
+  document.getElementById('s11Progress').textContent = 'Challenge Complete!';
+  document.getElementById('s11Prompt').textContent = `You got ${s11CorrectCount} out of ${s11Questions.length} correct!`;
+  document.getElementById('s11SignPair').style.display = 'none';
+  const optsWrap = document.getElementById('s11Options');
+  optsWrap.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.textContent = 'See My Results ➜';
+  btn.onclick = () => showReward();
+  optsWrap.appendChild(btn);
+  addStar(s11CorrectCount);
+  const fb = document.getElementById('s11Feedback');
+  fb.textContent = s11CorrectCount === s11Questions.length ? 'Perfect score! 🌟' : 'Great effort! 🎉';
+  fb.className = 'feedback good';
+  speak(`You got ${s11CorrectCount} out of ${s11Questions.length} correct!`);
+  window.finalChallengeScore = s11CorrectCount;
+}
+
+/* ============================================================
+   REWARD — Numbers Master + tier badge + Chapter checklist
+============================================================ */
+const chapterLessons = [
+  'Numbers to 1000','Number Names','Expanded Form','Place Value','Compare Numbers',
+  'Ascending & Descending','Even & Odd','Skip Counting','Number Patterns',
+];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="reward">
+  <div class="card reward-card">
+    <div class="badge-circle">🏆</div>
+    <h2>NUMBERS MASTER</h2>
+    <p>Amazing! You remember the numbers!</p>
+    <div class="tier-badge" id="tierBadge"></div>
+    <div class="stars-row" id="rewardStars"></div>
+    <div class="chapter-complete">
+      <h3>🌟 Chapter 1 Complete!</h3>
+      <ul class="chapter-checklist" id="chapterChecklist"></ul>
+    </div>
+  </div>
+</section>`);
+function showReward(){
+  goToStage(STAGES.length - 1);
+  const score = window.finalChallengeScore || 0;
+  const tierBadge = document.getElementById('tierBadge');
+  let tierClass = 'bronze', tierLabel = '🏅 Bronze';
+  if (score >= 9){ tierClass = 'gold'; tierLabel = '🥇 Gold'; }
+  else if (score >= 7){ tierClass = 'silver'; tierLabel = '🥈 Silver'; }
+  tierBadge.className = 'tier-badge ' + tierClass;
+  tierBadge.textContent = `${tierLabel} — ${score}/10`;
+  const starsRow = document.getElementById('rewardStars');
+  starsRow.innerHTML = '';
+  for (let i=0;i<5;i++){
+    const s = document.createElement('span');
+    s.className = 'star-icon';
+    s.textContent = '⭐';
+    starsRow.appendChild(s);
+  }
+  const checklist = document.getElementById('chapterChecklist');
+  checklist.innerHTML = '';
+  chapterLessons.forEach(name => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span style="color:#1a8a63;">✅</span> ${name}`;
+    checklist.appendChild(li);
+  });
+  saveStepDone('chapter1-challenge-complete');
+  speak('Amazing! You remember the numbers! Chapter 1 is complete!');
+}
+
+/* ---------------- init ---------------- */
+renderProgressTrack();
+goToStage(0);
+</script>
+</body>
+</html>

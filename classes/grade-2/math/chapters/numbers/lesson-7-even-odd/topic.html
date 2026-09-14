@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lesson 7: Even &amp; Odd — Grade 2 Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-1:#fff3f7;
+    --pink-2:#ffe1ec;
+    --berry-1:#e94f8a;
+    --berry-2:#c22a68;
+    --berry-dark:#8f1c4f;
+    --butter:#ffcf5c;
+    --butter-dark:#e6a800;
+    --mint:#4fd6a8;
+    --sky:#5aa9ff;
+    --ink:#4a1030;
+    --shadow: 0 10px 24px rgba(196,42,104,.18);
+    --radius-lg: 26px;
+    --even:#4fd6a8;
+    --odd:#ff9d5c;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, var(--pink-2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 20%, #ffe9d6 0%, transparent 40%),
+      linear-gradient(180deg, var(--pink-1), #fff);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Fredoka',sans-serif;}
+  button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(135deg,var(--berry-1),var(--berry-2));
+    color:#fff;padding:10px 16px;
+    box-shadow:0 4px 14px rgba(143,28,79,.25);
+  }
+  .topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .topbar .lesson-title{font-family:'Fredoka';font-weight:600;font-size:1.05rem;flex:1;}
+  .topbar .lesson-title small{display:block;font-family:'Nunito';font-weight:700;font-size:.68rem;opacity:.85;letter-spacing:.04em;text-transform:uppercase;}
+  .stars-count{background:rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;font-weight:800;font-size:.85rem;display:flex;align-items:center;gap:4px;}
+  .back-btn{
+    display:inline-flex;align-items:center;gap:4px;flex-shrink:0;
+    background:rgba(255,255,255,.18);color:#fff;text-decoration:none;
+    font-family:'Fredoka';font-weight:700;font-size:.8rem;
+    padding:7px 14px;border-radius:20px;transition:background .15s ease;
+  }
+  .back-btn:hover{background:rgba(255,255,255,.3);}
+
+  .progress-track{max-width:900px;margin:8px auto 0;display:flex;gap:3px;padding:0 16px;}
+  .progress-dot{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.28);transition:background .3s ease;}
+  .progress-dot.done{background:var(--butter);}
+  .progress-dot.active{background:#fff;}
+
+  .stage-wrap{max-width:780px;margin:0 auto;padding:22px 16px 90px;min-height:70vh;}
+  .stage{display:none;animation:fadeUp .45s ease both;}
+  .stage.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .stage-header{text-align:center;margin-bottom:18px;}
+  .stage-eyebrow{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--pink-2);color:var(--berry-dark);
+    font-weight:800;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;
+    padding:5px 14px;border-radius:20px;margin-bottom:8px;
+  }
+  .stage-header h2{font-size:1.4rem;margin:0 0 4px;color:var(--berry-dark);}
+  .stage-header p{margin:0;font-weight:700;color:#7a3a5a;font-size:.9rem;}
+
+  .card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:22px;border:3px solid var(--pink-2);}
+
+  .audio-btn{
+    background:linear-gradient(135deg,var(--sky),#2f7fe0);color:#fff;font-weight:800;font-size:.85rem;
+    padding:10px 18px;border-radius:30px;display:inline-flex;align-items:center;gap:8px;
+    box-shadow:0 6px 14px rgba(47,127,224,.3);transition:transform .15s ease;
+  }
+  .audio-btn:active{transform:scale(.94);}
+  .audio-btn.small{padding:7px 14px;font-size:.78rem;}
+  .audio-btn .icon{font-size:1.1rem;}
+
+  .row-center{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+
+  .btn{font-weight:800;font-size:.95rem;padding:12px 26px;border-radius:30px;transition:transform .15s ease, box-shadow .15s ease;}
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:linear-gradient(135deg,var(--berry-1),var(--berry-2));color:#fff;box-shadow:0 8px 18px rgba(196,42,104,.3);}
+  .btn-primary[disabled]{opacity:.4;pointer-events:none;}
+  .center-btn-row{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap;}
+
+  .feedback{text-align:center;font-weight:800;font-family:'Fredoka';font-size:1.02rem;min-height:1.6rem;margin-top:12px;}
+  .feedback.good{color:#1a8a63;}
+  .feedback.bad{color:#c23c3c;}
+  .feedback.neutral{color:var(--berry-dark);}
+  .q-progress{text-align:center;font-weight:800;color:#a85778;font-size:.78rem;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;}
+
+  /* ---------- EVEN/ODD badge ---------- */
+  .parity-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 22px;border-radius:30px;font-family:'Fredoka';font-weight:700;font-size:1.15rem;
+    margin:10px 0;opacity:0;transform:scale(.85);transition:opacity .4s ease, transform .4s ease;
+  }
+  .parity-badge.show{opacity:1;transform:scale(1);}
+  .parity-badge.even{background:#e3fbf3;color:#1a8a63;}
+  .parity-badge.odd{background:#ffe9da;color:#c2650e;}
+
+  /* ---------- Emoji rows (Discover) ---------- */
+  .emoji-pair-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;font-size:2rem;margin:14px 0;}
+  .emoji-pair-row .pair-unit{display:inline-flex;gap:2px;padding:4px 6px;border-radius:10px;}
+  .emoji-pair-row .pair-unit.linked{background:var(--pink-2);}
+  .emoji-pair-row .lone-unit{position:relative;}
+  .emoji-pair-row .lone-unit::after{
+    content:'?';position:absolute;top:-14px;right:-10px;
+    background:var(--odd);color:#fff;width:20px;height:20px;border-radius:50%;
+    font-family:'Fredoka';font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center;
+  }
+
+  /* ---------- Pairing widget (socks / animals) ---------- */
+  .pairing-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:16px 0;}
+  .count-display{
+    text-align:center;font-family:'Fredoka';font-weight:700;font-size:1.05rem;
+    color:var(--berry-dark);background:var(--pink-1);border:2px solid var(--pink-2);
+    border-radius:16px;padding:8px 16px;display:inline-block;margin:0 auto 10px;
+  }
+  .count-display-wrap{text-align:center;}
+  .pair-tile{
+    width:64px;height:64px;border-radius:16px;background:#fff8fb;border:3px solid var(--pink-2);
+    display:flex;align-items:center;justify-content:center;font-size:1.8rem;cursor:pointer;
+    transition:transform .15s ease, border-color .15s ease;position:relative;
+  }
+  .pair-tile:hover{transform:scale(1.05);border-color:var(--berry-1);}
+  .pair-tile.selecting{border-color:var(--sky);background:#eaf6ff;}
+  .pair-tile.paired{border-color:var(--mint);background:#e3fbf3;pointer-events:none;}
+  .pair-tile.alone{border-color:var(--odd);background:#ffe9da;pointer-events:none;}
+  .pair-tile.alone::after{
+    content:'?';position:absolute;top:-10px;right:-8px;
+    background:var(--odd);color:#fff;width:20px;height:20px;border-radius:50%;
+    font-family:'Fredoka';font-weight:700;font-size:.8rem;display:flex;align-items:center;justify-content:center;
+  }
+
+  /* ---------- Yes/No buttons ---------- */
+  .yesno-row{display:flex;justify-content:center;gap:14px;margin-top:16px;}
+  .yesno-btn{
+    padding:12px 30px;border-radius:30px;font-family:'Fredoka';font-weight:700;font-size:1.05rem;
+    background:#fff;border:2.5px solid var(--pink-2);color:var(--berry-dark);
+  }
+  .yesno-btn:hover{border-color:var(--berry-1);}
+  .yesno-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .yesno-btn.wrong{background:#ffe9e9;border-color:#f08a8a;color:#c23c3c;}
+  .yesno-btn.selected{background:var(--pink-2);border-color:var(--berry-1);}
+  .yesno-btn[disabled]{pointer-events:none;}
+
+  /* ---------- EVEN/ODD basket buttons ---------- */
+  .basket-row{display:flex;justify-content:center;gap:18px;margin-top:18px;flex-wrap:wrap;}
+  .basket-btn{
+    flex:1;min-width:140px;max-width:200px;padding:20px 14px;border-radius:20px;text-align:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.15rem;cursor:pointer;
+    border:3px solid var(--pink-2);background:#fff8fb;transition:transform .15s ease, border-color .15s ease;
+  }
+  .basket-btn:hover{transform:scale(1.03);}
+  .basket-btn .basket-icon{font-size:2rem;display:block;margin-bottom:4px;}
+  .basket-btn.even{color:#1a8a63;}
+  .basket-btn.even:hover{border-color:var(--even);}
+  .basket-btn.odd{color:#c2650e;}
+  .basket-btn.odd:hover{border-color:var(--odd);}
+  .basket-btn.correct{background:#e3fbf3;border-color:var(--mint);}
+  .basket-btn.wrong{background:#ffe9e9;border-color:#f08a8a;}
+  .basket-btn.selected{background:var(--pink-2);}
+  .basket-btn[disabled]{pointer-events:none;}
+
+  .falling-number{
+    font-family:'Fredoka';font-weight:700;font-size:3rem;text-align:center;color:var(--berry-2);
+    margin:10px 0;text-shadow:0 4px 0 var(--pink-2);
+    animation:fall .5s ease both;
+  }
+  @keyframes fall{from{transform:translateY(-16px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+
+  /* ---------- Number Hunt scene ---------- */
+  .hunt-scene{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:18px 0;}
+  .hunt-item{
+    width:88px;height:88px;border-radius:18px;background:#fff8fb;border:3px solid var(--pink-2);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .hunt-item:hover{transform:scale(1.05);border-color:var(--berry-1);}
+  .hunt-item .hunt-emoji{font-size:1.7rem;}
+  .hunt-item .hunt-num{font-family:'Fredoka';font-weight:700;color:var(--berry-dark);font-size:1.05rem;}
+  .hunt-item.correct-pick{border-color:var(--mint);background:#e3fbf3;}
+  .hunt-item.wrong-pick{animation:wiggle .4s ease;}
+  .hunt-item.locked{pointer-events:none;opacity:.6;}
+  @keyframes wiggle{0%,100%{transform:rotate(0);}25%{transform:rotate(-8deg);}75%{transform:rotate(8deg);}}
+
+  /* ---------- Traffic light ---------- */
+  .traffic-light{
+    width:70px;margin:0 auto;background:#3a3a3a;border-radius:16px;padding:12px 0;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .traffic-btn{
+    width:48px;height:48px;border-radius:50%;border:3px solid rgba(255,255,255,.25);
+    cursor:pointer;transition:transform .15s ease;
+  }
+  .traffic-btn:hover{transform:scale(1.08);}
+  .traffic-btn.green{background:radial-gradient(circle at 35% 30%, #7ef0c4, var(--even));}
+  .traffic-btn.red{background:radial-gradient(circle at 35% 30%, #ffb27e, var(--odd));}
+  .traffic-btn[disabled]{opacity:.4;pointer-events:none;}
+  .traffic-btn.wrong-flash{outline:3px solid #c23c3c;}
+
+  /* ---------- Number sequence display ---------- */
+  .num-sequence{
+    display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:16px 0;
+    font-family:'Fredoka';font-weight:700;font-size:1.6rem;color:var(--berry-dark);
+  }
+  .num-sequence span{background:var(--pink-1);border:2px solid var(--pink-2);border-radius:12px;padding:8px 14px;}
+
+  /* ---------- Options ---------- */
+  .options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;}
+  .opt-btn{
+    background:#fff;border:2.5px solid var(--pink-2);color:var(--ink);border-radius:14px;
+    padding:14px 8px;font-family:'Fredoka';font-weight:600;font-size:1.1rem;text-align:center;
+  }
+  .opt-btn:hover{border-color:var(--berry-1);}
+  .opt-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .opt-btn.wrong{background:#ffe9e9;border-color:#f08a8a;color:#c23c3c;}
+  .opt-btn.selected{background:var(--pink-2);border-color:var(--berry-1);color:var(--berry-dark);}
+  .opt-btn[disabled]{pointer-events:none;}
+
+  .stars-row{display:flex;justify-content:center;gap:4px;margin:6px 0;}
+  .star-icon{font-size:1.3rem;}
+
+  .reward-card{text-align:center;padding:36px 22px;background:linear-gradient(160deg,#fff,var(--pink-1));}
+  .badge-circle{
+    width:130px;height:130px;border-radius:50%;margin:0 auto 16px;
+    background:linear-gradient(135deg,var(--butter),var(--butter-dark));
+    display:flex;align-items:center;justify-content:center;font-size:3.4rem;
+    box-shadow:0 14px 26px rgba(230,168,0,.4);border:6px solid #fff;
+  }
+  .reward-card h2{color:var(--berry-dark);font-size:1.7rem;margin:0 0 4px;}
+  .reward-card p{color:#7a3a5a;font-weight:700;margin:0 0 10px;}
+  .next-lesson-card{
+    margin-top:22px;background:#fff;border:2.5px solid var(--pink-2);border-radius:18px;
+    padding:16px;display:flex;align-items:center;gap:14px;text-align:left;
+  }
+  .next-lesson-card .lock-icon{font-size:1.6rem;}
+  .next-lesson-card .txt small{display:block;color:#a85778;font-weight:800;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;}
+  .next-lesson-card .txt strong{font-family:'Fredoka';color:var(--berry-dark);font-size:1.05rem;}
+
+  @media (max-width:480px){
+    .options{grid-template-columns:1fr 1fr;}
+    .pair-tile{width:54px;height:54px;font-size:1.5rem;}
+    .hunt-item{width:74px;height:74px;}
+    .basket-btn{min-width:120px;padding:16px 10px;font-size:1rem;}
+    .emoji-pair-row{font-size:1.6rem;}
+  }
+  @media (prefers-reduced-motion: reduce){ .stage{animation:none;} .falling-number{animation:none;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="../lessons.html">&larr; Chapter</a>
+    <div class="lesson-title">
+      <small>Grade 2 · Math · Chapter 1: Numbers</small>
+      🧦 Lesson 7: Even &amp; Odd
+    </div>
+    <div class="stars-count"><span id="starTotal">0</span> ⭐</div>
+  </div>
+  <div class="progress-track" id="progressTrack"></div>
+</div>
+
+<div class="stage-wrap" id="stageWrap"></div>
+
+<script>
+/* ============================================================
+   LESSON 7: EVEN & ODD — self-contained, no shared engine.js.
+   Progress saved via ../../../../../../assets/js/progress.js
+   (falls back to local localStorage if that file is unavailable)
+
+   Per the spec's own note, this lesson deliberately varies its
+   interaction styles (pairing, yes/no, falling-number sorting,
+   hunt-and-click, traffic lights, pattern discovery) instead of
+   reusing drag/number-card patterns from earlier lessons — same
+   pink/berry Math palette and design system as the rest of
+   Chapter 1, continuing Lesson 1's own rule that every topic
+   keeps its interactions feeling fresh rather than repetitive.
+
+   Carried-forward fixes from earlier lessons:
+   - speakForStage() guard against the multi-voice overlap bug.
+   - Retry-until-correct on MCQ/tap activities outside Practice.
+   - Quick Practice: intro alert screen, no live right/wrong
+     reveal per question, score + stars revealed only at the end.
+============================================================ */
+const TOPIC_ID = "grade2-math-ch1-lesson7-even-odd";
+let totalStars = 0;
+
+(function loadProgressHelper(){
+  try{
+    const s = document.createElement('script');
+    s.src = "../../../../../../assets/js/progress.js";
+    document.head.appendChild(s);
+  }catch(e){ /* no-op: local fallback below still works */ }
+})();
+function saveStepDone(step){
+  try{
+    if (typeof setStepDone === 'function'){ setStepDone(TOPIC_ID, step, true); return; }
+  }catch(e){}
+  try{
+    const key = 'progress:' + TOPIC_ID;
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data[step] = true;
+    localStorage.setItem(key, JSON.stringify(data));
+  }catch(e){ /* storage unavailable — fail silently, never block the lesson */ }
+}
+
+/* ---------------- Speech ---------------- */
+let enVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  enVoice = voices.find(v => v.lang === 'en-IN') ||
+            voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+}
+if ('speechSynthesis' in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speak(text){
+  try{
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (enVoice) u.voice = enVoice;
+    u.rate = 0.88;
+    u.lang = 'en-IN';
+    speechSynthesis.speak(u);
+  }catch(e){ /* speech unavailable — visuals still work */ }
+}
+function isStageActive(stageId){
+  const el = document.getElementById(stageId);
+  return !!(el && el.classList.contains('active'));
+}
+function speakForStage(stageId, text){
+  if (isStageActive(stageId)) speak(text);
+}
+
+function addStar(n=1){
+  totalStars += n;
+  document.getElementById('starTotal').textContent = totalStars;
+}
+function shuffled(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+function isEven(n){ return n % 2 === 0; }
+
+/* ---------------- Stage machine ---------------- */
+const STAGES = [
+  {id:'s1'},   // discover
+  {id:'s2'},   // make the pairs (socks)
+  {id:'s3'},   // odd one out (carrots)
+  {id:'s4'},   // number sorting (falling numbers)
+  {id:'s5'},   // number hunt
+  {id:'s6'},   // traffic lights
+  {id:'s7'},   // pairing game (animals)
+  {id:'s8'},   // number rule discovery
+  {id:'s9'},   // quick practice
+  {id:'s10'},  // super challenge
+  {id:'reward'},
+];
+let currentStageIndex = 0;
+
+function renderProgressTrack(){
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  STAGES.forEach((st, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i < currentStageIndex ? ' done' : '') + (i === currentStageIndex ? ' active' : '');
+    track.appendChild(d);
+  });
+}
+function goToStage(index){
+  currentStageIndex = index;
+  document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(STAGES[index].id);
+  if (target) target.classList.add('active');
+  renderProgressTrack();
+  saveStepDone(STAGES[index].id);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function completeStage(){
+  if (currentStageIndex < STAGES.length - 1) goToStage(currentStageIndex + 1);
+}
+
+const wrap = document.getElementById('stageWrap');
+
+/* ============================================================
+   Reusable: pairing widget (Activity 2 socks / Activity 7 animals)
+============================================================ */
+function wirePairingRound(opts){
+  // opts: {containerEl, items:[emoji,...], countEl, onComplete(isEvenResult)}
+  containerReset(opts.containerEl);
+  let selected = null;
+  let remaining = opts.items.length;
+  if (opts.countEl) opts.countEl.textContent = `Counted so far: 0`;
+  const tiles = opts.items.map((emoji, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'pair-tile';
+    tile.textContent = emoji;
+    tile.dataset.index = i;
+    tile.onclick = () => {
+      if (tile.classList.contains('paired') || tile.classList.contains('alone')) return;
+      if (selected === null){
+        selected = tile;
+        tile.classList.add('selecting');
+        return;
+      }
+      if (selected === tile){
+        tile.classList.remove('selecting');
+        selected = null;
+        return;
+      }
+      selected.classList.remove('selecting');
+      selected.classList.add('paired');
+      tile.classList.add('paired');
+      selected = null;
+      remaining -= 2;
+      const countedSoFar = opts.items.length - remaining;
+      if (opts.countEl) opts.countEl.textContent = `Counted so far: ${countedSoFar}`;
+      if (remaining === 1){
+        const loneTile = [...opts.containerEl.children].find(t => !t.classList.contains('paired'));
+        if (loneTile) loneTile.classList.add('alone');
+        if (opts.countEl) opts.countEl.textContent = `Counted so far: ${opts.items.length}`;
+        if (opts.onComplete) opts.onComplete(false);
+      } else if (remaining === 0){
+        if (opts.onComplete) opts.onComplete(true);
+      }
+    };
+    opts.containerEl.appendChild(tile);
+    return tile;
+  });
+  return tiles;
+}
+function containerReset(el){ el.innerHTML = ''; }
+
+/* ============================================================
+   PART 1 — Discover: Do They Have a Partner?
+============================================================ */
+const s1Demo = [
+  {count:4, emoji:'🍎', result:'even', line:'Everyone has a partner. 4 is EVEN.'},
+  {count:5, emoji:'🍎', result:'odd', line:'One is alone. 5 is ODD.'},
+];
+let s1Step = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s1">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 1 · Discover</div>
+    <h2>Do They Have a Partner?</h2>
+    <p id="s1Sub">Watch the apples find a partner.</p>
+  </div>
+  <div class="card" id="s1DemoCard">
+    <div class="emoji-pair-row" id="s1Row"></div>
+    <div class="parity-badge" id="s1Badge"></div>
+    <div class="row-center"><button class="audio-btn small" id="s1Listen"><span class="icon">🔊</span> Listen Again</button></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s1Next">Continue ➜</button></div>
+  </div>
+  <div class="card" id="s1CheckCard" style="display:none;">
+    <div class="stage-header" style="margin-bottom:10px;">
+      <h2 style="font-size:1.2rem;">🎯 Quick Check</h2>
+      <p>Can you make pairs?</p>
+    </div>
+    <div class="emoji-pair-row" id="s1CheckRow" style="font-size:1.7rem;"></div>
+    <div class="yesno-row">
+      <button class="yesno-btn" id="s1Yes">YES → EVEN</button>
+      <button class="yesno-btn" id="s1No">NO → ODD</button>
+    </div>
+    <div class="feedback" id="s1CheckFeedback"></div>
+  </div>
+</section>`);
+function renderS1Demo(){
+  const d = s1Demo[s1Step];
+  const rowWrap = document.getElementById('s1Row');
+  rowWrap.innerHTML = '';
+  for (let i=0;i<d.count;i++){ const s = document.createElement('span'); s.textContent = d.emoji; rowWrap.appendChild(s); }
+  const badge = document.getElementById('s1Badge');
+  badge.className = 'parity-badge';
+  badge.textContent = '';
+  setTimeout(() => {
+    badge.classList.add('show', d.result);
+    badge.textContent = d.result === 'even' ? `⭐ ${d.count} is EVEN` : `⭐ ${d.count} is ODD`;
+    speakForStage('s1', d.line);
+  }, 500);
+}
+document.getElementById('s1Listen').onclick = () => speak(s1Demo[s1Step].line);
+document.getElementById('s1Next').onclick = () => {
+  s1Step++;
+  if (s1Step >= s1Demo.length){
+    document.getElementById('s1DemoCard').style.display = 'none';
+    document.getElementById('s1CheckCard').style.display = 'block';
+    const checkRow = document.getElementById('s1CheckRow');
+    for (let i=0;i<6;i++){ const s = document.createElement('span'); s.textContent = '🍪'; checkRow.appendChild(s); }
+    speakForStage('s1', 'Can you make pairs?');
+    return;
+  }
+  renderS1Demo();
+};
+renderS1Demo();
+function handleS1Check(picked){
+  const fb = document.getElementById('s1CheckFeedback');
+  if (picked === true){
+    document.getElementById('s1Yes').disabled = true;
+    document.getElementById('s1No').disabled = true;
+    document.getElementById('s1Yes').classList.add('correct');
+    fb.textContent = 'Correct! 6 is EVEN. 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! 6 is even.');
+    setTimeout(() => completeStage(), 1400);
+  } else {
+    document.getElementById('s1No').classList.add('wrong');
+    document.getElementById('s1No').disabled = true;
+    fb.textContent = 'Try again, you are very close!';
+    fb.className = 'feedback bad';
+    speak('Try again, you are very close!');
+  }
+}
+document.getElementById('s1Yes').onclick = () => handleS1Check(true);
+document.getElementById('s1No').onclick = () => handleS1Check(false);
+
+/* ============================================================
+   PART 2 — Make the Pairs (socks): 2 rounds
+============================================================ */
+const s2Rounds = [
+  {count:6, emoji:'🧦'},
+  {count:5, emoji:'🧦'},
+];
+let s2RoundIndex = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s2">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 2 · Make the Pairs</div>
+    <h2>🧦 Pair Up the Socks</h2>
+    <p>Tap two socks to pair them together — watch the count grow!</p>
+  </div>
+  <div class="card">
+    <div class="count-display-wrap"><span class="count-display" id="s2Count">Counted so far: 0</span></div>
+    <div class="pairing-row" id="s2Row"></div>
+    <div class="parity-badge" id="s2Badge"></div>
+    <div class="feedback" id="s2Feedback"></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s2Next" disabled>Next ➜</button></div>
+  </div>
+</section>`);
+function renderS2Round(){
+  const r = s2Rounds[s2RoundIndex];
+  document.getElementById('s2Badge').className = 'parity-badge';
+  document.getElementById('s2Badge').textContent = '';
+  document.getElementById('s2Feedback').textContent = '';
+  document.getElementById('s2Next').disabled = true;
+  const items = Array(r.count).fill(r.emoji);
+  wirePairingRound({
+    containerEl: document.getElementById('s2Row'),
+    items,
+    countEl: document.getElementById('s2Count'),
+    onComplete: (isEvenResult) => {
+      const badge = document.getElementById('s2Badge');
+      badge.classList.add('show', isEvenResult ? 'even' : 'odd');
+      badge.textContent = isEvenResult ? `⭐ EVEN — ${r.count}` : `⭐ ODD — ${r.count}`;
+      addStar(1);
+      speak(isEvenResult ? 'Even! Nothing left over.' : 'Odd! One is left over.');
+      document.getElementById('s2Next').disabled = false;
+    },
+  });
+}
+renderS2Round();
+document.getElementById('s2Next').onclick = () => {
+  s2RoundIndex++;
+  if (s2RoundIndex >= s2Rounds.length) completeStage();
+  else renderS2Round();
+};
+
+/* ============================================================
+   PART 3 — Odd One Out (carrots): 2 rounds
+============================================================ */
+const s3Rounds = [
+  {count:5, answerOdd:true},
+  {count:4, answerOdd:false},
+];
+let s3Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s3">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 3 · Odd One Out</div>
+    <h2>🐰 Is One Carrot Alone?</h2>
+    <p id="s3Prompt"></p>
+  </div>
+  <div class="card">
+    <div class="row-center"><button class="audio-btn small" id="s3Play"><span class="icon">🔊</span> Hear It Again</button></div>
+    <div class="emoji-pair-row" id="s3Row"></div>
+    <div class="yesno-row">
+      <button class="yesno-btn" id="s3Yes">YES → ODD</button>
+      <button class="yesno-btn" id="s3No">NO → EVEN</button>
+    </div>
+    <div class="feedback" id="s3Feedback"></div>
+  </div>
+</section>`);
+function renderS3(){
+  const r = s3Rounds[s3Index];
+  const prompt = 'Is one carrot alone?';
+  document.getElementById('s3Prompt').textContent = prompt;
+  document.getElementById('s3Feedback').textContent = '';
+  const rowWrap = document.getElementById('s3Row');
+  rowWrap.innerHTML = '';
+  for (let i=0;i<r.count;i++){ const s = document.createElement('span'); s.textContent = '🥕'; rowWrap.appendChild(s); }
+  const yesBtn = document.getElementById('s3Yes');
+  const noBtn = document.getElementById('s3No');
+  yesBtn.disabled = false; noBtn.disabled = false;
+  yesBtn.className = 'yesno-btn'; noBtn.className = 'yesno-btn';
+  document.getElementById('s3Play').onclick = () => speak(prompt);
+  setTimeout(() => speakForStage('s3', prompt), 400);
+}
+function handleS3(picked){
+  const r = s3Rounds[s3Index];
+  const fb = document.getElementById('s3Feedback');
+  const correct = picked === r.answerOdd;
+  if (correct){
+    document.getElementById('s3Yes').disabled = true;
+    document.getElementById('s3No').disabled = true;
+    (picked ? document.getElementById('s3Yes') : document.getElementById('s3No')).classList.add('correct');
+    fb.textContent = r.answerOdd ? 'Correct! ODD. 🎉' : 'Correct! EVEN. 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak(r.answerOdd ? 'Correct! Odd.' : 'Correct! Even.');
+    setTimeout(() => {
+      s3Index++;
+      if (s3Index >= s3Rounds.length) completeStage();
+      else renderS3();
+    }, 1400);
+  } else {
+    (picked ? document.getElementById('s3Yes') : document.getElementById('s3No')).classList.add('wrong');
+    (picked ? document.getElementById('s3Yes') : document.getElementById('s3No')).disabled = true;
+    fb.textContent = 'Try again, you are very close!';
+    fb.className = 'feedback bad';
+    speak('Try again, you are very close!');
+  }
+}
+document.getElementById('s3Yes').onclick = () => handleS3(true);
+document.getElementById('s3No').onclick = () => handleS3(false);
+renderS3();
+
+/* ============================================================
+   PART 4 — Number Sorting (falling numbers into EVEN/ODD baskets)
+============================================================ */
+const s4Numbers = [6, 9, 12, 15, 20, 23];
+let s4Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s4">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 4 · Number Sorting</div>
+    <h2>🗂️ Sort the Falling Numbers</h2>
+    <p id="s4Prompt"></p>
+  </div>
+  <div class="card">
+    <div class="falling-number" id="s4Number"></div>
+    <div class="basket-row">
+      <div class="basket-btn even" id="s4Even"><span class="basket-icon">🟢</span>EVEN</div>
+      <div class="basket-btn odd" id="s4Odd"><span class="basket-icon">🟠</span>ODD</div>
+    </div>
+    <div class="feedback" id="s4Feedback"></div>
+  </div>
+</section>`);
+function renderS4(){
+  const n = s4Numbers[s4Index];
+  document.getElementById('s4Prompt').textContent = `Question ${s4Index+1} of ${s4Numbers.length}`;
+  document.getElementById('s4Feedback').textContent = '';
+  const numEl = document.getElementById('s4Number');
+  numEl.textContent = '';
+  numEl.style.animation = 'none';
+  void numEl.offsetWidth;
+  numEl.style.animation = '';
+  setTimeout(() => { numEl.textContent = n; }, 30);
+  const evenBtn = document.getElementById('s4Even');
+  const oddBtn = document.getElementById('s4Odd');
+  evenBtn.className = 'basket-btn even'; oddBtn.className = 'basket-btn odd';
+  speakForStage('s4', String(n));
+}
+function handleS4(pickEven){
+  const n = s4Numbers[s4Index];
+  const correct = pickEven === isEven(n);
+  const fb = document.getElementById('s4Feedback');
+  const evenBtn = document.getElementById('s4Even');
+  const oddBtn = document.getElementById('s4Odd');
+  if (correct){
+    (pickEven ? evenBtn : oddBtn).classList.add('correct');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => {
+      s4Index++;
+      if (s4Index >= s4Numbers.length) completeStage();
+      else renderS4();
+    }, 1200);
+  } else {
+    (pickEven ? evenBtn : oddBtn).classList.add('wrong');
+    fb.textContent = 'Try again, you are very close!';
+    fb.className = 'feedback bad';
+    speak('Try again, you are very close!');
+    setTimeout(() => (pickEven ? evenBtn : oddBtn).classList.remove('wrong'), 600);
+  }
+}
+document.getElementById('s4Even').onclick = () => handleS4(true);
+document.getElementById('s4Odd').onclick = () => handleS4(false);
+renderS4();
+
+/* ============================================================
+   PART 5 — Number Hunt (classroom scene)
+============================================================ */
+const s5Items = [
+  {emoji:'📚', num:8}, {emoji:'🪑', num:13}, {emoji:'🎒', num:20}, {emoji:'🖼️', num:17}, {emoji:'🧸', num:24},
+];
+const s5Rounds = [
+  {label:'EVEN', wantEven:true, prompt:'Find an EVEN number!'},
+  {label:'ODD', wantEven:false, prompt:'Find an ODD number!'},
+];
+let s5Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s5">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 5 · Number Hunt</div>
+    <h2>🎯 Even or Odd Number Hunt</h2>
+    <p id="s5Prompt"></p>
+  </div>
+  <div class="card">
+    <div class="row-center"><button class="audio-btn small" id="s5Play"><span class="icon">🔊</span> Hear It Again</button></div>
+    <div class="hunt-scene" id="s5Scene"></div>
+    <div class="feedback" id="s5Feedback"></div>
+  </div>
+</section>`);
+function renderS5(){
+  const r = s5Rounds[s5Index];
+  document.getElementById('s5Prompt').textContent = r.prompt;
+  document.getElementById('s5Feedback').textContent = '';
+  document.getElementById('s5Play').onclick = () => speak(r.prompt);
+  setTimeout(() => speakForStage('s5', r.prompt), 400);
+  const scene = document.getElementById('s5Scene');
+  scene.innerHTML = '';
+  s5Items.forEach(item => {
+    const tile = document.createElement('div');
+    tile.className = 'hunt-item';
+    tile.innerHTML = `<span class="hunt-emoji">${item.emoji}</span><span class="hunt-num">${item.num}</span>`;
+    tile.onclick = () => {
+      const fb = document.getElementById('s5Feedback');
+      if (isEven(item.num) === r.wantEven){
+        document.querySelectorAll('#s5Scene .hunt-item').forEach(t => t.classList.add('locked'));
+        tile.classList.remove('locked');
+        tile.classList.add('correct-pick');
+        fb.textContent = 'Found it! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Found it!');
+        setTimeout(() => {
+          s5Index++;
+          if (s5Index >= s5Rounds.length) completeStage();
+          else renderS5();
+        }, 1400);
+      } else {
+        tile.classList.add('wrong-pick');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+        setTimeout(() => tile.classList.remove('wrong-pick'), 500);
+      }
+    };
+    scene.appendChild(tile);
+  });
+}
+renderS5();
+
+/* ============================================================
+   PART 6 — Even/Odd Traffic Lights
+============================================================ */
+const s6Rounds = [
+  {num:18, wantEven:true},
+  {num:21, wantEven:false},
+];
+let s6Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s6">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 6 · Traffic Lights</div>
+    <h2>🚦 Number Traffic Light</h2>
+    <p>🟢 = EVEN &nbsp;&nbsp; 🔴 = ODD</p>
+  </div>
+  <div class="card">
+    <div class="falling-number" id="s6Number"></div>
+    <div class="traffic-light">
+      <div class="traffic-btn green" id="s6Green"></div>
+      <div class="traffic-btn red" id="s6Red"></div>
+    </div>
+    <div class="feedback" id="s6Feedback"></div>
+  </div>
+</section>`);
+function renderS6(){
+  const r = s6Rounds[s6Index];
+  document.getElementById('s6Number').textContent = r.num;
+  document.getElementById('s6Feedback').textContent = '';
+  document.getElementById('s6Green').disabled = false;
+  document.getElementById('s6Red').disabled = false;
+  document.getElementById('s6Green').classList.remove('wrong-flash');
+  document.getElementById('s6Red').classList.remove('wrong-flash');
+  speakForStage('s6', String(r.num));
+}
+function handleS6(pickEven){
+  const r = s6Rounds[s6Index];
+  const fb = document.getElementById('s6Feedback');
+  const btn = pickEven ? document.getElementById('s6Green') : document.getElementById('s6Red');
+  if (pickEven === r.wantEven){
+    document.getElementById('s6Green').disabled = true;
+    document.getElementById('s6Red').disabled = true;
+    fb.textContent = pickEven ? 'Correct! 🚗💨' : 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => {
+      s6Index++;
+      if (s6Index >= s6Rounds.length) completeStage();
+      else renderS6();
+    }, 1300);
+  } else {
+    btn.classList.add('wrong-flash');
+    fb.textContent = 'Try again, you are very close!';
+    fb.className = 'feedback bad';
+    speak('Try again, you are very close!');
+    setTimeout(() => btn.classList.remove('wrong-flash'), 500);
+  }
+}
+document.getElementById('s6Green').onclick = () => handleS6(true);
+document.getElementById('s6Red').onclick = () => handleS6(false);
+renderS6();
+
+/* ============================================================
+   PART 7 — Pairing Game: Help the Animals (2 rounds)
+============================================================ */
+const s7Rounds = [
+  ['🐶','🐱','🐰','🐼'],
+  ['🐶','🐱','🐰','🐼','🐵'],
+];
+let s7Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s7">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 7 · Help the Animals</div>
+    <h2>🎮 Can Everyone Get a Friend?</h2>
+    <p>Tap one animal, then tap another animal to pair them up as friends.</p>
+  </div>
+  <div class="card">
+    <div class="row-center"><button class="audio-btn small" id="s7Play"><span class="icon">🔊</span> Hear the Instructions</button></div>
+    <p style="text-align:center;font-weight:800;color:#a85778;font-size:.8rem;letter-spacing:.02em;margin:8px 0 0;">① Tap an animal &nbsp; ② Tap another to pair them</p>
+    <div class="count-display-wrap"><span class="count-display" id="s7Count">Counted so far: 0</span></div>
+    <div class="pairing-row" id="s7Row"></div>
+    <div class="parity-badge" id="s7Badge"></div>
+    <div class="feedback" id="s7Feedback"></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s7Next" disabled>Next ➜</button></div>
+  </div>
+</section>`);
+function renderS7(){
+  const items = s7Rounds[s7Index];
+  document.getElementById('s7Badge').className = 'parity-badge';
+  document.getElementById('s7Badge').textContent = '';
+  document.getElementById('s7Feedback').textContent = '';
+  document.getElementById('s7Next').disabled = true;
+  const instructions = 'Tap one animal, then tap another animal to pair them up as friends. Can everyone get a friend?';
+  document.getElementById('s7Play').onclick = () => speak(instructions);
+  setTimeout(() => speakForStage('s7', instructions), 400);
+  wirePairingRound({
+    containerEl: document.getElementById('s7Row'),
+    items,
+    countEl: document.getElementById('s7Count'),
+    onComplete: (isEvenResult) => {
+      const badge = document.getElementById('s7Badge');
+      badge.classList.add('show', isEvenResult ? 'even' : 'odd');
+      badge.textContent = isEvenResult ? `⭐ EVEN — everyone has a friend!` : `⭐ ODD — one is left out.`;
+      addStar(1);
+      speak(isEvenResult ? 'Even! Everyone has a friend.' : 'Odd! One animal is left out.');
+      document.getElementById('s7Next').disabled = false;
+    },
+  });
+}
+renderS7();
+document.getElementById('s7Next').onclick = () => {
+  s7Index++;
+  if (s7Index >= s7Rounds.length) completeStage();
+  else renderS7();
+};
+
+/* ============================================================
+   PART 8 — Number Rule Discovery
+============================================================ */
+const s8Sequences = [
+  {label:'EVEN', numbers:[2,4,6,8,10]},
+  {label:'ODD', numbers:[1,3,5,7,9]},
+];
+let s8Step = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s8">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 8 · Number Rule Discovery</div>
+    <h2 id="s8Title"></h2>
+    <p>What do you see?</p>
+  </div>
+  <div class="card" id="s8DemoCard">
+    <div class="num-sequence" id="s8Seq"></div>
+    <div class="row-center"><button class="audio-btn small" id="s8Play"><span class="icon">🔊</span> What do you see?</button></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s8Next">Continue ➜</button></div>
+  </div>
+  <div class="card" id="s8RuleCard" style="display:none;">
+    <div class="stage-header" style="margin-bottom:10px;">
+      <h2 style="font-size:1.2rem;">🔑 The Rule</h2>
+      <p>Look at the LAST digit of any number.</p>
+    </div>
+    <div class="parity-badge show odd" style="display:block;text-align:center;font-size:1.05rem;">
+      Ends in <strong>1, 3, 5, 7, or 9</strong> → it's <strong>ODD</strong>
+    </div>
+    <div class="parity-badge show even" style="display:block;text-align:center;font-size:1.05rem;margin-top:10px;">
+      Ends in <strong>0, 2, 4, 6, or 8</strong> → it's <strong>EVEN</strong>
+    </div>
+    <div class="row-center" style="margin-top:14px;"><button class="audio-btn small" id="s8RulePlay"><span class="icon">🔊</span> Hear the Rule</button></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s8RuleNext">Try It ➜</button></div>
+  </div>
+  <div class="card" id="s8QuizCard" style="display:none;">
+    <div class="num-sequence"><span>12</span><span>14</span><span>16</span><span>?</span></div>
+    <div class="options" id="s8Options"></div>
+    <div class="feedback" id="s8Feedback"></div>
+  </div>
+</section>`);
+function renderS8Demo(){
+  const s = s8Sequences[s8Step];
+  document.getElementById('s8Title').textContent = s.label;
+  const seqWrap = document.getElementById('s8Seq');
+  seqWrap.innerHTML = '';
+  s.numbers.forEach(n => { const el = document.createElement('span'); el.textContent = n; seqWrap.appendChild(el); });
+  document.getElementById('s8Play').onclick = () => speak('What do you see?');
+  setTimeout(() => speakForStage('s8', 'What do you see?'), 400);
+}
+const s8RuleText = "Here's the rule. Look at the last digit. If a number ends in 1, 3, 5, 7, or 9, it's odd. If a number ends in 0, 2, 4, 6, or 8, it's even.";
+document.getElementById('s8Next').onclick = () => {
+  s8Step++;
+  if (s8Step >= s8Sequences.length){
+    document.getElementById('s8DemoCard').style.display = 'none';
+    document.getElementById('s8RuleCard').style.display = 'block';
+    speakForStage('s8', s8RuleText);
+    return;
+  }
+  renderS8Demo();
+};
+document.getElementById('s8RulePlay').onclick = () => speak(s8RuleText);
+document.getElementById('s8RuleNext').onclick = () => {
+  document.getElementById('s8RuleCard').style.display = 'none';
+  document.getElementById('s8QuizCard').style.display = 'block';
+  setupS8Quiz();
+};
+renderS8Demo();
+function setupS8Quiz(){
+  const options = [17,18,19];
+  const answer = 18;
+  const optsWrap = document.getElementById('s8Options');
+  optsWrap.innerHTML = '';
+  shuffled(options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      const fb = document.getElementById('s8Feedback');
+      if (opt === answer){
+        document.querySelectorAll('#s8Options .opt-btn').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        fb.textContent = 'Correct! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct!');
+        setTimeout(() => completeStage(), 1400);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s8', 'Twelve, fourteen, sixteen, what comes next?');
+}
+
+/* ============================================================
+   PART 9 — Quick Practice (5 questions, intro + silent scoring)
+============================================================ */
+const s9Questions = [8, 13, 26, 35, 40];
+let s9Index = 0;
+let s9CorrectCount = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s9">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 9 · Practice</div>
+    <h2>Quick Practice</h2>
+    <p>Five short questions.</p>
+  </div>
+  <div class="card" id="s9Intro">
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">You're going to answer 5 questions on your own now. Take your time and do your best!</p>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s9Start">Start Practice ▶</button></div>
+  </div>
+  <div class="card" id="s9Quiz" style="display:none;">
+    <div class="q-progress" id="s9Progress"></div>
+    <div class="falling-number" id="s9Number" style="animation:none;"></div>
+    <div class="basket-row" id="s9Baskets">
+      <div class="basket-btn even" id="s9Even"><span class="basket-icon">🟢</span>EVEN</div>
+      <div class="basket-btn odd" id="s9Odd"><span class="basket-icon">🟠</span>ODD</div>
+    </div>
+    <div class="feedback" id="s9Feedback"></div>
+  </div>
+</section>`);
+document.getElementById('s9Start').onclick = () => {
+  document.getElementById('s9Intro').style.display = 'none';
+  document.getElementById('s9Quiz').style.display = 'block';
+  speak("Now you're going to answer some questions on your own. Let's begin!");
+  renderS9();
+};
+function renderS9(){
+  const n = s9Questions[s9Index];
+  document.getElementById('s9Progress').textContent = `Question ${s9Index+1} of ${s9Questions.length}`;
+  document.getElementById('s9Number').textContent = n;
+  document.getElementById('s9Feedback').textContent = '';
+  const evenBtn = document.getElementById('s9Even');
+  const oddBtn = document.getElementById('s9Odd');
+  evenBtn.className = 'basket-btn even'; oddBtn.className = 'basket-btn odd';
+  evenBtn.onclick = () => handleS9(true);
+  oddBtn.onclick = () => handleS9(false);
+  speakForStage('s9', String(n));
+}
+function handleS9(pickEven){
+  const n = s9Questions[s9Index];
+  const evenBtn = document.getElementById('s9Even');
+  const oddBtn = document.getElementById('s9Odd');
+  evenBtn.onclick = null; oddBtn.onclick = null;
+  (pickEven ? evenBtn : oddBtn).classList.add('selected');
+  if (pickEven === isEven(n)) s9CorrectCount++;
+  const fb = document.getElementById('s9Feedback');
+  fb.textContent = 'Got it! Next question…';
+  fb.className = 'feedback neutral';
+  speak('Got it. Next question.');
+  setTimeout(() => {
+    s9Index++;
+    if (s9Index >= s9Questions.length) showS9Summary();
+    else renderS9();
+  }, 1100);
+}
+function showS9Summary(){
+  document.getElementById('s9Progress').textContent = 'Practice Complete!';
+  document.getElementById('s9Number').textContent = '';
+  document.getElementById('s9Baskets').innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.textContent = 'Continue ➜';
+  btn.onclick = () => completeStage();
+  document.getElementById('s9Baskets').appendChild(btn);
+  addStar(s9CorrectCount);
+  const fb = document.getElementById('s9Feedback');
+  fb.textContent = `You got ${s9CorrectCount} out of ${s9Questions.length} correct! ` +
+    (s9CorrectCount === s9Questions.length ? 'Perfect score! 🌟' : 'Great effort! 🎉');
+  fb.className = 'feedback good';
+  speak(`You got ${s9CorrectCount} out of ${s9Questions.length} correct!`);
+}
+
+/* ============================================================
+   PART 10 — Super Challenge
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s10">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 10 · Super Challenge</div>
+    <h2>⭐ Objects + Numbers</h2>
+  </div>
+  <div class="card" id="s10Count">
+    <p style="text-align:center;font-weight:800;color:#a85778;font-size:.78rem;letter-spacing:.03em;text-transform:uppercase;margin:0 0 6px;">Step 1 of 3 · Count the Apples</p>
+    <div class="emoji-pair-row" id="s10Apples" style="font-size:2rem;"></div>
+    <div class="row-center"><button class="audio-btn small" id="s10PlayCount"><span class="icon">🔊</span> How many apples are there?</button></div>
+    <div class="options" id="s10CountOptions"></div>
+    <div class="feedback" id="s10CountFeedback"></div>
+  </div>
+  <div class="card" id="s10Parity" style="display:none;">
+    <p style="text-align:center;font-weight:800;color:#a85778;font-size:.78rem;letter-spacing:.03em;text-transform:uppercase;margin:0 0 6px;">Step 2 of 3 · Even or Odd?</p>
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">Is 7 an even number or an odd number?</p>
+    <div class="basket-row">
+      <div class="basket-btn even" id="s10Even"><span class="basket-icon">🟢</span>EVEN</div>
+      <div class="basket-btn odd" id="s10Odd"><span class="basket-icon">🟠</span>ODD</div>
+    </div>
+    <div class="feedback" id="s10ParityFeedback"></div>
+  </div>
+  <div class="card" id="s10Mystery" style="display:none;">
+    <div class="stage-header" style="margin-bottom:10px;">
+      <p style="text-align:center;font-weight:800;color:#a85778;font-size:.78rem;letter-spacing:.03em;text-transform:uppercase;margin:0 0 6px;">Step 3 of 3 · Final Mystery</p>
+      <h2 style="font-size:1.2rem;">🔎 Guess My Number</h2>
+      <p>Use the clues below to find the secret number.</p>
+    </div>
+    <ul style="list-style:none;padding:0;margin:14px 0;display:flex;flex-direction:column;gap:10px;" id="s10Clues"></ul>
+    <div class="row-center"><button class="audio-btn small" id="s10PlayClues"><span class="icon">🔎</span> Hear the Clues</button></div>
+    <div class="options" id="s10MysteryOptions"></div>
+    <div class="feedback" id="s10MysteryFeedback"></div>
+  </div>
+</section>`);
+(function setupS10Count(){
+  const applesWrap = document.getElementById('s10Apples');
+  for (let i=0;i<7;i++){ const s = document.createElement('span'); s.textContent = '🍎'; applesWrap.appendChild(s); }
+  document.getElementById('s10PlayCount').onclick = () => speak('How many apples are there?');
+  setTimeout(() => speakForStage('s10', 'How many apples are there?'), 400);
+  const optsWrap = document.getElementById('s10CountOptions');
+  shuffled([6,7,8]).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      const fb = document.getElementById('s10CountFeedback');
+      if (opt === 7){
+        document.querySelectorAll('#s10CountOptions .opt-btn').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        fb.textContent = 'Correct! 7 apples. 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct! 7 apples.');
+        setTimeout(() => {
+          document.getElementById('s10Count').style.display = 'none';
+          document.getElementById('s10Parity').style.display = 'block';
+          setupS10Parity();
+        }, 1300);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+    optsWrap.appendChild(b);
+  });
+})();
+function setupS10Parity(){
+  speakForStage('s10', 'Is 7 an even number or an odd number?');
+  const evenBtn = document.getElementById('s10Even');
+  const oddBtn = document.getElementById('s10Odd');
+  evenBtn.onclick = () => handleS10Parity(true);
+  oddBtn.onclick = () => handleS10Parity(false);
+}
+function handleS10Parity(pickEven){
+  const fb = document.getElementById('s10ParityFeedback');
+  const evenBtn = document.getElementById('s10Even');
+  const oddBtn = document.getElementById('s10Odd');
+  if (pickEven === false){
+    evenBtn.onclick = null; oddBtn.onclick = null;
+    oddBtn.classList.add('correct');
+    fb.textContent = 'Correct! 7 is ODD. 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! 7 is odd.');
+    setTimeout(() => {
+      document.getElementById('s10Parity').style.display = 'none';
+      document.getElementById('s10Mystery').style.display = 'block';
+      setupS10Mystery();
+    }, 1300);
+  } else {
+    evenBtn.classList.add('wrong');
+    fb.textContent = 'Try again, you are very close!';
+    fb.className = 'feedback bad';
+    speak('Try again, you are very close!');
+    setTimeout(() => evenBtn.classList.remove('wrong'), 500);
+  }
+}
+function setupS10Mystery(){
+  const clues = ['I am between 20 and 30.', 'I am even.'];
+  const list = document.getElementById('s10Clues');
+  clues.forEach(c => {
+    const li = document.createElement('li');
+    li.style.cssText = 'background:var(--pink-1);border:2px solid var(--pink-2);border-radius:14px;padding:12px 16px;font-family:Fredoka;font-weight:600;color:var(--berry-dark);';
+    li.innerHTML = `🔎 ${c}`;
+    list.appendChild(li);
+  });
+  function speakClues(){ speakForStage('s10', clues.join(' ')); }
+  document.getElementById('s10PlayClues').onclick = () => speak(clues.join(' '));
+  setTimeout(speakClues, 500);
+  const optsWrap = document.getElementById('s10MysteryOptions');
+  shuffled([21,24,27]).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      const fb = document.getElementById('s10MysteryFeedback');
+      if (opt === 24){
+        document.querySelectorAll('#s10MysteryOptions .opt-btn').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        fb.textContent = 'Correct! I am 24! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct! I am 24!');
+        setTimeout(() => showReward(), 1500);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+    optsWrap.appendChild(b);
+  });
+}
+
+/* ============================================================
+   REWARD
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="reward">
+  <div class="card reward-card">
+    <div class="badge-circle">🧦</div>
+    <h2>PAIRING PRO</h2>
+    <p>You can find EVEN and ODD numbers!</p>
+    <div class="stars-row" id="rewardStars"></div>
+    <div class="next-lesson-card">
+      <div class="lock-icon">🔓</div>
+      <div class="txt">
+        <small>Next Lesson</small>
+        <strong>Skip Counting</strong>
+      </div>
+    </div>
+  </div>
+</section>`);
+function showReward(){
+  goToStage(STAGES.length - 1);
+  const starsRow = document.getElementById('rewardStars');
+  starsRow.innerHTML = '';
+  for (let i=0;i<5;i++){
+    const s = document.createElement('span');
+    s.className = 'star-icon';
+    s.textContent = '⭐';
+    starsRow.appendChild(s);
+  }
+  saveStepDone('lesson7-complete');
+  speak('Great job! You can find even and odd numbers!');
+}
+
+/* ---------------- init ---------------- */
+renderProgressTrack();
+goToStage(0);
+</script>
+</body>
+</html>

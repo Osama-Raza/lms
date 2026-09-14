@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lesson 9: Number Patterns — Grade 2 Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-1:#fff3f7;
+    --pink-2:#ffe1ec;
+    --berry-1:#e94f8a;
+    --berry-2:#c22a68;
+    --berry-dark:#8f1c4f;
+    --butter:#ffcf5c;
+    --butter-dark:#e6a800;
+    --mint:#4fd6a8;
+    --sky:#5aa9ff;
+    --ink:#4a1030;
+    --shadow: 0 10px 24px rgba(196,42,104,.18);
+    --radius-lg: 26px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, var(--pink-2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 20%, #ffe9d6 0%, transparent 40%),
+      linear-gradient(180deg, var(--pink-1), #fff);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Fredoka',sans-serif;}
+  button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(135deg,var(--berry-1),var(--berry-2));
+    color:#fff;padding:10px 16px;
+    box-shadow:0 4px 14px rgba(143,28,79,.25);
+  }
+  .topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .topbar .lesson-title{font-family:'Fredoka';font-weight:600;font-size:1.05rem;flex:1;}
+  .topbar .lesson-title small{display:block;font-family:'Nunito';font-weight:700;font-size:.68rem;opacity:.85;letter-spacing:.04em;text-transform:uppercase;}
+  .stars-count{background:rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;font-weight:800;font-size:.85rem;display:flex;align-items:center;gap:4px;}
+  .back-btn{
+    display:inline-flex;align-items:center;gap:4px;flex-shrink:0;
+    background:rgba(255,255,255,.18);color:#fff;text-decoration:none;
+    font-family:'Fredoka';font-weight:700;font-size:.8rem;
+    padding:7px 14px;border-radius:20px;transition:background .15s ease;
+  }
+  .back-btn:hover{background:rgba(255,255,255,.3);}
+
+  .progress-track{max-width:900px;margin:8px auto 0;display:flex;gap:3px;padding:0 16px;}
+  .progress-dot{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.28);transition:background .3s ease;}
+  .progress-dot.done{background:var(--butter);}
+  .progress-dot.active{background:#fff;}
+
+  .stage-wrap{max-width:780px;margin:0 auto;padding:22px 16px 90px;min-height:70vh;}
+  .stage{display:none;animation:fadeUp .45s ease both;}
+  .stage.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .stage-header{text-align:center;margin-bottom:18px;}
+  .stage-eyebrow{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--pink-2);color:var(--berry-dark);
+    font-weight:800;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;
+    padding:5px 14px;border-radius:20px;margin-bottom:8px;
+  }
+  .stage-header h2{font-size:1.4rem;margin:0 0 4px;color:var(--berry-dark);}
+  .stage-header p{margin:0;font-weight:700;color:#7a3a5a;font-size:.9rem;}
+
+  .card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:22px;border:3px solid var(--pink-2);}
+
+  .audio-btn{
+    background:linear-gradient(135deg,var(--sky),#2f7fe0);color:#fff;font-weight:800;font-size:.85rem;
+    padding:10px 18px;border-radius:30px;display:inline-flex;align-items:center;gap:8px;
+    box-shadow:0 6px 14px rgba(47,127,224,.3);transition:transform .15s ease;
+  }
+  .audio-btn:active{transform:scale(.94);}
+  .audio-btn.small{padding:7px 14px;font-size:.78rem;}
+  .audio-btn .icon{font-size:1.1rem;}
+
+  .row-center{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+
+  .btn{font-weight:800;font-size:.95rem;padding:12px 26px;border-radius:30px;transition:transform .15s ease, box-shadow .15s ease;}
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:linear-gradient(135deg,var(--berry-1),var(--berry-2));color:#fff;box-shadow:0 8px 18px rgba(196,42,104,.3);}
+  .btn-primary[disabled]{opacity:.4;pointer-events:none;}
+  .center-btn-row{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap;}
+
+  .feedback{text-align:center;font-weight:800;font-family:'Fredoka';font-size:1.02rem;min-height:1.6rem;margin-top:12px;}
+  .feedback.good{color:#1a8a63;}
+  .feedback.bad{color:#c23c3c;}
+  .feedback.neutral{color:var(--berry-dark);}
+  .q-progress{text-align:center;font-weight:800;color:#a85778;font-size:.78rem;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;}
+
+  /* ---------- Hop / number sequence reveal ---------- */
+  .hop-sequence{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;margin:16px 0;}
+  .hop-chip{
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+    opacity:0;transform:translateY(10px) scale(.8);transition:opacity .35s ease, transform .35s ease;
+  }
+  .hop-chip.show{opacity:1;transform:translateY(0) scale(1);}
+  .hop-chip .hop-emoji{font-size:1.6rem;}
+  .hop-chip .hop-num{font-family:'Fredoka';font-weight:700;color:var(--berry-dark);background:var(--pink-1);border:2px solid var(--pink-2);border-radius:10px;padding:4px 10px;font-size:1.1rem;}
+  .hop-arrow{color:#c98cae;font-family:'Fredoka';font-weight:700;font-size:1.2rem;}
+
+  .rule-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 22px;border-radius:30px;font-family:'Fredoka';font-weight:700;font-size:1.1rem;
+    margin:10px 0;background:#e3fbf3;color:#1a8a63;
+    opacity:0;transform:scale(.85);transition:opacity .4s ease, transform .4s ease;
+  }
+  .rule-badge.show{opacity:1;transform:scale(1);}
+
+  /* ---------- Apple groups (What Changed?) ---------- */
+  .group-row{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:16px 0;}
+  .apple-group{
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    opacity:0;transform:translateY(10px);transition:opacity .4s ease, transform .4s ease;
+  }
+  .apple-group.show{opacity:1;transform:translateY(0);}
+  .apple-group .apples{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:130px;font-size:1.2rem;}
+  .apple-group .group-total{font-family:'Fredoka';font-weight:700;color:var(--berry-dark);background:var(--pink-1);border:2px solid var(--pink-2);border-radius:10px;padding:3px 10px;font-size:1rem;}
+
+  /* ---------- Sequence with blank ---------- */
+  .num-sequence{
+    display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px 0;
+    font-family:'Fredoka';font-weight:700;font-size:1.5rem;color:var(--berry-dark);
+  }
+  .num-sequence span{background:var(--pink-1);border:2px solid var(--pink-2);border-radius:12px;padding:8px 14px;min-width:44px;text-align:center;}
+  .num-sequence span.blank{background:var(--butter);border-color:var(--butter-dark);color:#5a3d00;}
+
+  /* ---------- Options ---------- */
+  .options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;}
+  .opt-btn{
+    background:#fff;border:2.5px solid var(--pink-2);color:var(--ink);border-radius:14px;
+    padding:14px 8px;font-family:'Fredoka';font-weight:600;font-size:1.1rem;text-align:center;
+  }
+  .opt-btn:hover{border-color:var(--berry-1);}
+  .opt-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .opt-btn.wrong{background:#ffe9e9;border-color:#f08a8a;color:#c23c3c;}
+  .opt-btn.selected{background:var(--pink-2);border-color:var(--berry-1);color:var(--berry-dark);}
+  .opt-btn[disabled]{pointer-events:none;}
+
+  /* ---------- Robot scene ---------- */
+  .robot-scene{text-align:center;margin:16px 0;}
+  .robot-scene .robot-emoji{font-size:3.4rem;}
+  .robot-rule{
+    display:inline-block;margin-top:6px;font-family:'Fredoka';font-weight:700;font-size:1.15rem;
+    background:var(--pink-1);border:2px solid var(--pink-2);border-radius:14px;padding:8px 18px;color:var(--berry-dark);
+  }
+
+  /* ---------- Order tap (Pattern Garden) ---------- */
+  .order-slots{display:flex;justify-content:center;align-items:center;gap:8px;margin:16px 0;flex-wrap:wrap;}
+  .order-slot{
+    min-width:56px;height:50px;border:2.5px dashed #f3b8d0;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.05rem;color:#c98cae;background:#fff8fb;
+  }
+  .order-slot.filled{border-style:solid;border-color:var(--mint);background:#e3fbf3;color:#1a8a63;}
+  .order-arrow{color:#c98cae;font-family:'Fredoka';font-weight:700;font-size:1rem;}
+  .stone-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:14px;}
+  .stone-tile{
+    display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;
+    padding:10px 14px;border-radius:14px;background:#fff8fb;border:3px solid var(--pink-2);
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .stone-tile:hover{transform:scale(1.05);border-color:var(--berry-1);}
+  .stone-tile.locked{opacity:0;pointer-events:none;}
+  .stone-tile .stone-emoji{font-size:1.4rem;}
+  .stone-tile .stone-num{font-family:'Fredoka';font-weight:700;color:var(--berry-dark);}
+  .stone-tile.wrong-flash{background:#ffe9e9;border-color:#f08a8a;}
+
+  /* ---------- Clap sequence ---------- */
+  .clap-sequence{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:16px 0;}
+  .clap-chip{
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+    opacity:0;transform:scale(.7);transition:opacity .3s ease, transform .3s ease;
+  }
+  .clap-chip.show{opacity:1;transform:scale(1);}
+  .clap-chip .clap-emoji{font-size:1.6rem;}
+  .clap-chip .clap-num{font-family:'Fredoka';font-weight:700;color:var(--berry-dark);background:var(--pink-1);border:2px solid var(--pink-2);border-radius:10px;padding:3px 10px;}
+
+  /* ---------- Falling / catch numbers ---------- */
+  .catch-field{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:18px 0;}
+  .catch-num{
+    width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.2rem;color:#fff;cursor:pointer;
+    background:linear-gradient(135deg,var(--sky),#2f7fe0);box-shadow:0 4px 0 rgba(0,0,0,.12);
+    transition:transform .15s ease;
+  }
+  .catch-num:hover{transform:scale(1.08);}
+  .catch-num.caught{background:linear-gradient(135deg,var(--mint),#1a8a63);pointer-events:none;}
+  .catch-num.wrong-flash{outline:3px solid #c23c3c;}
+
+  /* ---------- Rule-pick buttons (Mystery Pattern) ---------- */
+  .rule-pick-row{display:flex;justify-content:center;gap:12px;margin-top:16px;flex-wrap:wrap;}
+  .rule-pick-btn{
+    padding:12px 22px;border-radius:16px;font-family:'Fredoka';font-weight:700;font-size:1.2rem;
+    background:#fff;border:2.5px solid var(--pink-2);color:var(--berry-dark);
+  }
+  .rule-pick-btn:hover{border-color:var(--berry-1);}
+  .rule-pick-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .rule-pick-btn.wrong{background:#ffe9e9;border-color:#f08a8a;color:#c23c3c;}
+  .rule-pick-btn[disabled]{pointer-events:none;}
+
+  .stars-row{display:flex;justify-content:center;gap:4px;margin:6px 0;}
+  .star-icon{font-size:1.3rem;}
+
+  .reward-card{text-align:center;padding:36px 22px;background:linear-gradient(160deg,#fff,var(--pink-1));}
+  .badge-circle{
+    width:130px;height:130px;border-radius:50%;margin:0 auto 16px;
+    background:linear-gradient(135deg,var(--butter),var(--butter-dark));
+    display:flex;align-items:center;justify-content:center;font-size:3.4rem;
+    box-shadow:0 14px 26px rgba(230,168,0,.4);border:6px solid #fff;
+  }
+  .reward-card h2{color:var(--berry-dark);font-size:1.7rem;margin:0 0 4px;}
+  .reward-card p{color:#7a3a5a;font-weight:700;margin:0 0 10px;}
+  .chapter-complete{
+    margin-top:24px;background:#fff8fb;border:2.5px solid var(--pink-2);border-radius:20px;padding:20px;text-align:left;
+  }
+  .chapter-complete h3{text-align:center;font-size:1.15rem;color:var(--berry-dark);margin:0 0 14px;}
+  .chapter-checklist{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+  .chapter-checklist li{
+    display:flex;align-items:center;gap:10px;font-family:'Fredoka';font-weight:600;color:var(--berry-dark);
+    background:#e3fbf3;border-radius:12px;padding:8px 14px;font-size:.95rem;
+  }
+  .chapter-checklist li .check{color:#1a8a63;font-size:1.1rem;}
+  .next-lesson-card{
+    margin-top:18px;background:#fff;border:2.5px solid var(--pink-2);border-radius:18px;
+    padding:16px;display:flex;align-items:center;gap:14px;text-align:left;
+  }
+  .next-lesson-card .lock-icon{font-size:1.6rem;}
+  .next-lesson-card .txt small{display:block;color:#a85778;font-weight:800;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;}
+  .next-lesson-card .txt strong{font-family:'Fredoka';color:var(--berry-dark);font-size:1.05rem;}
+
+  @media (max-width:480px){
+    .options{grid-template-columns:1fr 1fr;}
+    .catch-num{width:54px;height:54px;font-size:1rem;}
+    .num-sequence{font-size:1.2rem;}
+    .num-sequence span{padding:6px 10px;}
+  }
+  @media (prefers-reduced-motion: reduce){ .stage{animation:none;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="../lessons.html">&larr; Chapter</a>
+    <div class="lesson-title">
+      <small>Grade 2 · Math · Chapter 1: Numbers</small>
+      🔢 Lesson 9: Number Patterns
+    </div>
+    <div class="stars-count"><span id="starTotal">0</span> ⭐</div>
+  </div>
+  <div class="progress-track" id="progressTrack"></div>
+</div>
+
+<div class="stage-wrap" id="stageWrap"></div>
+
+<script>
+/* ============================================================
+   LESSON 9: NUMBER PATTERNS — self-contained, no shared engine.js.
+   Final lesson of Chapter 1: Numbers — reward screen shows the
+   full chapter checklist and unlocks the Chapter 1 Numbers
+   Challenge rather than a single next lesson.
+
+   Progress saved via ../../../../../../assets/js/progress.js
+   (falls back to local localStorage if that file is unavailable)
+
+   Carried-forward fixes from earlier lessons:
+   - speakForStage() guard against the multi-voice overlap bug —
+     a stage may only narrate itself while it is the visible one.
+   - stageEnterActions registry (added in Lesson 8): every stage
+     whose opening line would otherwise only ever be attempted at
+     page-load time (before it's ever shown) registers a callback
+     that goToStage() fires exactly once, the moment the stage
+     actually becomes active. Without this, most activities after
+     the first would open silently.
+   - Retry-until-correct on MCQ/tap activities outside Practice.
+   - Quick Practice: intro alert screen, no live right/wrong
+     reveal per question, score + stars revealed only at the end.
+   - Explicit, concrete instructions everywhere (per Lesson 7
+     feedback) — no vague "How many?"-style prompts.
+   - Tap-based interactions only — no hand-rolled drag.
+============================================================ */
+const TOPIC_ID = "grade2-math-ch1-lesson9-number-patterns";
+let totalStars = 0;
+
+(function loadProgressHelper(){
+  try{
+    const s = document.createElement('script');
+    s.src = "../../../../../../assets/js/progress.js";
+    document.head.appendChild(s);
+  }catch(e){ /* no-op: local fallback below still works */ }
+})();
+function saveStepDone(step){
+  try{
+    if (typeof setStepDone === 'function'){ setStepDone(TOPIC_ID, step, true); return; }
+  }catch(e){}
+  try{
+    const key = 'progress:' + TOPIC_ID;
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data[step] = true;
+    localStorage.setItem(key, JSON.stringify(data));
+  }catch(e){ /* storage unavailable — fail silently, never block the lesson */ }
+}
+
+/* ---------------- Speech ---------------- */
+let enVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  enVoice = voices.find(v => v.lang === 'en-IN') ||
+            voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+}
+if ('speechSynthesis' in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speak(text){
+  try{
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (enVoice) u.voice = enVoice;
+    u.rate = 0.88;
+    u.lang = 'en-IN';
+    speechSynthesis.speak(u);
+  }catch(e){ /* speech unavailable — visuals still work */ }
+}
+function isStageActive(stageId){
+  const el = document.getElementById(stageId);
+  return !!(el && el.classList.contains('active'));
+}
+function speakForStage(stageId, text){
+  if (isStageActive(stageId)) speak(text);
+}
+
+function addStar(n=1){
+  totalStars += n;
+  document.getElementById('starTotal').textContent = totalStars;
+}
+function shuffled(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+/* ---------------- Stage machine ---------------- */
+const STAGES = [
+  {id:'s1'},   // watch the pattern (2 demos)
+  {id:'s2'},   // quick try
+  {id:'s3'},   // what changed? (objects)
+  {id:'s4'},   // pattern detective (2 rounds)
+  {id:'s5'},   // missing tile (3 rounds)
+  {id:'s6'},   // pattern robot (demo + quiz)
+  {id:'s7'},   // pattern garden (2 rounds tap-in-order)
+  {id:'s8'},   // clap the pattern (demo + quiz)
+  {id:'s9'},   // catch the correct number (2 rounds)
+  {id:'s10'},  // quick practice (6 questions)
+  {id:'s11'},  // super challenge (4 challenges incl. mystery)
+  {id:'reward'},
+];
+let currentStageIndex = 0;
+
+function renderProgressTrack(){
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  STAGES.forEach((st, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i < currentStageIndex ? ' done' : '') + (i === currentStageIndex ? ' active' : '');
+    track.appendChild(d);
+  });
+}
+const stageEnterActions = {};
+function goToStage(index){
+  currentStageIndex = index;
+  document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(STAGES[index].id);
+  if (target) target.classList.add('active');
+  renderProgressTrack();
+  saveStepDone(STAGES[index].id);
+  window.scrollTo({top:0, behavior:'smooth'});
+  const enterAction = stageEnterActions[STAGES[index].id];
+  if (enterAction) enterAction();
+}
+function completeStage(){
+  if (currentStageIndex < STAGES.length - 1) goToStage(currentStageIndex + 1);
+}
+
+const wrap = document.getElementById('stageWrap');
+
+/* ---------------- shared MCQ helper (retry-until-correct) ---------------- */
+function renderRetryOptions(container, options, answer, onCorrect, onWrongExtra){
+  container.innerHTML = '';
+  shuffled(options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      if (String(opt) === String(answer)){
+        container.querySelectorAll('.opt-btn').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        onCorrect(b);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+        if (onWrongExtra) onWrongExtra();
+      }
+    };
+    container.appendChild(b);
+  });
+}
+function wireRetryFeedback(containerId, feedbackId){
+  document.querySelectorAll(`#${containerId} .opt-btn`).forEach(b => {
+    const orig = b.onclick;
+    b.onclick = (e) => {
+      orig(e);
+      if (b.classList.contains('wrong')){
+        const fb = document.getElementById(feedbackId);
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+  });
+}
+
+/* ============================================================
+   PART 1 — Watch the Pattern (two demo sequences)
+============================================================ */
+const s1Demos = [
+  {nums:[2,4,6,8,10], say:'Look! The numbers go up by 2.', badge:'Going up by 2!'},
+  {nums:[5,10,15,20], say:'The numbers go up by 5.', badge:'Going up by 5!'},
+];
+let s1Step = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s1">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 1 · Watch the Pattern</div>
+    <h2>🔢 Follow the Number Path</h2>
+    <p>Watch each number jump.</p>
+  </div>
+  <div class="card">
+    <div class="hop-sequence" id="s1Hops"></div>
+    <div class="rule-badge" id="s1Badge"></div>
+    <div class="row-center"><button class="audio-btn small" id="s1Listen"><span class="icon">🔊</span> Listen Again</button></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s1Next">Continue ➜</button></div>
+  </div>
+</section>`);
+function renderS1(){
+  const d = s1Demos[s1Step];
+  const hopsWrap = document.getElementById('s1Hops');
+  hopsWrap.innerHTML = '';
+  d.nums.forEach((n, i) => {
+    if (i > 0){
+      const arrow = document.createElement('span');
+      arrow.className = 'hop-arrow';
+      arrow.textContent = '→';
+      hopsWrap.appendChild(arrow);
+    }
+    const chip = document.createElement('div');
+    chip.className = 'hop-chip';
+    chip.innerHTML = `<span class="hop-emoji">🔵</span><span class="hop-num">${n}</span>`;
+    hopsWrap.appendChild(chip);
+  });
+  document.getElementById('s1Badge').className = 'rule-badge';
+  document.getElementById('s1Badge').textContent = d.badge;
+}
+function playS1Sequence(){
+  const chips = document.querySelectorAll('#s1Hops .hop-chip');
+  chips.forEach(c => c.classList.remove('show'));
+  document.getElementById('s1Badge').classList.remove('show');
+  chips.forEach((chip, i) => setTimeout(() => chip.classList.add('show'), 250 + i * 400));
+  setTimeout(() => {
+    document.getElementById('s1Badge').classList.add('show');
+  }, 250 + s1Demos[s1Step].nums.length * 400);
+  setTimeout(() => speakForStage('s1', s1Demos[s1Step].say), 250 + s1Demos[s1Step].nums.length * 400);
+}
+document.getElementById('s1Listen').onclick = () => { renderS1(); playS1Sequence(); };
+document.getElementById('s1Next').onclick = () => {
+  s1Step++;
+  if (s1Step >= s1Demos.length){ completeStage(); return; }
+  renderS1();
+  playS1Sequence();
+};
+renderS1();
+stageEnterActions.s1 = () => playS1Sequence();
+
+/* ============================================================
+   PART 1b — Quick Try: 10, 20, 30, ?
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s2">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 1 · Quick Try</div>
+    <h2>What Comes Next?</h2>
+  </div>
+  <div class="card">
+    <div class="num-sequence"><span>10</span><span>20</span><span>30</span><span class="blank">?</span></div>
+    <div class="options" id="s2Options"></div>
+    <div class="feedback" id="s2Feedback"></div>
+  </div>
+</section>`);
+renderRetryOptions(document.getElementById('s2Options'), [35,40,50], 40, () => {
+  const fb = document.getElementById('s2Feedback');
+  fb.textContent = 'Correct! 🎉';
+  fb.className = 'feedback good';
+  addStar(1);
+  speak('Correct! 40!');
+  setTimeout(() => completeStage(), 1300);
+});
+wireRetryFeedback('s2Options', 's2Feedback');
+stageEnterActions.s2 = () => speak('What comes next? 10, 20, 30...');
+
+/* ============================================================
+   PART 2 — What Changed? (apple groups, two demos)
+============================================================ */
+const s3Demos = [
+  {counts:[2,4,6], say:'We add 2 each time!'},
+  {counts:[5,10,15], say:'We add 5 each time!'},
+];
+let s3Step = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s3">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 2 · What Changed?</div>
+    <h2>🍎 What Is Changing?</h2>
+    <p>Watch the apple groups grow.</p>
+  </div>
+  <div class="card">
+    <div class="group-row" id="s3Groups"></div>
+    <div class="rule-badge" id="s3Badge"></div>
+    <div class="row-center"><button class="audio-btn small" id="s3Listen"><span class="icon">🔊</span> Listen Again</button></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s3Next">Continue ➜</button></div>
+  </div>
+</section>`);
+function renderS3(){
+  const d = s3Demos[s3Step];
+  const groupsWrap = document.getElementById('s3Groups');
+  groupsWrap.innerHTML = '';
+  d.counts.forEach(count => {
+    const g = document.createElement('div');
+    g.className = 'apple-group';
+    const applesWrap = document.createElement('div');
+    applesWrap.className = 'apples';
+    for (let i=0;i<count;i++){ const s = document.createElement('span'); s.textContent = '🍎'; applesWrap.appendChild(s); }
+    g.appendChild(applesWrap);
+    const totalEl = document.createElement('div');
+    totalEl.className = 'group-total';
+    totalEl.textContent = count;
+    g.appendChild(totalEl);
+    groupsWrap.appendChild(g);
+  });
+  document.getElementById('s3Badge').className = 'rule-badge';
+  document.getElementById('s3Badge').textContent = d.say;
+}
+function playS3Sequence(){
+  const groups = document.querySelectorAll('#s3Groups .apple-group');
+  groups.forEach(g => g.classList.remove('show'));
+  document.getElementById('s3Badge').classList.remove('show');
+  groups.forEach((g, i) => setTimeout(() => g.classList.add('show'), 200 + i * 500));
+  setTimeout(() => document.getElementById('s3Badge').classList.add('show'), 200 + s3Demos[s3Step].counts.length * 500);
+  setTimeout(() => speakForStage('s3', s3Demos[s3Step].say), 200 + s3Demos[s3Step].counts.length * 500);
+}
+document.getElementById('s3Listen').onclick = () => { renderS3(); playS3Sequence(); };
+document.getElementById('s3Next').onclick = () => {
+  s3Step++;
+  if (s3Step >= s3Demos.length){ completeStage(); return; }
+  renderS3();
+  playS3Sequence();
+};
+renderS3();
+stageEnterActions.s3 = () => playS3Sequence();
+
+/* ============================================================
+   PART 3 — Pattern Detective (2 rounds)
+============================================================ */
+const s4Rounds = [
+  {sequence:['10','20','30','40','?'], options:[45,50,60], answer:50, say:'10, 20, 30, 40, what comes next?'},
+  {sequence:['100','200','?','400'], options:[250,300,350], answer:300, say:'100, 200, blank, 400. Find the missing number.'},
+];
+let s4Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s4">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 3 · Pattern Detective</div>
+    <h2>🕵️ Solve the Pattern</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s4Progress"></div>
+    <div class="num-sequence" id="s4Seq"></div>
+    <div class="options" id="s4Options"></div>
+    <div class="feedback" id="s4Feedback"></div>
+  </div>
+</section>`);
+function renderS4(){
+  const r = s4Rounds[s4Index];
+  document.getElementById('s4Progress').textContent = `Question ${s4Index+1} of ${s4Rounds.length}`;
+  document.getElementById('s4Feedback').textContent = '';
+  const seqWrap = document.getElementById('s4Seq');
+  seqWrap.innerHTML = '';
+  r.sequence.forEach(n => {
+    const el = document.createElement('span');
+    el.textContent = n;
+    if (n === '?') el.classList.add('blank');
+    seqWrap.appendChild(el);
+  });
+  renderRetryOptions(document.getElementById('s4Options'), r.options, r.answer, () => {
+    const fb = document.getElementById('s4Feedback');
+    fb.textContent = '🌟 Detective Star! Correct!';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Detective star! Correct!');
+    setTimeout(() => {
+      s4Index++;
+      if (s4Index >= s4Rounds.length) completeStage();
+      else renderS4();
+    }, 1500);
+  });
+  wireRetryFeedback('s4Options', 's4Feedback');
+}
+renderS4();
+stageEnterActions.s4 = () => speak(s4Rounds[s4Index].say);
+
+/* ============================================================
+   PART 4 — Missing Tile (3 rounds)
+============================================================ */
+const s5Rounds = [
+  {sequence:['3','5','?','9','11'], options:[6,7,8], answer:7, say:'3, 5, blank, 9, 11. Find the missing tile.'},
+  {sequence:['20','25','?','35'], options:[28,30,32], answer:30, say:'20, 25, blank, 35. Find the missing tile.'},
+  {sequence:['100','200','?','400'], options:[250,300,350], answer:300, say:'100, 200, blank, 400. Find the missing tile.'},
+];
+let s5Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s5">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 4 · Missing Tile</div>
+    <h2>🧩 Find the Missing Tile</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s5Progress"></div>
+    <div class="num-sequence" id="s5Seq"></div>
+    <div class="options" id="s5Options"></div>
+    <div class="feedback" id="s5Feedback"></div>
+  </div>
+</section>`);
+function renderS5(){
+  const r = s5Rounds[s5Index];
+  document.getElementById('s5Progress').textContent = `Question ${s5Index+1} of ${s5Rounds.length}`;
+  document.getElementById('s5Feedback').textContent = '';
+  const seqWrap = document.getElementById('s5Seq');
+  seqWrap.innerHTML = '';
+  r.sequence.forEach(n => {
+    const el = document.createElement('span');
+    el.textContent = n === '?' ? '🟨' : n;
+    if (n === '?') el.classList.add('blank');
+    seqWrap.appendChild(el);
+  });
+  renderRetryOptions(document.getElementById('s5Options'), r.options, r.answer, () => {
+    const fb = document.getElementById('s5Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => {
+      s5Index++;
+      if (s5Index >= s5Rounds.length) completeStage();
+      else renderS5();
+    }, 1400);
+  });
+  wireRetryFeedback('s5Options', 's5Feedback');
+}
+renderS5();
+stageEnterActions.s5 = () => speak(s5Rounds[s5Index].say);
+
+/* ============================================================
+   PART 5 — Pattern Robot (demo then quiz)
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s6">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 5 · Pattern Robot</div>
+    <h2 id="s6Title">🤖 Discover the Robot's Rule</h2>
+  </div>
+  <div class="card" id="s6DemoCard">
+    <div class="robot-scene">
+      <div class="robot-emoji">🤖</div>
+      <div class="robot-rule">Rule: +2</div>
+    </div>
+    <div class="hop-sequence" id="s6Hops"></div>
+    <div class="row-center"><button class="audio-btn small" id="s6Listen"><span class="icon">🔊</span> Listen Again</button></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s6Next">Continue ➜</button></div>
+  </div>
+  <div class="card" id="s6QuizCard" style="display:none;">
+    <div class="robot-scene">
+      <div class="robot-emoji">🤖</div>
+      <div class="robot-rule">Rule: +5</div>
+    </div>
+    <div class="num-sequence"><span>10</span><span>15</span><span>20</span><span class="blank">?</span></div>
+    <div class="options" id="s6Options"></div>
+    <div class="feedback" id="s6Feedback"></div>
+  </div>
+</section>`);
+(function setupS6Demo(){
+  const hopsWrap = document.getElementById('s6Hops');
+  const nums = [4,6,8,10];
+  nums.forEach((n, i) => {
+    if (i > 0){
+      const arrow = document.createElement('span');
+      arrow.className = 'hop-arrow';
+      arrow.textContent = '→';
+      hopsWrap.appendChild(arrow);
+    }
+    const chip = document.createElement('div');
+    chip.className = 'hop-chip';
+    chip.innerHTML = `<span class="hop-emoji">🤖</span><span class="hop-num">${n}</span>`;
+    hopsWrap.appendChild(chip);
+  });
+  function playDemo(){
+    const chips = hopsWrap.querySelectorAll('.hop-chip');
+    chips.forEach(c => c.classList.remove('show'));
+    chips.forEach((chip, i) => setTimeout(() => chip.classList.add('show'), 250 + i * 400));
+    setTimeout(() => speakForStage('s6', "The robot's rule is plus 2. Input 4. 4, 6, 8, 10."), 250 + nums.length * 400);
+  }
+  document.getElementById('s6Listen').onclick = playDemo;
+  stageEnterActions.s6 = () => playDemo();
+})();
+document.getElementById('s6Next').onclick = () => {
+  document.getElementById('s6DemoCard').style.display = 'none';
+  document.getElementById('s6QuizCard').style.display = 'block';
+  document.getElementById('s6Title').textContent = '🤖 Now the Rule Changed!';
+  const say = "The robot's rule is now plus 5. 10, 15, 20, what comes next?";
+  speakForStage('s6', say);
+  renderRetryOptions(document.getElementById('s6Options'), [22,25,30], 25, () => {
+    const fb = document.getElementById('s6Feedback');
+    fb.textContent = 'The robot celebrates! 🎉 Correct!';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! The robot celebrates!');
+    setTimeout(() => completeStage(), 1500);
+  });
+  wireRetryFeedback('s6Options', 's6Feedback');
+};
+
+/* ============================================================
+   PART 6 — Pattern Garden (2 rounds, tap-in-order stepping stones)
+============================================================ */
+const s7Rounds = [
+  {numbers:[10,20,30,40,50], emoji:'🧑'},
+  {numbers:[2,4,6,8,10], emoji:'🧑'},
+];
+let s7Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s7">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 6 · Pattern Garden</div>
+    <h2>🌳 Cross the Stepping Stones</h2>
+    <p id="s7Sub">Tap the stones in order to help the character cross.</p>
+  </div>
+  <div class="card">
+    <div class="order-slots" id="s7Slots"></div>
+    <div class="stone-row" id="s7Stones"></div>
+    <div class="feedback" id="s7Feedback"></div>
+  </div>
+</section>`);
+function renderS7(){
+  const r = s7Rounds[s7Index];
+  document.getElementById('s7Feedback').textContent = '';
+  const slotsWrap = document.getElementById('s7Slots');
+  slotsWrap.innerHTML = '';
+  r.numbers.forEach((_, i) => {
+    if (i > 0){
+      const arrow = document.createElement('span');
+      arrow.className = 'order-arrow';
+      arrow.textContent = '→';
+      slotsWrap.appendChild(arrow);
+    }
+    const slot = document.createElement('div');
+    slot.className = 'order-slot';
+    slot.dataset.index = i;
+    slotsWrap.appendChild(slot);
+  });
+  const stonesWrap = document.getElementById('s7Stones');
+  stonesWrap.innerHTML = '';
+  let nextIdx = 0;
+  shuffled(r.numbers).forEach(n => {
+    const tile = document.createElement('div');
+    tile.className = 'stone-tile';
+    tile.innerHTML = `<span class="stone-emoji">🪨</span><span class="stone-num">${n}</span>`;
+    tile.onclick = () => {
+      if (tile.classList.contains('locked')) return;
+      const fb = document.getElementById('s7Feedback');
+      if (n === r.numbers[nextIdx]){
+        const slot = slotsWrap.querySelector(`.order-slot[data-index="${nextIdx}"]`);
+        slot.textContent = n;
+        slot.classList.add('filled');
+        tile.classList.add('locked');
+        fb.textContent = '🧑 Step! Nice!';
+        fb.className = 'feedback good';
+        speak('Nice!');
+        nextIdx++;
+        if (nextIdx === r.numbers.length){
+          addStar(1);
+          fb.textContent = 'Crossed the garden! 🎉';
+          speak('Great job!');
+          setTimeout(() => {
+            s7Index++;
+            if (s7Index >= s7Rounds.length) completeStage();
+            else renderS7();
+          }, 1400);
+        }
+      } else {
+        tile.classList.add('wrong-flash');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+        setTimeout(() => tile.classList.remove('wrong-flash'), 500);
+      }
+    };
+    stonesWrap.appendChild(tile);
+  });
+}
+renderS7();
+stageEnterActions.s7 = () => speak('Tap the stepping stones in order.');
+
+/* ============================================================
+   PART 7 — Clap the Pattern (demo then quiz)
+============================================================ */
+const s8Nums = [5,10,15,20];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s8">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 7 · Clap the Pattern</div>
+    <h2>🎵 Clap and Count!</h2>
+  </div>
+  <div class="card">
+    <div class="clap-sequence" id="s8Claps"></div>
+    <div class="row-center"><button class="audio-btn small" id="s8Listen"><span class="icon">🔊</span> Clap and Count Again</button></div>
+    <div id="s8QuizArea" style="display:none;">
+      <p style="text-align:center;font-weight:700;color:#7a3a5a;margin-top:14px;">What comes next?</p>
+      <div class="options" id="s8Options"></div>
+    </div>
+    <div class="feedback" id="s8Feedback"></div>
+  </div>
+</section>`);
+(function setupS8(){
+  const clapsWrap = document.getElementById('s8Claps');
+  s8Nums.forEach(n => {
+    const chip = document.createElement('div');
+    chip.className = 'clap-chip';
+    chip.innerHTML = `<span class="clap-emoji">👏</span><span class="clap-num">${n}</span>`;
+    clapsWrap.appendChild(chip);
+  });
+  function playClaps(cb){
+    const chips = clapsWrap.querySelectorAll('.clap-chip');
+    chips.forEach(c => c.classList.remove('show'));
+    chips.forEach((chip, i) => setTimeout(() => chip.classList.add('show'), 200 + i * 450));
+    setTimeout(() => {
+      speakForStage('s8', 'Clap and count! 5, 10, 15, 20.');
+      if (cb) cb();
+    }, 200 + s8Nums.length * 450);
+  }
+  document.getElementById('s8Listen').onclick = () => playClaps();
+  stageEnterActions.s8 = () => playClaps(() => {
+    if (document.getElementById('s8QuizArea').style.display === 'none'){
+      document.getElementById('s8QuizArea').style.display = 'block';
+      renderRetryOptions(document.getElementById('s8Options'), [22,25,30], 25, () => {
+        const fb = document.getElementById('s8Feedback');
+        fb.textContent = 'Correct! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct! 25!');
+        setTimeout(() => completeStage(), 1400);
+      });
+      wireRetryFeedback('s8Options', 's8Feedback');
+    }
+  });
+})();
+
+/* ============================================================
+   PART 8 — Catch the Correct Number (2 rounds, single target)
+============================================================ */
+const s9Rounds = [
+  {sequence:['10','20','30','?'], falling:[35,40,45,50], answer:40, say:'10, 20, 30, catch the next number in the pattern!'},
+  {sequence:['2','4','6','?'], falling:[7,8,9,10], answer:8, say:'2, 4, 6, catch the next number in the pattern!'},
+];
+let s9Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s9">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 8 · Catch the Correct Number</div>
+    <h2>🎯 Catch the Next Number</h2>
+  </div>
+  <div class="card">
+    <div class="num-sequence" id="s9Seq"></div>
+    <div class="catch-field" id="s9Field"></div>
+    <div class="feedback" id="s9Feedback"></div>
+  </div>
+</section>`);
+function renderS9(){
+  const r = s9Rounds[s9Index];
+  document.getElementById('s9Feedback').textContent = '';
+  const seqWrap = document.getElementById('s9Seq');
+  seqWrap.innerHTML = '';
+  r.sequence.forEach(n => {
+    const el = document.createElement('span');
+    el.textContent = n;
+    if (n === '?') el.classList.add('blank');
+    seqWrap.appendChild(el);
+  });
+  const field = document.getElementById('s9Field');
+  field.innerHTML = '';
+  shuffled(r.falling).forEach(n => {
+    const tile = document.createElement('div');
+    tile.className = 'catch-num';
+    tile.textContent = n;
+    tile.onclick = () => {
+      if (tile.classList.contains('caught')) return;
+      const fb = document.getElementById('s9Feedback');
+      if (n === r.answer){
+        document.querySelectorAll('#s9Field .catch-num').forEach(t => t.classList.add('caught'));
+        fb.textContent = 'Caught it! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Caught it! Correct!');
+        setTimeout(() => {
+          s9Index++;
+          if (s9Index >= s9Rounds.length) completeStage();
+          else renderS9();
+        }, 1400);
+      } else {
+        tile.classList.add('wrong-flash');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+        setTimeout(() => tile.classList.remove('wrong-flash'), 500);
+      }
+    };
+    field.appendChild(tile);
+  });
+}
+renderS9();
+stageEnterActions.s9 = () => speak(s9Rounds[s9Index].say);
+
+/* ============================================================
+   PART 9 — Quick Practice (6 questions, intro + silent scoring)
+============================================================ */
+const s10Questions = [
+  {sequence:['1','2','3','?'], options:[4,5,6], answer:4},
+  {sequence:['2','4','6','?'], options:[7,8,9], answer:8},
+  {sequence:['5','10','15','?'], options:[18,20,25], answer:20},
+  {sequence:['10','20','30','?'], options:[35,40,50], answer:40},
+  {sequence:['100','200','300','?'], options:[350,400,500], answer:400},
+  {sequence:['20','25','30','?'], options:[32,35,40], answer:35},
+];
+let s10Index = 0;
+let s10CorrectCount = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s10">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 9 · Practice</div>
+    <h2>Quick Practice</h2>
+    <p>Six short questions.</p>
+  </div>
+  <div class="card" id="s10Intro">
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">You're going to answer 6 questions on your own now. Take your time and do your best!</p>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s10Start">Start Practice ▶</button></div>
+  </div>
+  <div class="card" id="s10Quiz" style="display:none;">
+    <div class="q-progress" id="s10Progress"></div>
+    <div class="num-sequence" id="s10Seq"></div>
+    <div class="options" id="s10Options"></div>
+    <div class="feedback" id="s10Feedback"></div>
+  </div>
+</section>`);
+document.getElementById('s10Start').onclick = () => {
+  document.getElementById('s10Intro').style.display = 'none';
+  document.getElementById('s10Quiz').style.display = 'block';
+  speak("Now you're going to answer some questions on your own. Let's begin!");
+  renderS10();
+};
+function renderS10(){
+  const q = s10Questions[s10Index];
+  document.getElementById('s10Progress').textContent = `Question ${s10Index+1} of ${s10Questions.length}`;
+  document.getElementById('s10Feedback').textContent = '';
+  const seqWrap = document.getElementById('s10Seq');
+  seqWrap.innerHTML = '';
+  q.sequence.forEach(n => {
+    const el = document.createElement('span');
+    el.textContent = n;
+    if (n === '?') el.classList.add('blank');
+    seqWrap.appendChild(el);
+  });
+  const optsWrap = document.getElementById('s10Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      document.querySelectorAll('#s10Options .opt-btn').forEach(x => x.disabled = true);
+      b.classList.add('selected');
+      if (opt === q.answer) s10CorrectCount++;
+      const fb = document.getElementById('s10Feedback');
+      fb.textContent = 'Got it! Next question…';
+      fb.className = 'feedback neutral';
+      speak('Got it. Next question.');
+      setTimeout(() => {
+        s10Index++;
+        if (s10Index >= s10Questions.length) showS10Summary();
+        else renderS10();
+      }, 1100);
+    };
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s10', q.sequence.join(', ').replace('?', 'what comes next?'));
+}
+function showS10Summary(){
+  document.getElementById('s10Progress').textContent = 'Practice Complete!';
+  document.getElementById('s10Seq').innerHTML = '';
+  const optsWrap = document.getElementById('s10Options');
+  optsWrap.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.textContent = 'Continue ➜';
+  btn.style.gridColumn = '1 / -1';
+  btn.onclick = () => completeStage();
+  optsWrap.appendChild(btn);
+  addStar(s10CorrectCount);
+  const fb = document.getElementById('s10Feedback');
+  fb.textContent = `You got ${s10CorrectCount} out of ${s10Questions.length} correct! ` +
+    (s10CorrectCount === s10Questions.length ? 'Perfect score! 🌟' : 'Great effort! 🎉');
+  fb.className = 'feedback good';
+  speak(`You got ${s10CorrectCount} out of ${s10Questions.length} correct!`);
+}
+
+/* ============================================================
+   PART 10 — Super Challenge (3 challenges + Mystery Pattern)
+============================================================ */
+const s11Challenges = [
+  {sequence:['4','6','8','10','?'], options:[11,12,14], answer:12, say:'4, 6, 8, 10, what comes next?'},
+  {sequence:['10','20','30','?','50'], options:[35,40,45], answer:40, say:'10, 20, 30, blank, 50. Find the missing number.'},
+  {sequence:['100','200','?','400','500'], options:[250,300,350], answer:300, say:'100, 200, blank, 400, 500. Find the missing number.'},
+];
+let s11Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s11">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 10 · Super Challenge</div>
+    <h2 id="s11Title">🏆 Mixed Pattern Challenge</h2>
+    <p id="s11Sub"></p>
+  </div>
+  <div class="card" id="s11ChallengeCard">
+    <div class="q-progress" id="s11Progress"></div>
+    <div class="num-sequence" id="s11Seq"></div>
+    <div class="row-center"><button class="audio-btn small" id="s11Play"><span class="icon">🔊</span> Hear It Again</button></div>
+    <div class="options" id="s11Options"></div>
+    <div class="feedback" id="s11Feedback"></div>
+  </div>
+  <div class="card" id="s11MysteryCard" style="display:none;">
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">Look at the pattern below. What is the rule?</p>
+    <div class="num-sequence"><span>5</span><span>10</span><span>15</span><span>20</span><span class="blank">?</span><span>30</span></div>
+    <div class="row-center"><button class="audio-btn small" id="s11MysteryPlay"><span class="icon">🔎</span> Hear It Again</button></div>
+    <div id="s11RuleStep">
+      <div class="rule-pick-row" id="s11RuleOptions"></div>
+    </div>
+    <div id="s11NumberStep" style="display:none;">
+      <p style="text-align:center;font-weight:700;color:#7a3a5a;margin-top:14px;">Great! Now find the missing number.</p>
+      <div class="options" id="s11NumberOptions"></div>
+    </div>
+    <div class="feedback" id="s11MysteryFeedback"></div>
+  </div>
+</section>`);
+function renderS11Challenge(){
+  const r = s11Challenges[s11Index];
+  document.getElementById('s11Sub').textContent = `Challenge ${s11Index+1} of ${s11Challenges.length + 1}`;
+  document.getElementById('s11Progress').textContent = `Challenge ${s11Index+1} of ${s11Challenges.length + 1}`;
+  document.getElementById('s11Feedback').textContent = '';
+  const seqWrap = document.getElementById('s11Seq');
+  seqWrap.innerHTML = '';
+  r.sequence.forEach(n => {
+    const el = document.createElement('span');
+    el.textContent = n;
+    if (n === '?') el.classList.add('blank');
+    seqWrap.appendChild(el);
+  });
+  document.getElementById('s11Play').onclick = () => speak(r.say);
+  renderRetryOptions(document.getElementById('s11Options'), r.options, r.answer, () => {
+    const fb = document.getElementById('s11Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! ' + r.answer + '!');
+    setTimeout(() => {
+      s11Index++;
+      if (s11Index >= s11Challenges.length){
+        document.getElementById('s11ChallengeCard').style.display = 'none';
+        document.getElementById('s11MysteryCard').style.display = 'block';
+        document.getElementById('s11Title').textContent = '🕵️ Mystery Pattern';
+        setupS11Mystery();
+      } else {
+        renderS11Challenge();
+      }
+    }, 1400);
+  });
+  wireRetryFeedback('s11Options', 's11Feedback');
+}
+renderS11Challenge();
+stageEnterActions.s11 = () => speak(s11Challenges[s11Index] ? s11Challenges[s11Index].say : 'What is the rule of this pattern?');
+function setupS11Mystery(){
+  const mysterySay = '5, 10, 15, 20, blank, 30. What is the rule?';
+  speakForStage('s11', mysterySay);
+  document.getElementById('s11MysteryPlay').onclick = () => speak(mysterySay);
+  const ruleWrap = document.getElementById('s11RuleOptions');
+  ruleWrap.innerHTML = '';
+  shuffled(['+2','+5','+10']).forEach(rule => {
+    const b = document.createElement('button');
+    b.className = 'rule-pick-btn';
+    b.textContent = rule;
+    b.onclick = () => {
+      if (b.disabled) return;
+      const fb = document.getElementById('s11MysteryFeedback');
+      if (rule === '+5'){
+        document.querySelectorAll('#s11RuleOptions .rule-pick-btn').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        fb.textContent = "You found the rule! It's plus 5. 🎉";
+        fb.className = 'feedback good';
+        addStar(1);
+        speak("You found the rule! It's plus 5.");
+        setTimeout(() => {
+          document.getElementById('s11NumberStep').style.display = 'block';
+          fb.textContent = '';
+          renderRetryOptions(document.getElementById('s11NumberOptions'), [22,25,28], 25, () => {
+            const fb2 = document.getElementById('s11MysteryFeedback');
+            fb2.textContent = 'Correct! The missing number is 25! 🎉';
+            fb2.className = 'feedback good';
+            addStar(1);
+            speak('Correct! The missing number is 25!');
+            setTimeout(() => showReward(), 1600);
+          });
+          wireRetryFeedback('s11NumberOptions', 's11MysteryFeedback');
+        }, 1300);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+    ruleWrap.appendChild(b);
+  });
+}
+
+/* ============================================================
+   REWARD — Pattern Master + Chapter 1 Complete
+============================================================ */
+const chapterLessons = [
+  'Numbers to 1000', 'Number Names', 'Expanded Form', 'Place Value',
+  'Compare Numbers', 'Ascending & Descending', 'Even & Odd',
+  'Skip Counting', 'Number Patterns',
+];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="reward">
+  <div class="card reward-card">
+    <div class="badge-circle">🔢</div>
+    <h2>PATTERN MASTER</h2>
+    <p>You found the patterns!</p>
+    <div class="stars-row" id="rewardStars"></div>
+    <div class="chapter-complete">
+      <h3>🌟 Chapter 1 Complete!</h3>
+      <ul class="chapter-checklist" id="chapterChecklist"></ul>
+    </div>
+    <div class="next-lesson-card">
+      <div class="lock-icon">🔓</div>
+      <div class="txt">
+        <small>Next Up</small>
+        <strong>Chapter 1 Numbers Challenge</strong>
+      </div>
+    </div>
+  </div>
+</section>`);
+function showReward(){
+  goToStage(STAGES.length - 1);
+  const starsRow = document.getElementById('rewardStars');
+  starsRow.innerHTML = '';
+  for (let i=0;i<5;i++){
+    const s = document.createElement('span');
+    s.className = 'star-icon';
+    s.textContent = '⭐';
+    starsRow.appendChild(s);
+  }
+  const checklist = document.getElementById('chapterChecklist');
+  checklist.innerHTML = '';
+  chapterLessons.forEach(name => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="check">✅</span> ${name}`;
+    checklist.appendChild(li);
+  });
+  saveStepDone('lesson9-complete');
+  saveStepDone('chapter1-complete');
+  speak('Great job! You found the patterns! Chapter 1 is complete!');
+}
+
+/* ---------------- init ---------------- */
+renderProgressTrack();
+goToStage(0);
+</script>
+</body>
+</html>

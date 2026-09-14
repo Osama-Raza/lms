@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lesson 8: Skip Counting — Grade 2 Math</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-1:#fff3f7;
+    --pink-2:#ffe1ec;
+    --berry-1:#e94f8a;
+    --berry-2:#c22a68;
+    --berry-dark:#8f1c4f;
+    --butter:#ffcf5c;
+    --butter-dark:#e6a800;
+    --mint:#4fd6a8;
+    --sky:#5aa9ff;
+    --ink:#4a1030;
+    --shadow: 0 10px 24px rgba(196,42,104,.18);
+    --radius-lg: 26px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, var(--pink-2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 20%, #ffe9d6 0%, transparent 40%),
+      linear-gradient(180deg, var(--pink-1), #fff);
+    color:var(--ink);
+    min-height:100vh;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Fredoka',sans-serif;}
+  button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:linear-gradient(135deg,var(--berry-1),var(--berry-2));
+    color:#fff;padding:10px 16px;
+    box-shadow:0 4px 14px rgba(143,28,79,.25);
+  }
+  .topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .topbar .lesson-title{font-family:'Fredoka';font-weight:600;font-size:1.05rem;flex:1;}
+  .topbar .lesson-title small{display:block;font-family:'Nunito';font-weight:700;font-size:.68rem;opacity:.85;letter-spacing:.04em;text-transform:uppercase;}
+  .stars-count{background:rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;font-weight:800;font-size:.85rem;display:flex;align-items:center;gap:4px;}
+  .back-btn{
+    display:inline-flex;align-items:center;gap:4px;flex-shrink:0;
+    background:rgba(255,255,255,.18);color:#fff;text-decoration:none;
+    font-family:'Fredoka';font-weight:700;font-size:.8rem;
+    padding:7px 14px;border-radius:20px;transition:background .15s ease;
+  }
+  .back-btn:hover{background:rgba(255,255,255,.3);}
+
+  .progress-track{max-width:900px;margin:8px auto 0;display:flex;gap:3px;padding:0 16px;}
+  .progress-dot{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.28);transition:background .3s ease;}
+  .progress-dot.done{background:var(--butter);}
+  .progress-dot.active{background:#fff;}
+
+  .stage-wrap{max-width:780px;margin:0 auto;padding:22px 16px 90px;min-height:70vh;}
+  .stage{display:none;animation:fadeUp .45s ease both;}
+  .stage.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .stage-header{text-align:center;margin-bottom:18px;}
+  .stage-eyebrow{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--pink-2);color:var(--berry-dark);
+    font-weight:800;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;
+    padding:5px 14px;border-radius:20px;margin-bottom:8px;
+  }
+  .stage-header h2{font-size:1.4rem;margin:0 0 4px;color:var(--berry-dark);}
+  .stage-header p{margin:0;font-weight:700;color:#7a3a5a;font-size:.9rem;}
+  .step-label{
+    text-align:center;font-weight:800;color:#a85778;font-size:.78rem;
+    letter-spacing:.03em;text-transform:uppercase;margin:0 0 6px;
+  }
+
+  .card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:22px;border:3px solid var(--pink-2);}
+
+  .audio-btn{
+    background:linear-gradient(135deg,var(--sky),#2f7fe0);color:#fff;font-weight:800;font-size:.85rem;
+    padding:10px 18px;border-radius:30px;display:inline-flex;align-items:center;gap:8px;
+    box-shadow:0 6px 14px rgba(47,127,224,.3);transition:transform .15s ease;
+  }
+  .audio-btn:active{transform:scale(.94);}
+  .audio-btn.small{padding:7px 14px;font-size:.78rem;}
+  .audio-btn .icon{font-size:1.1rem;}
+
+  .row-center{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+
+  .btn{font-weight:800;font-size:.95rem;padding:12px 26px;border-radius:30px;transition:transform .15s ease, box-shadow .15s ease;}
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:linear-gradient(135deg,var(--berry-1),var(--berry-2));color:#fff;box-shadow:0 8px 18px rgba(196,42,104,.3);}
+  .btn-primary[disabled]{opacity:.4;pointer-events:none;}
+  .center-btn-row{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap;}
+
+  .feedback{text-align:center;font-weight:800;font-family:'Fredoka';font-size:1.02rem;min-height:1.6rem;margin-top:12px;}
+  .feedback.good{color:#1a8a63;}
+  .feedback.bad{color:#c23c3c;}
+  .feedback.neutral{color:var(--berry-dark);}
+  .q-progress{text-align:center;font-weight:800;color:#a85778;font-size:.78rem;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;}
+
+  /* ---------- Jump / hop sequence display ---------- */
+  .hop-sequence{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;margin:16px 0;}
+  .hop-chip{
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+    opacity:0;transform:translateY(10px) scale(.8);transition:opacity .35s ease, transform .35s ease;
+  }
+  .hop-chip.show{opacity:1;transform:translateY(0) scale(1);}
+  .hop-chip .hop-emoji{font-size:1.8rem;}
+  .hop-chip .hop-num{font-family:'Fredoka';font-weight:700;color:var(--berry-dark);background:var(--pink-1);border:2px solid var(--pink-2);border-radius:10px;padding:4px 10px;font-size:1.1rem;}
+  .hop-arrow{color:#c98cae;font-family:'Fredoka';font-weight:700;font-size:1.2rem;}
+
+  .rule-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:10px 22px;border-radius:30px;font-family:'Fredoka';font-weight:700;font-size:1.1rem;
+    margin:10px 0;background:#e3fbf3;color:#1a8a63;
+    opacity:0;transform:scale(.85);transition:opacity .4s ease, transform .4s ease;
+  }
+  .rule-badge.show{opacity:1;transform:scale(1);}
+
+  /* ---------- Kangaroo jump scene ---------- */
+  .jump-scene{display:flex;justify-content:center;align-items:flex-end;gap:14px;margin:20px 0;flex-wrap:wrap;}
+  .jump-stone{
+    min-width:70px;padding:14px 10px;border-radius:16px;text-align:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.3rem;color:#c98cae;
+    background:#fff8fb;border:3px dashed var(--pink-2);position:relative;
+  }
+  .jump-stone.reached{border-style:solid;border-color:var(--mint);background:#e3fbf3;color:#1a8a63;}
+  .jump-stone.current::before{
+    content:'🦘';position:absolute;top:-34px;left:50%;transform:translateX(-50%);font-size:1.8rem;
+  }
+
+  /* ---------- Apple groups ---------- */
+  .group-row{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:16px 0;}
+  .apple-group{
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    opacity:0;transform:translateY(10px);transition:opacity .4s ease, transform .4s ease;
+  }
+  .apple-group.show{opacity:1;transform:translateY(0);}
+  .apple-group .apples{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:110px;font-size:1.3rem;}
+  .apple-group .group-total{font-family:'Fredoka';font-weight:700;color:var(--berry-dark);background:var(--pink-1);border:2px solid var(--pink-2);border-radius:10px;padding:3px 10px;font-size:1rem;}
+
+  /* ---------- Spinner ---------- */
+  .spinner-wheel{
+    width:120px;height:120px;border-radius:50%;margin:0 auto 14px;
+    background:conic-gradient(var(--berry-1) 0% 25%, var(--butter) 25% 50%, var(--mint) 50% 75%, var(--sky) 75% 100%);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 18px rgba(0,0,0,.18);border:6px solid #fff;
+    transition:transform 1.1s cubic-bezier(.2,.8,.2,1);
+  }
+  .spinner-wheel .spinner-label{
+    background:#fff;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.3rem;color:var(--berry-dark);
+  }
+
+  /* ---------- Sequence with blank (fill the gap / practice / challenge) ---------- */
+  .num-sequence{
+    display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px 0;
+    font-family:'Fredoka';font-weight:700;font-size:1.5rem;color:var(--berry-dark);
+  }
+  .num-sequence span{background:var(--pink-1);border:2px solid var(--pink-2);border-radius:12px;padding:8px 14px;min-width:44px;text-align:center;}
+  .num-sequence span.blank{background:var(--butter);border-color:var(--butter-dark);color:#5a3d00;}
+
+  /* ---------- Options ---------- */
+  .options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;}
+  .opt-btn{
+    background:#fff;border:2.5px solid var(--pink-2);color:var(--ink);border-radius:14px;
+    padding:14px 8px;font-family:'Fredoka';font-weight:600;font-size:1.1rem;text-align:center;
+  }
+  .opt-btn:hover{border-color:var(--berry-1);}
+  .opt-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .opt-btn.wrong{background:#ffe9e9;border-color:#f08a8a;color:#c23c3c;}
+  .opt-btn.selected{background:var(--pink-2);border-color:var(--berry-1);color:var(--berry-dark);}
+  .opt-btn[disabled]{pointer-events:none;}
+
+  /* ---------- Train ---------- */
+  .train-row{display:flex;justify-content:center;gap:10px;margin:18px 0;flex-wrap:wrap;}
+  .carriage{
+    min-width:74px;padding:16px 10px;border-radius:14px;text-align:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.2rem;color:var(--berry-dark);
+    background:#fff8fb;border:3px solid var(--pink-2);position:relative;
+  }
+  .carriage.engine{background:linear-gradient(135deg,var(--berry-1),var(--berry-2));color:#fff;border-color:var(--berry-2);}
+  .carriage.empty{border-style:dashed;color:#c98cae;}
+  .carriage.filled{border-style:solid;border-color:var(--mint);background:#e3fbf3;color:#1a8a63;}
+
+  /* ---------- Number Catcher ---------- */
+  .catch-field{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:18px 0;}
+  .catch-num{
+    width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.2rem;color:#fff;cursor:pointer;
+    background:linear-gradient(135deg,var(--sky),#2f7fe0);box-shadow:0 4px 0 rgba(0,0,0,.12);
+    transition:transform .15s ease;
+  }
+  .catch-num:hover{transform:scale(1.08);}
+  .catch-num.caught{background:linear-gradient(135deg,var(--mint),#1a8a63);pointer-events:none;}
+  .catch-num.wrong-flash{outline:3px solid #c23c3c;}
+  .catch-progress{text-align:center;font-family:'Fredoka';font-weight:700;color:var(--berry-dark);margin-top:10px;}
+
+  /* ---------- Order tap (Help the Bee) ---------- */
+  .order-slots{display:flex;justify-content:center;align-items:center;gap:8px;margin:16px 0;flex-wrap:wrap;}
+  .order-slot{
+    min-width:56px;height:50px;border:2.5px dashed #f3b8d0;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fredoka';font-weight:700;font-size:1.05rem;color:#c98cae;background:#fff8fb;
+  }
+  .order-slot.filled{border-style:solid;border-color:var(--mint);background:#e3fbf3;color:#1a8a63;}
+  .order-arrow{color:#c98cae;font-family:'Fredoka';font-weight:700;font-size:1rem;}
+  .flower-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:14px;}
+  .flower-tile{
+    display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;
+    padding:10px;border-radius:14px;background:#fff8fb;border:3px solid var(--pink-2);
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .flower-tile:hover{transform:scale(1.05);border-color:var(--berry-1);}
+  .flower-tile.locked{opacity:0;pointer-events:none;}
+  .flower-tile .flower-emoji{font-size:1.5rem;}
+  .flower-tile .flower-num{font-family:'Fredoka';font-weight:700;color:var(--berry-dark);}
+  .flower-tile.wrong-flash{background:#ffe9e9;border-color:#f08a8a;}
+
+  .stars-row{display:flex;justify-content:center;gap:4px;margin:6px 0;}
+  .star-icon{font-size:1.3rem;}
+
+  .reward-card{text-align:center;padding:36px 22px;background:linear-gradient(160deg,#fff,var(--pink-1));}
+  .badge-circle{
+    width:130px;height:130px;border-radius:50%;margin:0 auto 16px;
+    background:linear-gradient(135deg,var(--butter),var(--butter-dark));
+    display:flex;align-items:center;justify-content:center;font-size:3.4rem;
+    box-shadow:0 14px 26px rgba(230,168,0,.4);border:6px solid #fff;
+  }
+  .reward-card h2{color:var(--berry-dark);font-size:1.7rem;margin:0 0 4px;}
+  .reward-card p{color:#7a3a5a;font-weight:700;margin:0 0 10px;}
+  .next-lesson-card{
+    margin-top:22px;background:#fff;border:2.5px solid var(--pink-2);border-radius:18px;
+    padding:16px;display:flex;align-items:center;gap:14px;text-align:left;
+  }
+  .next-lesson-card .lock-icon{font-size:1.6rem;}
+  .next-lesson-card .txt small{display:block;color:#a85778;font-weight:800;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;}
+  .next-lesson-card .txt strong{font-family:'Fredoka';color:var(--berry-dark);font-size:1.05rem;}
+
+  @media (max-width:480px){
+    .options{grid-template-columns:1fr 1fr;}
+    .jump-stone{min-width:58px;font-size:1.1rem;}
+    .catch-num{width:54px;height:54px;font-size:1rem;}
+    .num-sequence{font-size:1.2rem;}
+    .num-sequence span{padding:6px 10px;}
+  }
+  @media (prefers-reduced-motion: reduce){ .stage{animation:none;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="../lessons.html">&larr; Chapter</a>
+    <div class="lesson-title">
+      <small>Grade 2 · Math · Chapter 1: Numbers</small>
+      🚂 Lesson 8: Skip Counting
+    </div>
+    <div class="stars-count"><span id="starTotal">0</span> ⭐</div>
+  </div>
+  <div class="progress-track" id="progressTrack"></div>
+</div>
+
+<div class="stage-wrap" id="stageWrap"></div>
+
+<script>
+/* ============================================================
+   LESSON 8: SKIP COUNTING — self-contained, no shared engine.js.
+   Progress saved via ../../../../../../assets/js/progress.js
+   (falls back to local localStorage if that file is unavailable)
+
+   Carried-forward fixes from earlier lessons:
+   - speakForStage() guard against the multi-voice overlap bug —
+     a stage may only narrate itself while it is the visible one.
+   - Retry-until-correct on MCQ/tap activities outside Practice:
+     a wrong pick disables only that option, encourages another
+     try, and never locks out the correct answer.
+   - Quick Practice: intro alert screen, no live right/wrong
+     reveal per question, score + stars revealed only at the end.
+   - Every instruction is explicit and concrete (e.g. "How many
+     apples are there?" rather than "How many?"), per direct
+     feedback from Lesson 7.
+   - Tap-based interactions only — no hand-rolled drag, per the
+     Lesson 4 pointer/drag bug history.
+============================================================ */
+const TOPIC_ID = "grade2-math-ch1-lesson8-skip-counting";
+let totalStars = 0;
+
+(function loadProgressHelper(){
+  try{
+    const s = document.createElement('script');
+    s.src = "../../../../../../assets/js/progress.js";
+    document.head.appendChild(s);
+  }catch(e){ /* no-op: local fallback below still works */ }
+})();
+function saveStepDone(step){
+  try{
+    if (typeof setStepDone === 'function'){ setStepDone(TOPIC_ID, step, true); return; }
+  }catch(e){}
+  try{
+    const key = 'progress:' + TOPIC_ID;
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data[step] = true;
+    localStorage.setItem(key, JSON.stringify(data));
+  }catch(e){ /* storage unavailable — fail silently, never block the lesson */ }
+}
+
+/* ---------------- Speech ---------------- */
+let enVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  enVoice = voices.find(v => v.lang === 'en-IN') ||
+            voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+}
+if ('speechSynthesis' in window){
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+function speak(text){
+  try{
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (enVoice) u.voice = enVoice;
+    u.rate = 0.88;
+    u.lang = 'en-IN';
+    speechSynthesis.speak(u);
+  }catch(e){ /* speech unavailable — visuals still work */ }
+}
+function isStageActive(stageId){
+  const el = document.getElementById(stageId);
+  return !!(el && el.classList.contains('active'));
+}
+function speakForStage(stageId, text){
+  if (isStageActive(stageId)) speak(text);
+}
+
+function addStar(n=1){
+  totalStars += n;
+  document.getElementById('starTotal').textContent = totalStars;
+}
+function shuffled(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+/* ---------------- Stage machine ---------------- */
+const STAGES = [
+  {id:'s1'},  {id:'s2'},   // watch the jumps: demo, quick try
+  {id:'s3'},               // jump along
+  {id:'s4'},  {id:'s5'},   // count the groups: demo, try
+  {id:'s6'},               // spin & count
+  {id:'s7'},               // fill the missing step
+  {id:'s8'},               // counting train
+  {id:'s9'},               // number catcher
+  {id:'s10'},              // help the bee
+  {id:'s11'},              // quick practice
+  {id:'s12'},              // super challenge + mystery
+  {id:'reward'},
+];
+let currentStageIndex = 0;
+
+function renderProgressTrack(){
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  STAGES.forEach((st, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i < currentStageIndex ? ' done' : '') + (i === currentStageIndex ? ' active' : '');
+    track.appendChild(d);
+  });
+}
+function goToStage(index){
+  currentStageIndex = index;
+  document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(STAGES[index].id);
+  if (target) target.classList.add('active');
+  renderProgressTrack();
+  saveStepDone(STAGES[index].id);
+  window.scrollTo({top:0, behavior:'smooth'});
+  const enterAction = stageEnterActions[STAGES[index].id];
+  if (enterAction) enterAction();
+}
+function completeStage(){
+  if (currentStageIndex < STAGES.length - 1) goToStage(currentStageIndex + 1);
+}
+/* Registry of "first time this stage becomes visible" narration triggers.
+   Needed because every stage is BUILT immediately at page load (only one
+   is SHOWN), so a setTimeout/speakForStage call made during a stage's
+   initial construction fires before goToStage ever makes it active — the
+   speakForStage guard correctly stops that from leaking into whatever IS
+   visible, but nothing then re-fires it once the student actually reaches
+   that stage. Each stage below registers its opening line here; goToStage
+   invokes it exactly once, at the moment the stage is genuinely shown. */
+const stageEnterActions = {};
+
+const wrap = document.getElementById('stageWrap');
+
+/* ---------------- shared MCQ helper (retry-until-correct) ---------------- */
+function renderRetryOptions(container, options, answer, onCorrect){
+  container.innerHTML = '';
+  shuffled(options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      if (String(opt) === String(answer)){
+        container.querySelectorAll('.opt-btn').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        onCorrect(b);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+      }
+    };
+    container.appendChild(b);
+  });
+}
+
+/* ============================================================
+   PART 1 — Watch the Jumps (frog, counting by 2s)
+============================================================ */
+const s1Hops = [2,4,6,8,10];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s1">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 1 · Watch the Jumps</div>
+    <h2>🐸 The Frog Counts by 2</h2>
+    <p>Watch and listen as the frog jumps.</p>
+  </div>
+  <div class="card">
+    <div class="hop-sequence" id="s1Hops"></div>
+    <div class="rule-badge" id="s1Badge">We are counting by 2!</div>
+    <div class="row-center"><button class="audio-btn small" id="s1Listen"><span class="icon">🔊</span> Listen Again</button></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s1Next">Continue ➜</button></div>
+  </div>
+</section>`);
+(function setupS1(){
+  const hopsWrap = document.getElementById('s1Hops');
+  s1Hops.forEach((n, i) => {
+    if (i > 0){
+      const arrow = document.createElement('span');
+      arrow.className = 'hop-arrow';
+      arrow.textContent = '→';
+      hopsWrap.appendChild(arrow);
+    }
+    const chip = document.createElement('div');
+    chip.className = 'hop-chip';
+    chip.innerHTML = `<span class="hop-emoji">🐸</span><span class="hop-num">${n}</span>`;
+    hopsWrap.appendChild(chip);
+  });
+  function playSequence(){
+    const chips = hopsWrap.querySelectorAll('.hop-chip');
+    chips.forEach(c => c.classList.remove('show'));
+    document.getElementById('s1Badge').classList.remove('show');
+    chips.forEach((chip, i) => setTimeout(() => chip.classList.add('show'), 250 + i * 450));
+    setTimeout(() => {
+      document.getElementById('s1Badge').classList.add('show');
+      speakForStage('s1', '2... 4... 6... 8... 10. We are counting by 2.');
+    }, 250 + s1Hops.length * 450);
+  }
+  document.getElementById('s1Listen').onclick = () => {
+    speechSynthesis && speechSynthesis.cancel && speechSynthesis.cancel();
+    playSequence();
+  };
+  setTimeout(playSequence, 300);
+})();
+document.getElementById('s1Next').onclick = () => completeStage();
+
+/* ============================================================
+   PART 1b — Quick Try: 2, 4, 6, ?
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s2">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 1 · Quick Try</div>
+    <h2>What Comes Next?</h2>
+  </div>
+  <div class="card">
+    <div class="num-sequence"><span>2</span><span>4</span><span>6</span><span class="blank">?</span></div>
+    <div class="options" id="s2Options"></div>
+    <div class="feedback" id="s2Feedback"></div>
+  </div>
+</section>`);
+(function setupS2(){
+  renderRetryOptions(document.getElementById('s2Options'), [7,8,9], 8, () => {
+    const fb = document.getElementById('s2Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! 8!');
+    setTimeout(() => completeStage(), 1300);
+  });
+  document.querySelectorAll('#s2Options .opt-btn').forEach(b => {
+    const orig = b.onclick;
+    b.onclick = (e) => {
+      orig(e);
+      if (b.classList.contains('wrong')){
+        document.getElementById('s2Feedback').textContent = 'Try again, you are very close!';
+        document.getElementById('s2Feedback').className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+  });
+  speakForStage('s2', 'What comes next? 2, 4, 6...');
+  stageEnterActions.s2 = () => speak('What comes next? 2, 4, 6...');
+})();
+
+/* ============================================================
+   PART 2 — Jump Along (kangaroo, counting by 10s)
+============================================================ */
+const s3Stones = [20,30,40];
+let s3Index = 0;
+let s3AskedNext = false;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s3">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 2 · Jump Along</div>
+    <h2>🦘 Jump Along by 10</h2>
+    <p id="s3Sub">Tap Jump! to move the kangaroo forward.</p>
+  </div>
+  <div class="card">
+    <div class="jump-scene" id="s3Scene"></div>
+    <div class="row-center"><button class="btn btn-primary" id="s3JumpBtn">Jump! 🦘</button></div>
+    <div id="s3NextQ" style="display:none;">
+      <p style="text-align:center;font-weight:700;color:#7a3a5a;margin-top:14px;">What comes next?</p>
+      <div class="options" id="s3Options"></div>
+    </div>
+    <div class="feedback" id="s3Feedback"></div>
+  </div>
+</section>`);
+function renderS3Scene(){
+  const scene = document.getElementById('s3Scene');
+  scene.innerHTML = '';
+  const startStone = document.createElement('div');
+  startStone.className = 'jump-stone reached' + (s3Index === -1 ? ' current' : '');
+  startStone.textContent = '10';
+  scene.appendChild(startStone);
+  s3Stones.forEach((n, i) => {
+    const stone = document.createElement('div');
+    stone.className = 'jump-stone' + (i < s3Index ? ' reached' : '') + (i === s3Index ? ' current' : '');
+    stone.textContent = n;
+    scene.appendChild(stone);
+  });
+}
+renderS3Scene();
+speakForStage('s3', 'Ten. Tap Jump to move the kangaroo forward by 10.');
+stageEnterActions.s3 = () => speak('Ten. Tap Jump to move the kangaroo forward by 10.');
+document.getElementById('s3JumpBtn').onclick = () => {
+  if (s3Index >= s3Stones.length) return;
+  s3Index++;
+  renderS3Scene();
+  const n = s3Stones[s3Index - 1];
+  speak(String(n));
+  if (s3Index >= s3Stones.length){
+    document.getElementById('s3JumpBtn').style.display = 'none';
+    document.getElementById('s3Sub').textContent = '10, 20, 30, 40 — now what comes next?';
+    document.getElementById('s3NextQ').style.display = 'block';
+    renderRetryOptions(document.getElementById('s3Options'), [50,45,60], 50, () => {
+      const fb = document.getElementById('s3Feedback');
+      fb.textContent = 'Correct! 🎉';
+      fb.className = 'feedback good';
+      addStar(1);
+      speak('Correct! 50!');
+      setTimeout(() => completeStage(), 1400);
+    });
+    document.querySelectorAll('#s3Options .opt-btn').forEach(b => {
+      const orig = b.onclick;
+      b.onclick = (e) => {
+        orig(e);
+        if (b.classList.contains('wrong')){
+          document.getElementById('s3Feedback').textContent = 'Try again, you are very close!';
+          document.getElementById('s3Feedback').className = 'feedback bad';
+          speak('Try again, you are very close!');
+        }
+      };
+    });
+    speakForStage('s3', 'What comes next?');
+  }
+};
+
+/* ============================================================
+   PART 3 — Count the Groups (apples, counting by 5s) — demo
+============================================================ */
+const s4Totals = [5,10,15,20];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s4">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 3 · Count the Groups</div>
+    <h2>🍎 Count 5 More Each Time</h2>
+    <p>Watch the apple groups grow.</p>
+  </div>
+  <div class="card">
+    <div class="group-row" id="s4Groups"></div>
+    <div class="row-center"><button class="audio-btn small" id="s4Listen"><span class="icon">🔊</span> Listen Again</button></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s4Next">Continue ➜</button></div>
+  </div>
+</section>`);
+(function setupS4(){
+  const groupsWrap = document.getElementById('s4Groups');
+  s4Totals.forEach(total => {
+    const g = document.createElement('div');
+    g.className = 'apple-group';
+    const applesWrap = document.createElement('div');
+    applesWrap.className = 'apples';
+    for (let i=0;i<5;i++){ const s = document.createElement('span'); s.textContent = '🍎'; applesWrap.appendChild(s); }
+    g.appendChild(applesWrap);
+    const totalEl = document.createElement('div');
+    totalEl.className = 'group-total';
+    totalEl.textContent = total;
+    g.appendChild(totalEl);
+    groupsWrap.appendChild(g);
+  });
+  function playSequence(){
+    const groups = groupsWrap.querySelectorAll('.apple-group');
+    groups.forEach(g => g.classList.remove('show'));
+    groups.forEach((g, i) => setTimeout(() => g.classList.add('show'), 200 + i * 500));
+    setTimeout(() => speakForStage('s4', 'We count 5 more each time. 5, 10, 15, 20.'), 200 + s4Totals.length * 500);
+  }
+  document.getElementById('s4Listen').onclick = () => playSequence();
+  stageEnterActions.s4 = () => playSequence();
+  setTimeout(playSequence, 300);
+})();
+document.getElementById('s4Next').onclick = () => completeStage();
+
+/* ============================================================
+   PART 3b — Try: 5, 10, 15, ?
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s5">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 3 · Try It</div>
+    <h2>What Comes Next?</h2>
+  </div>
+  <div class="card">
+    <div class="num-sequence"><span>5</span><span>10</span><span>15</span><span class="blank">?</span></div>
+    <div class="options" id="s5Options"></div>
+    <div class="feedback" id="s5Feedback"></div>
+  </div>
+</section>`);
+(function setupS5(){
+  renderRetryOptions(document.getElementById('s5Options'), [18,20,25], 20, () => {
+    const fb = document.getElementById('s5Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! 20!');
+    setTimeout(() => completeStage(), 1300);
+  });
+  document.querySelectorAll('#s5Options .opt-btn').forEach(b => {
+    const orig = b.onclick;
+    b.onclick = (e) => {
+      orig(e);
+      if (b.classList.contains('wrong')){
+        document.getElementById('s5Feedback').textContent = 'Try again, you are very close!';
+        document.getElementById('s5Feedback').className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+  });
+  speakForStage('s5', 'What comes next? 5, 10, 15...');
+  stageEnterActions.s5 = () => speak('What comes next? 5, 10, 15...');
+})();
+
+/* ============================================================
+   PART 4 — Spin & Count (2 rounds)
+============================================================ */
+const s6Rounds = [
+  {start:10, sequence:[10,20,30], options:[30,40,50], answer:40, by:10},
+  {start:30, sequence:[30,40,50], options:[50,60,70], answer:60, by:10},
+];
+let s6Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s6">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 4 · Spin &amp; Count</div>
+    <h2>🎡 Spin the Wheel</h2>
+    <p id="s6Sub">Tap SPIN to start counting.</p>
+  </div>
+  <div class="card" id="s6SpinCard">
+    <div class="spinner-wheel" id="s6Wheel"><div class="spinner-label" id="s6WheelLabel">?</div></div>
+    <div class="row-center"><button class="btn btn-primary" id="s6SpinBtn">SPIN 🎡</button></div>
+  </div>
+  <div class="card" id="s6QuizCard" style="display:none;">
+    <div class="num-sequence" id="s6Seq"></div>
+    <div class="options" id="s6Options"></div>
+    <div class="feedback" id="s6Feedback"></div>
+  </div>
+</section>`);
+function renderS6Round(){
+  document.getElementById('s6SpinCard').style.display = 'block';
+  document.getElementById('s6QuizCard').style.display = 'none';
+  document.getElementById('s6Wheel').style.transform = 'rotate(0deg)';
+  document.getElementById('s6WheelLabel').textContent = '?';
+  document.getElementById('s6SpinBtn').disabled = false;
+  document.getElementById('s6Sub').textContent = 'Tap SPIN to start counting.';
+}
+document.getElementById('s6SpinBtn').onclick = () => {
+  const r = s6Rounds[s6Index];
+  const wheel = document.getElementById('s6Wheel');
+  document.getElementById('s6SpinBtn').disabled = true;
+  wheel.style.transform = `rotate(${900 + Math.random()*360}deg)`;
+  setTimeout(() => {
+    document.getElementById('s6WheelLabel').textContent = r.start;
+    speakForStage('s6', `${r.start}! Count by ${r.by}!`);
+    setTimeout(() => {
+      document.getElementById('s6SpinCard').style.display = 'none';
+      document.getElementById('s6QuizCard').style.display = 'block';
+      const seqWrap = document.getElementById('s6Seq');
+      seqWrap.innerHTML = '';
+      r.sequence.forEach(n => { const el = document.createElement('span'); el.textContent = n; seqWrap.appendChild(el); });
+      const blank = document.createElement('span');
+      blank.className = 'blank';
+      blank.textContent = '?';
+      seqWrap.appendChild(blank);
+      renderRetryOptions(document.getElementById('s6Options'), r.options, r.answer, () => {
+        const fb = document.getElementById('s6Feedback');
+        fb.textContent = 'Correct! 🎉';
+        fb.className = 'feedback good';
+        addStar(1);
+        speak('Correct! ' + r.answer + '!');
+        setTimeout(() => {
+          s6Index++;
+          if (s6Index >= s6Rounds.length) completeStage();
+          else renderS6Round();
+        }, 1500);
+      });
+      document.querySelectorAll('#s6Options .opt-btn').forEach(b => {
+        const orig = b.onclick;
+        b.onclick = (e) => {
+          orig(e);
+          if (b.classList.contains('wrong')){
+            document.getElementById('s6Feedback').textContent = 'Try again, you are very close!';
+            document.getElementById('s6Feedback').className = 'feedback bad';
+            speak('Try again, you are very close!');
+          }
+        };
+      });
+      speakForStage('s6', r.sequence.join(', ') + ', what comes next?');
+    }, 900);
+  }, 1150);
+};
+renderS6Round();
+
+/* ============================================================
+   PART 5 — Fill the Missing Step (4 rounds)
+============================================================ */
+const s7Rounds = [
+  {sequence:['2','4','?','8','10'], options:[5,6,7], answer:6, say:'2, 4, blank, 8, 10. Find the missing number.'},
+  {sequence:['5','10','?','20'], options:[12,15,18], answer:15, say:'5, 10, blank, 20. Find the missing number.'},
+  {sequence:['20','30','?','50'], options:[35,40,45], answer:40, say:'20, 30, blank, 50. Find the missing number.'},
+  {sequence:['100','200','?','400'], options:[250,300,350], answer:300, say:'100, 200, blank, 400. Find the missing number.'},
+];
+let s7Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s7">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 5 · Fill the Missing Step</div>
+    <h2>🧩 What Number Is Missing?</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s7Progress"></div>
+    <div class="num-sequence" id="s7Seq"></div>
+    <div class="options" id="s7Options"></div>
+    <div class="feedback" id="s7Feedback"></div>
+  </div>
+</section>`);
+function renderS7(){
+  const r = s7Rounds[s7Index];
+  document.getElementById('s7Progress').textContent = `Question ${s7Index+1} of ${s7Rounds.length}`;
+  document.getElementById('s7Feedback').textContent = '';
+  const seqWrap = document.getElementById('s7Seq');
+  seqWrap.innerHTML = '';
+  r.sequence.forEach(n => {
+    const el = document.createElement('span');
+    el.textContent = n;
+    if (n === '?') el.classList.add('blank');
+    seqWrap.appendChild(el);
+  });
+  renderRetryOptions(document.getElementById('s7Options'), r.options, r.answer, () => {
+    const fb = document.getElementById('s7Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! ' + r.answer + '!');
+    setTimeout(() => {
+      s7Index++;
+      if (s7Index >= s7Rounds.length) completeStage();
+      else renderS7();
+    }, 1400);
+  });
+  document.querySelectorAll('#s7Options .opt-btn').forEach(b => {
+    const orig = b.onclick;
+    b.onclick = (e) => {
+      orig(e);
+      if (b.classList.contains('wrong')){
+        document.getElementById('s7Feedback').textContent = 'Try again, you are very close!';
+        document.getElementById('s7Feedback').className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+  });
+  speakForStage('s7', r.say);
+  stageEnterActions.s7 = () => speak(s7Rounds[s7Index].say);
+}
+renderS7();
+
+/* ============================================================
+   PART 6 — Counting Train (2 rounds, counting by 100)
+============================================================ */
+const s8Rounds = [
+  {carriages:['100','200','?','400'], options:[250,300,350], answer:300},
+  {carriages:['200','300','?','500'], options:[350,400,450], answer:400},
+];
+let s8Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s8">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 6 · Counting Train</div>
+    <h2>🚂 Fill the Empty Carriage</h2>
+    <p>Counting by 100 — tap the number that belongs in the gap.</p>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s8Progress"></div>
+    <div class="train-row" id="s8Train"></div>
+    <div class="options" id="s8Options"></div>
+    <div class="feedback" id="s8Feedback"></div>
+  </div>
+</section>`);
+function renderS8(){
+  const r = s8Rounds[s8Index];
+  document.getElementById('s8Progress').textContent = `Question ${s8Index+1} of ${s8Rounds.length}`;
+  document.getElementById('s8Feedback').textContent = '';
+  const trainWrap = document.getElementById('s8Train');
+  trainWrap.innerHTML = '';
+  r.carriages.forEach((n, i) => {
+    const c = document.createElement('div');
+    c.className = 'carriage' + (i === 0 ? ' engine' : '') + (n === '?' ? ' empty' : '');
+    c.textContent = i === 0 ? '🚂 ' + n : (n === '?' ? '❓' : '🚃 ' + n);
+    trainWrap.appendChild(c);
+  });
+  renderRetryOptions(document.getElementById('s8Options'), r.options, r.answer, (btn) => {
+    const emptyCarriage = trainWrap.querySelector('.carriage.empty');
+    if (emptyCarriage){ emptyCarriage.textContent = '🚃 ' + r.answer; emptyCarriage.classList.remove('empty'); emptyCarriage.classList.add('filled'); }
+    const fb = document.getElementById('s8Feedback');
+    fb.textContent = 'Correct! 🚂💨';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! ' + r.answer + '!');
+    setTimeout(() => {
+      s8Index++;
+      if (s8Index >= s8Rounds.length) completeStage();
+      else renderS8();
+    }, 1500);
+  });
+  document.querySelectorAll('#s8Options .opt-btn').forEach(b => {
+    const orig = b.onclick;
+    b.onclick = (e) => {
+      orig(e);
+      if (b.classList.contains('wrong')){
+        document.getElementById('s8Feedback').textContent = 'Try again, you are very close!';
+        document.getElementById('s8Feedback').className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+  });
+  speakForStage('s8', `Which number fills the empty carriage?`);
+  stageEnterActions.s8 = () => speak('Which number fills the empty carriage?');
+}
+renderS8();
+
+/* ============================================================
+   PART 7 — Number Catcher (2 rounds, multi-select)
+============================================================ */
+const s9Rounds = [
+  {by:5, numbers:[15,20,22,25,31], correct:[15,20,25]},
+  {by:10, numbers:[30,35,40,45,50], correct:[30,40,50]},
+];
+let s9Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s9">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 7 · Number Catcher</div>
+    <h2 id="s9Title"></h2>
+    <p>Tap only the numbers that fit the pattern — leave the rest!</p>
+  </div>
+  <div class="card">
+    <div class="row-center"><button class="audio-btn small" id="s9Play"><span class="icon">🔊</span> Hear the Rule</button></div>
+    <div class="catch-field" id="s9Field"></div>
+    <div class="catch-progress" id="s9Progress"></div>
+    <div class="feedback" id="s9Feedback"></div>
+  </div>
+</section>`);
+function renderS9(){
+  const r = s9Rounds[s9Index];
+  document.getElementById('s9Title').textContent = `🎯 Catch numbers by ${r.by}!`;
+  document.getElementById('s9Feedback').textContent = '';
+  const prompt = `Catch numbers by ${r.by}!`;
+  document.getElementById('s9Play').onclick = () => speak(prompt);
+  setTimeout(() => speakForStage('s9', prompt), 400);
+  stageEnterActions.s9 = () => speak(`Catch numbers by ${s9Rounds[s9Index].by}!`);
+  const field = document.getElementById('s9Field');
+  field.innerHTML = '';
+  let caughtCount = 0;
+  function updateProgress(){
+    document.getElementById('s9Progress').textContent = `Caught: ${caughtCount} of ${r.correct.length}`;
+  }
+  shuffled(r.numbers).forEach(n => {
+    const tile = document.createElement('div');
+    tile.className = 'catch-num';
+    tile.textContent = n;
+    tile.onclick = () => {
+      if (tile.classList.contains('caught')) return;
+      const fb = document.getElementById('s9Feedback');
+      if (r.correct.includes(n)){
+        tile.classList.add('caught');
+        caughtCount++;
+        updateProgress();
+        addStar(1);
+        fb.textContent = 'Caught it! 🎉';
+        fb.className = 'feedback good';
+        speak('Caught it!');
+        if (caughtCount === r.correct.length){
+          setTimeout(() => {
+            s9Index++;
+            if (s9Index >= s9Rounds.length) completeStage();
+            else renderS9();
+          }, 1400);
+        }
+      } else {
+        tile.classList.add('wrong-flash');
+        fb.textContent = "That's not part of the pattern — try again!";
+        fb.className = 'feedback bad';
+        speak("That's not part of the pattern. Try again!");
+        setTimeout(() => tile.classList.remove('wrong-flash'), 500);
+      }
+    };
+    field.appendChild(tile);
+  });
+  updateProgress();
+}
+renderS9();
+
+/* ============================================================
+   PART 8 — Help the Bee (3 rounds, tap-in-order)
+============================================================ */
+const s10Rounds = [
+  {numbers:[10,20,30,40], by:10},
+  {numbers:[2,4,6,8], by:2},
+  {numbers:[5,10,15,20], by:5},
+];
+let s10Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s10">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 8 · Help the Bee</div>
+    <h2>🐝 Visit the Flowers in Order</h2>
+    <p id="s10Sub"></p>
+  </div>
+  <div class="card">
+    <div class="order-slots" id="s10Slots"></div>
+    <div class="flower-row" id="s10Flowers"></div>
+    <div class="feedback" id="s10Feedback"></div>
+  </div>
+</section>`);
+function renderS10(){
+  const r = s10Rounds[s10Index];
+  document.getElementById('s10Sub').textContent = `Tap the flowers in order — counting by ${r.by}.`;
+  document.getElementById('s10Feedback').textContent = '';
+  speakForStage('s10', `Tap the flowers in order, counting by ${r.by}.`);
+  stageEnterActions.s10 = () => speak(`Tap the flowers in order, counting by ${s10Rounds[s10Index].by}.`);
+  const slotsWrap = document.getElementById('s10Slots');
+  slotsWrap.innerHTML = '';
+  r.numbers.forEach((_, i) => {
+    if (i > 0){
+      const arrow = document.createElement('span');
+      arrow.className = 'order-arrow';
+      arrow.textContent = '→';
+      slotsWrap.appendChild(arrow);
+    }
+    const slot = document.createElement('div');
+    slot.className = 'order-slot';
+    slot.dataset.index = i;
+    slotsWrap.appendChild(slot);
+  });
+  const flowersWrap = document.getElementById('s10Flowers');
+  flowersWrap.innerHTML = '';
+  let nextIdx = 0;
+  shuffled(r.numbers).forEach(n => {
+    const tile = document.createElement('div');
+    tile.className = 'flower-tile';
+    tile.innerHTML = `<span class="flower-emoji">🌸</span><span class="flower-num">${n}</span>`;
+    tile.onclick = () => {
+      if (tile.classList.contains('locked')) return;
+      const fb = document.getElementById('s10Feedback');
+      if (n === r.numbers[nextIdx]){
+        const slot = slotsWrap.querySelector(`.order-slot[data-index="${nextIdx}"]`);
+        slot.textContent = n;
+        slot.classList.add('filled');
+        tile.classList.add('locked');
+        fb.textContent = 'Buzzz! 🐝';
+        fb.className = 'feedback good';
+        speak('Nice!');
+        nextIdx++;
+        if (nextIdx === r.numbers.length){
+          addStar(1);
+          fb.textContent = 'All flowers visited! 🎉';
+          speak('Great job!');
+          setTimeout(() => {
+            s10Index++;
+            if (s10Index >= s10Rounds.length) completeStage();
+            else renderS10();
+          }, 1400);
+        }
+      } else {
+        tile.classList.add('wrong-flash');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+        setTimeout(() => tile.classList.remove('wrong-flash'), 500);
+      }
+    };
+    flowersWrap.appendChild(tile);
+  });
+}
+renderS10();
+
+/* ============================================================
+   PART 9 — Quick Practice (6 questions, intro + silent scoring)
+============================================================ */
+const s11Questions = [
+  {sequence:['2','4','6','?'], options:[7,8,9], answer:8},
+  {sequence:['5','10','15','?'], options:[18,20,25], answer:20},
+  {sequence:['10','20','30','?'], options:[35,40,50], answer:40},
+  {sequence:['100','200','300','?'], options:[350,400,500], answer:400},
+  {sequence:['20','30','?','50'], options:[35,40,45], answer:40},
+  {sequence:['10','15','20','?'], options:[22,25,30], answer:25},
+];
+let s11Index = 0;
+let s11CorrectCount = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s11">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 9 · Practice</div>
+    <h2>Quick Practice</h2>
+    <p>Six short questions.</p>
+  </div>
+  <div class="card" id="s11Intro">
+    <p style="text-align:center;font-weight:700;color:#7a3a5a;">You're going to answer 6 questions on your own now. Take your time and do your best!</p>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s11Start">Start Practice ▶</button></div>
+  </div>
+  <div class="card" id="s11Quiz" style="display:none;">
+    <div class="q-progress" id="s11Progress"></div>
+    <div class="num-sequence" id="s11Seq"></div>
+    <div class="options" id="s11Options"></div>
+    <div class="feedback" id="s11Feedback"></div>
+  </div>
+</section>`);
+document.getElementById('s11Start').onclick = () => {
+  document.getElementById('s11Intro').style.display = 'none';
+  document.getElementById('s11Quiz').style.display = 'block';
+  speak("Now you're going to answer some questions on your own. Let's begin!");
+  renderS11();
+};
+function renderS11(){
+  const q = s11Questions[s11Index];
+  document.getElementById('s11Progress').textContent = `Question ${s11Index+1} of ${s11Questions.length}`;
+  document.getElementById('s11Feedback').textContent = '';
+  const seqWrap = document.getElementById('s11Seq');
+  seqWrap.innerHTML = '';
+  q.sequence.forEach(n => {
+    const el = document.createElement('span');
+    el.textContent = n;
+    if (n === '?') el.classList.add('blank');
+    seqWrap.appendChild(el);
+  });
+  const optsWrap = document.getElementById('s11Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      document.querySelectorAll('#s11Options .opt-btn').forEach(x => x.disabled = true);
+      b.classList.add('selected');
+      if (opt === q.answer) s11CorrectCount++;
+      const fb = document.getElementById('s11Feedback');
+      fb.textContent = 'Got it! Next question…';
+      fb.className = 'feedback neutral';
+      speak('Got it. Next question.');
+      setTimeout(() => {
+        s11Index++;
+        if (s11Index >= s11Questions.length) showS11Summary();
+        else renderS11();
+      }, 1100);
+    };
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s11', q.sequence.join(', ').replace('?', 'what comes next?'));
+}
+function showS11Summary(){
+  document.getElementById('s11Progress').textContent = 'Practice Complete!';
+  document.getElementById('s11Seq').innerHTML = '';
+  const optsWrap = document.getElementById('s11Options');
+  optsWrap.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.textContent = 'Continue ➜';
+  btn.style.gridColumn = '1 / -1';
+  btn.onclick = () => completeStage();
+  optsWrap.appendChild(btn);
+  addStar(s11CorrectCount);
+  const fb = document.getElementById('s11Feedback');
+  fb.textContent = `You got ${s11CorrectCount} out of ${s11Questions.length} correct! ` +
+    (s11CorrectCount === s11Questions.length ? 'Perfect score! 🌟' : 'Great effort! 🎉');
+  fb.className = 'feedback good';
+  speak(`You got ${s11CorrectCount} out of ${s11Questions.length} correct!`);
+}
+
+/* ============================================================
+   PART 10 — Super Challenge (3 challenges + Final Mystery)
+============================================================ */
+const s12Challenges = [
+  {sequence:['2','4','6','?'], options:[7,8,9], answer:8, say:'2, 4, 6, what comes next?'},
+  {sequence:['100','200','?','400'], options:[250,300,350], answer:300, say:'100, 200, blank, 400. Find the missing number.'},
+  {sequence:['25','30','35','?'], options:[38,40,45], answer:40, say:'Count by 5. 25, 30, 35, what comes next?'},
+];
+let s12Index = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s12">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 10 · Super Challenge</div>
+    <h2 id="s12Title">⭐ Mixed Counting Challenge</h2>
+    <p id="s12Sub"></p>
+  </div>
+  <div class="card" id="s12ChallengeCard">
+    <div class="q-progress" id="s12Progress"></div>
+    <div class="num-sequence" id="s12Seq"></div>
+    <div class="row-center"><button class="audio-btn small" id="s12Play"><span class="icon">🔊</span> Hear It Again</button></div>
+    <div class="options" id="s12Options"></div>
+    <div class="feedback" id="s12Feedback"></div>
+  </div>
+  <div class="card" id="s12MysteryCard" style="display:none;">
+    <ul style="list-style:none;padding:0;margin:14px 0;display:flex;flex-direction:column;gap:10px;" id="s12Clues"></ul>
+    <div class="num-sequence"><span>50</span><span>60</span><span>70</span><span class="blank">?</span><span>90</span></div>
+    <div class="row-center"><button class="audio-btn small" id="s12MysteryPlay"><span class="icon">🔎</span> Hear the Clues</button></div>
+    <div class="options" id="s12MysteryOptions"></div>
+    <div class="feedback" id="s12MysteryFeedback"></div>
+  </div>
+</section>`);
+function renderS12Challenge(){
+  document.getElementById('s12Sub').textContent = `Challenge ${s12Index+1} of ${s12Challenges.length}`;
+  const r = s12Challenges[s12Index];
+  document.getElementById('s12Progress').textContent = `Challenge ${s12Index+1} of ${s12Challenges.length}`;
+  document.getElementById('s12Feedback').textContent = '';
+  const seqWrap = document.getElementById('s12Seq');
+  seqWrap.innerHTML = '';
+  r.sequence.forEach(n => {
+    const el = document.createElement('span');
+    el.textContent = n;
+    if (n === '?') el.classList.add('blank');
+    seqWrap.appendChild(el);
+  });
+  document.getElementById('s12Play').onclick = () => speak(r.say);
+  setTimeout(() => speakForStage('s12', r.say), 400);
+  stageEnterActions.s12 = () => speak(s12Challenges[s12Index] ? s12Challenges[s12Index].say : '');
+  renderRetryOptions(document.getElementById('s12Options'), r.options, r.answer, () => {
+    const fb = document.getElementById('s12Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! ' + r.answer + '!');
+    setTimeout(() => {
+      s12Index++;
+      if (s12Index >= s12Challenges.length){
+        document.getElementById('s12ChallengeCard').style.display = 'none';
+        document.getElementById('s12MysteryCard').style.display = 'block';
+        document.getElementById('s12Title').textContent = '🕵️ Final Mystery';
+        setupS12Mystery();
+      } else {
+        renderS12Challenge();
+      }
+    }, 1400);
+  });
+  document.querySelectorAll('#s12Options .opt-btn').forEach(b => {
+    const orig = b.onclick;
+    b.onclick = (e) => {
+      orig(e);
+      if (b.classList.contains('wrong')){
+        document.getElementById('s12Feedback').textContent = 'Try again, you are very close!';
+        document.getElementById('s12Feedback').className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+  });
+}
+renderS12Challenge();
+function setupS12Mystery(){
+  const clues = ['I start at 50.', 'I jump by 10.'];
+  const list = document.getElementById('s12Clues');
+  clues.forEach(c => {
+    const li = document.createElement('li');
+    li.style.cssText = 'background:var(--pink-1);border:2px solid var(--pink-2);border-radius:14px;padding:12px 16px;font-family:Fredoka;font-weight:600;color:var(--berry-dark);';
+    li.innerHTML = `🔎 ${c}`;
+    list.appendChild(li);
+  });
+  function speakClues(){ speakForStage('s12', clues.join(' ') + ' What number is missing?'); }
+  document.getElementById('s12MysteryPlay').onclick = () => speak(clues.join(' ') + ' What number is missing?');
+  setTimeout(speakClues, 500);
+  renderRetryOptions(document.getElementById('s12MysteryOptions'), [75,80,85], 80, () => {
+    const fb = document.getElementById('s12MysteryFeedback');
+    fb.textContent = 'Correct! I am 80! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! I am 80!');
+    setTimeout(() => showReward(), 1500);
+  });
+  document.querySelectorAll('#s12MysteryOptions .opt-btn').forEach(b => {
+    const orig = b.onclick;
+    b.onclick = (e) => {
+      orig(e);
+      if (b.classList.contains('wrong')){
+        document.getElementById('s12MysteryFeedback').textContent = 'Try again, you are very close!';
+        document.getElementById('s12MysteryFeedback').className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+  });
+}
+
+/* ============================================================
+   REWARD
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="reward">
+  <div class="card reward-card">
+    <div class="badge-circle">🚂</div>
+    <h2>SKIP-COUNTING CHAMPION</h2>
+    <p>You can count in jumps!</p>
+    <div class="stars-row" id="rewardStars"></div>
+    <div class="next-lesson-card">
+      <div class="lock-icon">🔓</div>
+      <div class="txt">
+        <small>Next Lesson</small>
+        <strong>Number Patterns</strong>
+      </div>
+    </div>
+  </div>
+</section>`);
+function showReward(){
+  goToStage(STAGES.length - 1);
+  const starsRow = document.getElementById('rewardStars');
+  starsRow.innerHTML = '';
+  for (let i=0;i<5;i++){
+    const s = document.createElement('span');
+    s.className = 'star-icon';
+    s.textContent = '⭐';
+    starsRow.appendChild(s);
+  }
+  saveStepDone('lesson8-complete');
+  speak('Great job! You can count in jumps!');
+}
+
+/* ---------------- init ---------------- */
+renderProgressTrack();
+goToStage(0);
+</script>
+</body>
+</html>
