@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lesson 1: Plants — Grade 2 Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Science Chapter 1 palette — green/soil/sun tones, distinct from Math's pink/berry */
+    --green-1:#eefbf1; --green-2:#c9f0da; --leaf-1:#52b788; --leaf-2:#2d6a4f; --leaf-dark:#1b4332;
+    --soil:#a9744f; --soil-dark:#7c5136;
+    --sun:#ffc94d; --sun-dark:#e0a300;
+    --water:#4fb0e8; --water-dark:#2f7fc4;
+    --mint:#4fd6a8; --ink:#1e3a2f;
+    --shadow: 0 10px 24px rgba(45,106,79,.18); --radius-lg: 26px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:radial-gradient(circle at 10% 10%, var(--green-2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 15%, #fff3d6 0%, transparent 40%),
+      linear-gradient(180deg, var(--green-1), #fff);
+    color:var(--ink); min-height:100vh; overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Fredoka',sans-serif;}
+  button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+
+  .topbar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--leaf-1),var(--leaf-2));color:#fff;padding:10px 16px;box-shadow:0 4px 14px rgba(27,67,50,.25);}
+  .topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .topbar .lesson-title{font-family:'Fredoka';font-weight:600;font-size:1.05rem;flex:1;}
+  .topbar .lesson-title small{display:block;font-family:'Nunito';font-weight:700;font-size:.68rem;opacity:.85;letter-spacing:.04em;text-transform:uppercase;}
+  .stars-count{background:rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;font-weight:800;font-size:.85rem;display:flex;align-items:center;gap:4px;}
+  .back-btn{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;background:rgba(255,255,255,.18);color:#fff;text-decoration:none;font-family:'Fredoka';font-weight:700;font-size:.8rem;padding:7px 14px;border-radius:20px;transition:background .15s ease;}
+  .back-btn:hover{background:rgba(255,255,255,.3);}
+  .progress-track{max-width:900px;margin:8px auto 0;display:flex;gap:3px;padding:0 16px;}
+  .progress-dot{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.28);transition:background .3s ease;}
+  .progress-dot.done{background:var(--sun);}
+  .progress-dot.active{background:#fff;}
+
+  .stage-wrap{max-width:780px;margin:0 auto;padding:22px 16px 90px;min-height:70vh;}
+  .stage{display:none;animation:fadeUp .45s ease both;}
+  .stage.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .stage-header{text-align:center;margin-bottom:18px;}
+  .stage-eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--green-2);color:var(--leaf-dark);font-weight:800;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:8px;}
+  .stage-header h2{font-size:1.4rem;margin:0 0 4px;color:var(--leaf-dark);}
+  .stage-header p{margin:0;font-weight:700;color:#3d6b53;font-size:.9rem;}
+
+  .card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:22px;border:3px solid var(--green-2);}
+  .audio-btn{background:linear-gradient(135deg,var(--water),var(--water-dark));color:#fff;font-weight:800;font-size:.85rem;padding:10px 18px;border-radius:30px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 14px rgba(47,127,196,.3);transition:transform .15s ease;}
+  .audio-btn:active{transform:scale(.94);}
+  .audio-btn.small{padding:7px 14px;font-size:.78rem;}
+  .row-center{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+  .btn{font-weight:800;font-size:.95rem;padding:12px 26px;border-radius:30px;transition:transform .15s ease, box-shadow .15s ease;}
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:linear-gradient(135deg,var(--leaf-1),var(--leaf-2));color:#fff;box-shadow:0 8px 18px rgba(45,106,79,.3);}
+  .btn-primary[disabled]{opacity:.4;pointer-events:none;}
+  .center-btn-row{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  .feedback{text-align:center;font-weight:800;font-family:'Fredoka';font-size:1.02rem;min-height:1.6rem;margin-top:12px;}
+  .feedback.good{color:#1a8a63;}
+  .feedback.bad{color:#c2650e;}
+  .feedback.neutral{color:var(--leaf-dark);}
+  .q-progress{text-align:center;font-weight:800;color:#4d8a6a;font-size:.78rem;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;}
+
+  /* Plant growth demo */
+  .plant-stage-display{text-align:center;font-size:4rem;margin:16px 0;min-height:90px;}
+  .growth-badge{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:30px;font-family:'Fredoka';font-weight:700;font-size:1.1rem;margin:10px 0;background:var(--green-2);color:var(--leaf-dark);opacity:0;transform:scale(.85);transition:opacity .4s ease, transform .4s ease;}
+  .growth-badge.show{opacity:1;transform:scale(1);}
+  .growth-badge.urdu{font-family:'Nunito','Fredoka',sans-serif;direction:rtl;}
+  .vocab-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:2px;}
+  .vocab-chip{
+    background:#fff8e6;border:2px solid var(--sun);color:var(--soil-dark);
+    font-family:'Fredoka';font-weight:700;font-size:.8rem;padding:5px 12px;border-radius:14px;cursor:pointer;
+  }
+  .vocab-chip:hover{border-color:var(--sun-dark);}
+  .vocab-meaning{
+    max-width:340px;margin:8px auto 0;background:#fffaf0;border:2px dashed var(--sun);border-radius:12px;
+    padding:8px 14px;font-weight:700;color:var(--soil-dark);font-size:.85rem;text-align:center;display:none;
+  }
+  .vocab-meaning.show{display:block;}
+  .urdu-toggle-row{display:flex;justify-content:center;margin-top:10px;}
+  .urdu-toggle-btn{
+    background:#fff;border:2.5px solid var(--water);color:var(--water-dark);
+    font-family:'Fredoka';font-weight:700;font-size:.82rem;padding:8px 16px;border-radius:20px;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .urdu-toggle-btn.active{background:var(--water);color:#fff;}
+
+  /* Parts puzzle / build diagram */
+  .plant-diagram{display:flex;flex-direction:column;align-items:center;gap:6px;margin:16px 0;}
+  .plant-zone{
+    width:180px;min-height:52px;border:2.5px dashed #a9d9c1;border-radius:14px;background:#fbfff9;
+    display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+    font-family:'Fredoka';font-weight:700;color:#7fae94;transition:transform .15s ease, border-color .15s ease;
+  }
+  .plant-zone:hover{transform:scale(1.03);border-color:var(--leaf-1);}
+  .plant-zone.filled{border-style:solid;border-color:var(--mint);background:#e3fbf3;color:#1a8a63;}
+  .plant-zone.selecting{border-color:var(--water);background:#eaf7ff;}
+  .part-bank{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:14px;}
+  .part-chip{
+    padding:12px 18px;border-radius:16px;font-family:'Fredoka';font-weight:700;font-size:1rem;cursor:pointer;
+    background:#fbfff9;border:3px solid var(--green-2);color:var(--leaf-dark);transition:transform .15s ease, border-color .15s ease;
+  }
+  .part-chip:hover{transform:scale(1.05);border-color:var(--leaf-1);}
+  .part-chip.used{opacity:0;pointer-events:none;}
+  .part-chip.selecting{border-color:var(--water);background:#eaf7ff;}
+
+  /* Needs / catch mini-game */
+  .need-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:16px 0;}
+  .need-card{
+    width:96px;padding:14px 8px;border-radius:16px;text-align:center;cursor:pointer;
+    background:#fbfff9;border:3px solid var(--green-2);transition:transform .15s ease, border-color .15s ease;
+  }
+  .need-card:hover{transform:scale(1.05);border-color:var(--leaf-1);}
+  .need-card .need-emoji{font-size:1.8rem;display:block;margin-bottom:4px;}
+  .need-card .need-label{font-family:'Fredoka';font-weight:700;font-size:.82rem;color:var(--leaf-dark);}
+  .need-card.caught{border-color:var(--mint);background:#e3fbf3;pointer-events:none;}
+  .need-card.wrong-flash{border-color:#e0743f;background:#fff0e6;}
+  .need-progress{text-align:center;font-family:'Fredoka';font-weight:700;color:var(--leaf-dark);margin-top:8px;}
+
+  /* Watering can */
+  .water-scene{text-align:center;margin:14px 0;}
+  .water-can-btn{
+    font-size:2.6rem;background:none;border:none;cursor:pointer;transition:transform .15s ease;
+  }
+  .water-can-btn:hover{transform:scale(1.1) rotate(-8deg);}
+  .water-progress-row{display:flex;justify-content:center;gap:6px;margin-top:10px;}
+  .water-drop{font-size:1.3rem;opacity:.25;transition:opacity .3s ease;}
+  .water-drop.filled{opacity:1;}
+
+  /* Yes/No */
+  .yesno-row{display:flex;justify-content:center;gap:14px;margin-top:16px;}
+  .yesno-btn{padding:12px 30px;border-radius:30px;font-family:'Fredoka';font-weight:700;font-size:1.05rem;background:#fff;border:2.5px solid var(--green-2);color:var(--leaf-dark);}
+  .yesno-btn:hover{border-color:var(--leaf-1);}
+  .yesno-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .yesno-btn.wrong{background:#fff0e6;border-color:#e0743f;color:#c2650e;}
+  .yesno-btn[disabled]{pointer-events:none;}
+  .object-display{text-align:center;font-size:4rem;margin:14px 0;}
+  .object-label{text-align:center;font-family:'Fredoka';font-weight:700;color:var(--leaf-dark);font-size:1.1rem;margin-bottom:6px;}
+
+  /* Order-build (Build My Plant) */
+  .order-slots{display:flex;flex-direction:column-reverse;align-items:center;gap:6px;margin:16px 0;}
+  .order-slot{width:200px;height:48px;border:2.5px dashed #a9d9c1;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka';font-weight:700;color:#7fae94;background:#fbfff9;}
+  .order-slot.filled{border-style:solid;border-color:var(--mint);background:#e3fbf3;color:#1a8a63;}
+  .tap-tile-row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:14px;}
+  .tap-tile{padding:12px 18px;border-radius:14px;font-family:'Fredoka';font-weight:700;font-size:1rem;cursor:pointer;background:#fbfff9;border:3px solid var(--green-2);color:var(--leaf-dark);transition:transform .15s ease, border-color .15s ease;}
+  .tap-tile:hover{transform:scale(1.05);border-color:var(--leaf-1);}
+  .tap-tile.locked{opacity:0;pointer-events:none;}
+  .tap-tile.wrong-flash{background:#fff0e6;border-color:#e0743f;}
+
+  /* options (Quick Practice) */
+  .options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+  .opt-btn{background:#fff;border:2.5px solid var(--green-2);color:var(--ink);border-radius:14px;padding:14px 8px;font-family:'Fredoka';font-weight:600;font-size:1.05rem;text-align:center;}
+  .opt-btn:hover{border-color:var(--leaf-1);}
+  .opt-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .opt-btn.wrong{background:#fff0e6;border-color:#e0743f;color:#c2650e;}
+  .opt-btn.selected{background:var(--green-2);border-color:var(--leaf-1);color:var(--leaf-dark);}
+  .opt-btn[disabled]{pointer-events:none;}
+
+  .stars-row{display:flex;justify-content:center;gap:4px;margin:6px 0;}
+  .star-icon{font-size:1.3rem;}
+  .reward-card{text-align:center;padding:36px 22px;background:linear-gradient(160deg,#fff,var(--green-1));}
+  .badge-circle{width:130px;height:130px;border-radius:50%;margin:0 auto 16px;background:linear-gradient(135deg,var(--sun),var(--sun-dark));display:flex;align-items:center;justify-content:center;font-size:3.4rem;box-shadow:0 14px 26px rgba(224,163,0,.4);border:6px solid #fff;}
+  .reward-card h2{color:var(--leaf-dark);font-size:1.7rem;margin:0 0 4px;}
+  .reward-card p{color:#3d6b53;font-weight:700;margin:0 0 10px;}
+  .next-lesson-card{margin-top:22px;background:#fff;border:2.5px solid var(--green-2);border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;text-align:left;}
+  .next-lesson-card .lock-icon{font-size:1.6rem;}
+  .next-lesson-card .txt small{display:block;color:#4d8a6a;font-weight:800;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;}
+  .next-lesson-card .txt strong{font-family:'Fredoka';color:var(--leaf-dark);font-size:1.05rem;}
+
+  @media (max-width:480px){
+    .options{grid-template-columns:1fr;}
+    .plant-zone{width:150px;}
+    .order-slot{width:160px;}
+    .need-card{width:82px;}
+  }
+  @media (prefers-reduced-motion: reduce){ .stage{animation:none;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="../lessons.html">&larr; Chapter</a>
+    <div class="lesson-title">
+      <small>Grade 2 · Science · Chapter 1: Living Things</small>
+      🌱 Lesson 1: Plants
+    </div>
+    <div class="stars-count"><span id="starTotal">0</span> ⭐</div>
+  </div>
+  <div class="progress-track" id="progressTrack"></div>
+</div>
+
+<div class="stage-wrap" id="stageWrap"></div>
+
+<script>
+/* ============================================================
+   SCIENCE — CHAPTER 1: LIVING THINGS — LESSON 1: PLANTS
+   Self-contained, no shared engine.js. First Science lesson built
+   in this chat — uses its own green/soil/sun palette (Science
+   never reuses Math's pink/berry), continuing the project's
+   subject-palette rule.
+
+   Progress saved via ../../../../../../assets/js/progress.js
+   (falls back to local localStorage if that file is unavailable)
+
+   Carries every fix learned across the Math chapter:
+   - speakForStage() guard + stageEnterActions registry: a stage's
+     opening narration fires exactly once, only when it genuinely
+     becomes visible — not at page-load construction time.
+   - Retry-until-correct on every activity outside Practice: a
+     wrong pick disables only that option and encourages another
+     try; the correct answer always stays reachable.
+   - Quick Practice: intro alert screen, no live right/wrong
+     reveal per question, score + stars revealed only at the end.
+   - Tap-based interactions only — no hand-rolled drag.
+   - Explicit, concrete instructions everywhere.
+============================================================ */
+const TOPIC_ID = "grade2-science-ch1-lesson1-plants";
+let totalStars = 0;
+
+(function loadProgressHelper(){
+  try{
+    const s = document.createElement('script');
+    s.src = "../../../../../../assets/js/progress.js";
+    document.head.appendChild(s);
+  }catch(e){}
+})();
+function saveStepDone(step){
+  try{ if (typeof setStepDone === 'function'){ setStepDone(TOPIC_ID, step, true); return; } }catch(e){}
+  try{
+    const key = 'progress:' + TOPIC_ID;
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data[step] = true;
+    localStorage.setItem(key, JSON.stringify(data));
+  }catch(e){}
+}
+
+let enVoice = null;
+let urVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  enVoice = voices.find(v => v.lang === 'en-IN') || voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+  urVoice = voices.find(v => v.lang === 'ur-PK') || voices.find(v => v.lang && v.lang.startsWith('ur')) || null;
+}
+if ('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(text, lang){
+  try{
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (lang === 'ur'){ u.voice = urVoice || enVoice; u.lang = urVoice ? 'ur-PK' : 'en-IN'; }
+    else { u.voice = enVoice; u.lang = 'en-IN'; }
+    u.rate = 0.88;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function isStageActive(stageId){ const el = document.getElementById(stageId); return !!(el && el.classList.contains('active')); }
+function speakForStage(stageId, text, lang){ if (isStageActive(stageId)) speak(text, lang); }
+
+function addStar(n=1){ totalStars += n; document.getElementById('starTotal').textContent = totalStars; }
+function shuffled(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+const STAGES = [
+  {id:'s1'},{id:'s2'},{id:'s3'},{id:'s4'},{id:'s5'},{id:'s6'},{id:'s7'},{id:'reward'},
+];
+let currentStageIndex = 0;
+function renderProgressTrack(){
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  STAGES.forEach((st, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i < currentStageIndex ? ' done' : '') + (i === currentStageIndex ? ' active' : '');
+    track.appendChild(d);
+  });
+}
+const stageEnterActions = {};
+function goToStage(index){
+  currentStageIndex = index;
+  document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(STAGES[index].id);
+  if (target) target.classList.add('active');
+  renderProgressTrack();
+  saveStepDone(STAGES[index].id);
+  window.scrollTo({top:0, behavior:'smooth'});
+  const action = stageEnterActions[STAGES[index].id];
+  if (action) action();
+}
+function completeStage(){ if (currentStageIndex < STAGES.length - 1) goToStage(currentStageIndex + 1); }
+
+const wrap = document.getElementById('stageWrap');
+
+function renderRetryOptions(container, options, answer, onCorrect, cls){
+  container.innerHTML = '';
+  shuffled(options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = cls || 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      if (String(opt) === String(answer)){
+        container.querySelectorAll('button').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        onCorrect(b);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+      }
+    };
+    container.appendChild(b);
+  });
+}
+function wireRetryFeedback(containerId, feedbackId){
+  document.querySelectorAll(`#${containerId} button`).forEach(b => {
+    const orig = b.onclick;
+    b.onclick = (e) => {
+      orig(e);
+      if (b.classList.contains('wrong')){
+        const fb = document.getElementById(feedbackId);
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+  });
+}
+
+/* ============================================================
+   ACTIVITY 1 — Meet the Plant (growth demo)
+============================================================ */
+const s1Stages = [
+  {emoji:'🌰', label:'A tiny seed.', say:'This is a tiny seed.',
+   labelUr:'ایک چھوٹا بیج۔', sayUr:'یہ ایک چھوٹا سا بیج ہے۔',
+   words:[{term:'Seed', meaning:'A tiny part a new plant grows from.'}]},
+  {emoji:'🌱', label:'The seed sprouts!', say:'The seed sprouts! A little green shoot appears.',
+   labelUr:'بیج نکلتا ہے!', sayUr:'بیج سے ننھا سبز پودا نکلتا ہے۔',
+   words:[{term:'Sprout', meaning:'When a tiny new plant first starts to grow.'}]},
+  {emoji:'🌿', label:'It grows a stem and leaves.', say:'It grows a stem and leaves.',
+   labelUr:'اس میں تنا اور پتے بنتے ہیں۔', sayUr:'اس میں تنا اور پتے بنتے ہیں۔',
+   words:[{term:'Stem', meaning:'The part of the plant that holds it up, like a straw.'}]},
+  {emoji:'🌸', label:'A beautiful flower blooms!', say:'A beautiful flower blooms! Plants are living things — they grow and change.',
+   labelUr:'ایک خوبصورت پھول کھلتا ہے!', sayUr:'ایک خوبصورت پھول کھلتا ہے! پودے زندہ چیزیں ہیں — یہ بڑھتے اور بدلتے ہیں۔',
+   words:[{term:'Bloom', meaning:'When a flower opens up fully.'}]},
+];
+let s1Step = 0;
+let s1UrduMode = false;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s1">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 1 · Meet the Plant</div>
+    <h2>🌱 Watch a Plant Grow</h2>
+  </div>
+  <div class="card">
+    <div class="plant-stage-display" id="s1Display"></div>
+    <div class="growth-badge" id="s1Badge"></div>
+    <div class="vocab-row" id="s1VocabRow"></div>
+    <div class="vocab-meaning" id="s1VocabMeaning"></div>
+    <div class="row-center"><button class="audio-btn small" id="s1Listen"><span>🔊</span> Listen Again</button></div>
+    <div class="urdu-toggle-row">
+      <button class="urdu-toggle-btn" id="s1UrduToggle"><span>🌐</span> اردو میں سنیں (Urdu)</button>
+    </div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s1Next">Continue ➜</button></div>
+  </div>
+</section>`);
+function renderS1(){
+  const s = s1Stages[s1Step];
+  document.getElementById('s1Display').textContent = s.emoji;
+  const badge = document.getElementById('s1Badge');
+  badge.className = 'growth-badge' + (s1UrduMode ? ' urdu' : '');
+  badge.textContent = s1UrduMode ? s.labelUr : s.label;
+  setTimeout(() => badge.classList.add('show'), 150);
+  const vocabRow = document.getElementById('s1VocabRow');
+  vocabRow.innerHTML = '';
+  document.getElementById('s1VocabMeaning').classList.remove('show');
+  s.words.forEach(w => {
+    const chip = document.createElement('button');
+    chip.className = 'vocab-chip';
+    chip.textContent = `📖 ${w.term}`;
+    chip.onclick = () => {
+      const meaningEl = document.getElementById('s1VocabMeaning');
+      meaningEl.textContent = `${w.term}: ${w.meaning}`;
+      meaningEl.classList.add('show');
+      speak(`${w.term} means ${w.meaning}`);
+    };
+    vocabRow.appendChild(chip);
+  });
+}
+function speakS1Current(){
+  const s = s1Stages[s1Step];
+  speak(s1UrduMode ? s.sayUr : s.say, s1UrduMode ? 'ur' : 'en');
+}
+document.getElementById('s1Listen').onclick = speakS1Current;
+document.getElementById('s1UrduToggle').onclick = () => {
+  s1UrduMode = !s1UrduMode;
+  document.getElementById('s1UrduToggle').classList.toggle('active', s1UrduMode);
+  renderS1();
+  speakS1Current();
+};
+document.getElementById('s1Next').onclick = () => {
+  s1Step++;
+  if (s1Step >= s1Stages.length){ completeStage(); return; }
+  renderS1();
+  speakS1Current();
+};
+renderS1();
+stageEnterActions.s1 = () => speakS1Current();
+
+/* ============================================================
+   ACTIVITY 2 — Plant Parts Puzzle
+============================================================ */
+const s2Parts = [
+  {id:'flower', label:'🌸 Flower'},
+  {id:'leaf', label:'🍃 Leaf'},
+  {id:'stem', label:'🌿 Stem'},
+  {id:'root', label:'🌱 Root'},
+];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s2">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 2 · Plant Parts Puzzle</div>
+    <h2>🧩 Put Each Part in Place</h2>
+    <p>Tap a part, then tap where it belongs.</p>
+  </div>
+  <div class="card">
+    <div class="plant-diagram" id="s2Diagram"></div>
+    <div class="part-bank" id="s2Bank"></div>
+    <div class="feedback" id="s2Feedback"></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s2Next" disabled>Next ➜</button></div>
+  </div>
+</section>`);
+(function setupS2(){
+  const diagram = document.getElementById('s2Diagram');
+  const zoneOrder = ['flower','leaf','stem','root'];
+  const zoneEls = {};
+  zoneOrder.forEach(id => {
+    const zone = document.createElement('div');
+    zone.className = 'plant-zone';
+    zone.dataset.id = id;
+    zone.textContent = '?';
+    diagram.appendChild(zone);
+    zoneEls[id] = zone;
+  });
+  const bank = document.getElementById('s2Bank');
+  let selectedChip = null;
+  let filledCount = 0;
+  shuffled(s2Parts).forEach(part => {
+    const chip = document.createElement('div');
+    chip.className = 'part-chip';
+    chip.textContent = part.label;
+    chip.dataset.id = part.id;
+    chip.onclick = () => {
+      if (chip.classList.contains('used')) return;
+      if (selectedChip) selectedChip.classList.remove('selecting');
+      selectedChip = chip;
+      chip.classList.add('selecting');
+    };
+    bank.appendChild(chip);
+  });
+  zoneOrder.forEach(id => {
+    zoneEls[id].onclick = () => {
+      if (zoneEls[id].classList.contains('filled') || !selectedChip) return;
+      const fb = document.getElementById('s2Feedback');
+      if (selectedChip.dataset.id === id){
+        zoneEls[id].textContent = selectedChip.textContent;
+        zoneEls[id].classList.add('filled');
+        selectedChip.classList.add('used');
+        selectedChip = null;
+        filledCount++;
+        fb.textContent = 'Nice!';
+        fb.className = 'feedback good';
+        speak('Nice!');
+        if (filledCount === s2Parts.length){
+          addStar(1);
+          fb.textContent = 'You built the whole plant! 🎉';
+          speak('You built the whole plant!');
+          document.getElementById('s2Next').disabled = false;
+        }
+      } else {
+        fb.textContent = 'Not that part — try again!';
+        fb.className = 'feedback bad';
+        speak('Not that part. Try again!');
+        selectedChip.classList.remove('selecting');
+        selectedChip = null;
+      }
+    };
+  });
+})();
+document.getElementById('s2Next').onclick = () => completeStage();
+stageEnterActions.s2 = () => speak('Tap a plant part, then tap where it belongs.');
+
+/* ============================================================
+   ACTIVITY 3 — What Does a Plant Need?
+============================================================ */
+const s3Items = [
+  {emoji:'☀️', label:'Sunlight', need:true},
+  {emoji:'💧', label:'Water', need:true},
+  {emoji:'🌬️', label:'Air', need:true},
+  {emoji:'🍕', label:'Pizza', need:false},
+  {emoji:'📺', label:'TV', need:false},
+  {emoji:'🎈', label:'Balloon', need:false},
+];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s3">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 3 · What Does a Plant Need?</div>
+    <h2>☀️💧 Choose What Helps It Grow</h2>
+    <p>Tap only the things a plant needs.</p>
+  </div>
+  <div class="card">
+    <div class="need-grid" id="s3Grid"></div>
+    <div class="need-progress" id="s3Progress"></div>
+    <div class="feedback" id="s3Feedback"></div>
+  </div>
+</section>`);
+(function setupS3(){
+  const grid = document.getElementById('s3Grid');
+  let caughtCount = 0;
+  const totalNeeds = s3Items.filter(i => i.need).length;
+  function updateProgress(){ document.getElementById('s3Progress').textContent = `Found: ${caughtCount} of ${totalNeeds}`; }
+  shuffled(s3Items).forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'need-card';
+    card.innerHTML = `<span class="need-emoji">${item.emoji}</span><span class="need-label">${item.label}</span>`;
+    card.onclick = () => {
+      if (card.classList.contains('caught')) return;
+      const fb = document.getElementById('s3Feedback');
+      if (item.need){
+        card.classList.add('caught');
+        caughtCount++;
+        updateProgress();
+        addStar(1);
+        fb.textContent = 'Yes! Plants need that! 🎉';
+        fb.className = 'feedback good';
+        speak('Yes! Plants need that!');
+        if (caughtCount === totalNeeds){
+          setTimeout(() => completeStage(), 1400);
+        }
+      } else {
+        card.classList.add('wrong-flash');
+        fb.textContent = "That's not something a plant needs — try again!";
+        fb.className = 'feedback bad';
+        speak("That's not something a plant needs. Try again!");
+        setTimeout(() => card.classList.remove('wrong-flash'), 500);
+      }
+    };
+    grid.appendChild(card);
+  });
+  updateProgress();
+})();
+stageEnterActions.s3 = () => speak('Tap the things a plant needs to grow: sunlight, water, and air.');
+
+/* ============================================================
+   ACTIVITY 4 — Water the Plant
+============================================================ */
+const s4Growth = ['🌰','🌱','🌿','🌸'];
+let s4Taps = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s4">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 4 · Water the Plant</div>
+    <h2>💧 Give It a Drink!</h2>
+    <p>Tap the watering can to help the plant grow.</p>
+  </div>
+  <div class="card">
+    <div class="water-scene">
+      <div class="plant-stage-display" id="s4Display">🌰</div>
+      <button class="water-can-btn" id="s4Can">🪣</button>
+    </div>
+    <div class="water-progress-row" id="s4Drops"></div>
+    <div class="feedback" id="s4Feedback"></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s4Next" disabled>Next ➜</button></div>
+  </div>
+</section>`);
+(function setupS4(){
+  const dropsWrap = document.getElementById('s4Drops');
+  for (let i=0;i<3;i++){ const d = document.createElement('span'); d.className = 'water-drop'; d.textContent = '💧'; dropsWrap.appendChild(d); }
+  document.getElementById('s4Can').onclick = () => {
+    if (s4Taps >= 3) return;
+    s4Taps++;
+    document.getElementById('s4Display').textContent = s4Growth[s4Taps];
+    dropsWrap.children[s4Taps - 1].classList.add('filled');
+    const fb = document.getElementById('s4Feedback');
+    if (s4Taps < 3){
+      fb.textContent = 'Splash! It is growing!';
+      fb.className = 'feedback good';
+      speak('Splash! The plant is growing!');
+    } else {
+      addStar(1);
+      fb.textContent = 'It bloomed into a flower! 🎉';
+      fb.className = 'feedback good';
+      speak('It bloomed into a flower!');
+      document.getElementById('s4Next').disabled = false;
+    }
+  };
+})();
+document.getElementById('s4Next').onclick = () => completeStage();
+stageEnterActions.s4 = () => speak('Tap the watering can to help the plant grow.');
+
+/* ============================================================
+   ACTIVITY 5 — Plant or Not? (5 rounds, Yes/No)
+============================================================ */
+const s5Rounds = [
+  {emoji:'🌳', label:'Tree', isPlant:true},
+  {emoji:'🌷', label:'Flower', isPlant:true},
+  {emoji:'🍎', label:'Apple', isPlant:false},
+  {emoji:'🚗', label:'Car', isPlant:false},
+  {emoji:'🪨', label:'Rock', isPlant:false},
+];
+let s5Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s5">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 5 · Plant or Not?</div>
+    <h2>🔎 Is This a Plant?</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s5Progress"></div>
+    <div class="object-display" id="s5Emoji"></div>
+    <div class="object-label" id="s5Label"></div>
+    <div class="yesno-row">
+      <button class="yesno-btn" id="s5Yes">YES 🌱</button>
+      <button class="yesno-btn" id="s5No">NO ❌</button>
+    </div>
+    <div class="feedback" id="s5Feedback"></div>
+  </div>
+</section>`);
+function renderS5(){
+  const r = s5Rounds[s5Idx];
+  document.getElementById('s5Progress').textContent = `Question ${s5Idx+1} of ${s5Rounds.length}`;
+  document.getElementById('s5Emoji').textContent = r.emoji;
+  document.getElementById('s5Label').textContent = r.label;
+  document.getElementById('s5Feedback').textContent = '';
+  const yesBtn = document.getElementById('s5Yes');
+  const noBtn = document.getElementById('s5No');
+  yesBtn.className = 'yesno-btn'; noBtn.className = 'yesno-btn';
+  yesBtn.disabled = false; noBtn.disabled = false;
+  yesBtn.onclick = () => handleS5(true);
+  noBtn.onclick = () => handleS5(false);
+  speakForStage('s5', `Is a ${r.label.toLowerCase()} a plant?`);
+}
+function handleS5(pickYes){
+  const r = s5Rounds[s5Idx];
+  const fb = document.getElementById('s5Feedback');
+  const yesBtn = document.getElementById('s5Yes');
+  const noBtn = document.getElementById('s5No');
+  if (pickYes === r.isPlant){
+    yesBtn.disabled = true; noBtn.disabled = true;
+    (pickYes ? yesBtn : noBtn).classList.add('correct');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => { s5Idx++; if (s5Idx >= s5Rounds.length) completeStage(); else renderS5(); }, 1300);
+  } else {
+    (pickYes ? yesBtn : noBtn).classList.add('wrong');
+    fb.textContent = 'Try again, you are very close!';
+    fb.className = 'feedback bad';
+    speak('Try again, you are very close!');
+    setTimeout(() => (pickYes ? yesBtn : noBtn).classList.remove('wrong'), 600);
+  }
+}
+renderS5();
+stageEnterActions.s5 = () => speak(`Is a ${s5Rounds[s5Idx].label.toLowerCase()} a plant?`);
+
+/* ============================================================
+   ACTIVITY 6 — Build My Plant (tap in order, root to flower)
+============================================================ */
+const s6Order = [
+  {id:'root', label:'🌱 Root'},
+  {id:'stem', label:'🌿 Stem'},
+  {id:'leaf', label:'🍃 Leaf'},
+  {id:'flower', label:'🌸 Flower'},
+];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s6">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 6 · Build My Plant</div>
+    <h2>🌱 Build It From the Ground Up</h2>
+    <p>Tap the parts in order, starting from underground.</p>
+  </div>
+  <div class="card">
+    <div class="order-slots" id="s6Slots"></div>
+    <div class="tap-tile-row" id="s6Tiles"></div>
+    <div class="feedback" id="s6Feedback"></div>
+  </div>
+</section>`);
+(function setupS6(){
+  const slotsWrap = document.getElementById('s6Slots');
+  s6Order.forEach((_, i) => {
+    const slot = document.createElement('div');
+    slot.className = 'order-slot';
+    slot.dataset.index = i;
+    slotsWrap.appendChild(slot);
+  });
+  const tilesWrap = document.getElementById('s6Tiles');
+  let nextIdx = 0;
+  shuffled(s6Order).forEach(part => {
+    const tile = document.createElement('div');
+    tile.className = 'tap-tile';
+    tile.textContent = part.label;
+    tile.onclick = () => {
+      if (tile.classList.contains('locked')) return;
+      const fb = document.getElementById('s6Feedback');
+      if (part.id === s6Order[nextIdx].id){
+        const slot = slotsWrap.querySelector(`.order-slot[data-index="${nextIdx}"]`);
+        slot.textContent = part.label;
+        slot.classList.add('filled');
+        tile.classList.add('locked');
+        fb.textContent = 'Growing nicely!';
+        fb.className = 'feedback good';
+        speak('Growing nicely!');
+        nextIdx++;
+        if (nextIdx === s6Order.length){
+          addStar(1);
+          fb.textContent = 'Your plant is complete! 🎉';
+          speak('Your plant is complete!');
+          setTimeout(() => completeStage(), 1500);
+        }
+      } else {
+        tile.classList.add('wrong-flash');
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+        setTimeout(() => tile.classList.remove('wrong-flash'), 500);
+      }
+    };
+    tilesWrap.appendChild(tile);
+  });
+})();
+stageEnterActions.s6 = () => speak('Tap the parts in order, starting from underground: root, stem, leaf, flower.');
+
+/* ============================================================
+   ACTIVITY 7 — Quick Practice (2 questions, intro + silent scoring)
+============================================================ */
+const s7Questions = [
+  {prompt:'Which part is under the soil?', options:['Root','Stem'], answer:'Root'},
+  {prompt:'Which part holds the leaves?', options:['Stem','Flower'], answer:'Stem'},
+];
+let s7Index = 0;
+let s7CorrectCount = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s7">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 7 · Practice</div>
+    <h2>Quick Practice</h2>
+    <p>Two short questions.</p>
+  </div>
+  <div class="card" id="s7Intro">
+    <p style="text-align:center;font-weight:700;color:#3d6b53;">You're going to answer 2 questions on your own now. Take your time and do your best!</p>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s7Start">Start Practice ▶</button></div>
+  </div>
+  <div class="card" id="s7Quiz" style="display:none;">
+    <div class="q-progress" id="s7Progress"></div>
+    <div style="text-align:center;font-family:'Fredoka';font-weight:700;font-size:1.1rem;color:var(--leaf-dark);margin-bottom:6px;" id="s7Prompt"></div>
+    <div class="options" id="s7Options"></div>
+    <div class="feedback" id="s7Feedback"></div>
+  </div>
+</section>`);
+document.getElementById('s7Start').onclick = () => {
+  document.getElementById('s7Intro').style.display = 'none';
+  document.getElementById('s7Quiz').style.display = 'block';
+  speak("Now you're going to answer some questions on your own. Let's begin!");
+  renderS7();
+};
+function renderS7(){
+  const q = s7Questions[s7Index];
+  document.getElementById('s7Progress').textContent = `Question ${s7Index+1} of ${s7Questions.length}`;
+  document.getElementById('s7Prompt').textContent = q.prompt;
+  document.getElementById('s7Feedback').textContent = '';
+  const optsWrap = document.getElementById('s7Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      document.querySelectorAll('#s7Options .opt-btn').forEach(x => x.disabled = true);
+      b.classList.add('selected');
+      if (opt === q.answer) s7CorrectCount++;
+      const fb = document.getElementById('s7Feedback');
+      fb.textContent = 'Got it! Next question…';
+      fb.className = 'feedback neutral';
+      speak('Got it. Next question.');
+      setTimeout(() => { s7Index++; if (s7Index >= s7Questions.length) showS7Summary(); else renderS7(); }, 1100);
+    };
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s7', q.prompt);
+}
+function showS7Summary(){
+  document.getElementById('s7Progress').textContent = 'Practice Complete!';
+  document.getElementById('s7Prompt').textContent = `You got ${s7CorrectCount} out of ${s7Questions.length} correct!`;
+  const optsWrap = document.getElementById('s7Options');
+  optsWrap.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.textContent = 'Continue ➜';
+  btn.style.gridColumn = '1 / -1';
+  btn.onclick = () => showReward();
+  optsWrap.appendChild(btn);
+  addStar(s7CorrectCount);
+  const fb = document.getElementById('s7Feedback');
+  fb.textContent = s7CorrectCount === s7Questions.length ? 'Perfect score! 🌟' : 'Great effort! 🎉';
+  fb.className = 'feedback good';
+  speak(`You got ${s7CorrectCount} out of ${s7Questions.length} correct!`);
+}
+
+/* ============================================================
+   REWARD
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="reward">
+  <div class="card reward-card">
+    <div class="badge-circle">🌱</div>
+    <h2>PLANT EXPLORER</h2>
+    <p>You know how plants grow and what they need!</p>
+    <div class="stars-row" id="rewardStars"></div>
+    <div class="next-lesson-card">
+      <div class="lock-icon">🔓</div>
+      <div class="txt">
+        <small>Next Lesson</small>
+        <strong>Animals</strong>
+      </div>
+    </div>
+  </div>
+</section>`);
+function showReward(){
+  goToStage(STAGES.length - 1);
+  const starsRow = document.getElementById('rewardStars');
+  starsRow.innerHTML = '';
+  for (let i=0;i<5;i++){
+    const s = document.createElement('span');
+    s.className = 'star-icon';
+    s.textContent = '⭐';
+    starsRow.appendChild(s);
+  }
+  saveStepDone('lesson1-complete');
+  speak('Great job! You are a Plant Explorer!');
+}
+
+/* ---------------- init ---------------- */
+renderProgressTrack();
+goToStage(0);
+</script>
+</body>
+</html>

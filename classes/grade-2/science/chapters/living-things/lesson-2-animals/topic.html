@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lesson 2: Animals — Grade 2 Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Same Science Chapter 1 palette as Lesson 1 — green/soil/sun tones */
+    --green-1:#eefbf1; --green-2:#c9f0da; --leaf-1:#52b788; --leaf-2:#2d6a4f; --leaf-dark:#1b4332;
+    --soil:#a9744f; --soil-dark:#7c5136;
+    --sun:#ffc94d; --sun-dark:#e0a300;
+    --water:#4fb0e8; --water-dark:#2f7fc4;
+    --mint:#4fd6a8; --ink:#1e3a2f;
+    --shadow: 0 10px 24px rgba(45,106,79,.18); --radius-lg: 26px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Nunito',sans-serif;
+    background:radial-gradient(circle at 10% 10%, var(--green-2) 0%, transparent 45%),
+      radial-gradient(circle at 90% 15%, #fff3d6 0%, transparent 40%),
+      linear-gradient(180deg, var(--green-1), #fff);
+    color:var(--ink); min-height:100vh; overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Fredoka',sans-serif;}
+  button{font-family:'Nunito',sans-serif;cursor:pointer;border:none;}
+
+  .topbar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,var(--leaf-1),var(--leaf-2));color:#fff;padding:10px 16px;box-shadow:0 4px 14px rgba(27,67,50,.25);}
+  .topbar-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;}
+  .topbar .lesson-title{font-family:'Fredoka';font-weight:600;font-size:1.05rem;flex:1;}
+  .topbar .lesson-title small{display:block;font-family:'Nunito';font-weight:700;font-size:.68rem;opacity:.85;letter-spacing:.04em;text-transform:uppercase;}
+  .stars-count{background:rgba(255,255,255,.18);border-radius:20px;padding:5px 12px;font-weight:800;font-size:.85rem;display:flex;align-items:center;gap:4px;}
+  .back-btn{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;background:rgba(255,255,255,.18);color:#fff;text-decoration:none;font-family:'Fredoka';font-weight:700;font-size:.8rem;padding:7px 14px;border-radius:20px;transition:background .15s ease;}
+  .back-btn:hover{background:rgba(255,255,255,.3);}
+  .progress-track{max-width:900px;margin:8px auto 0;display:flex;gap:3px;padding:0 16px;}
+  .progress-dot{flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.28);transition:background .3s ease;}
+  .progress-dot.done{background:var(--sun);}
+  .progress-dot.active{background:#fff;}
+
+  .stage-wrap{max-width:780px;margin:0 auto;padding:22px 16px 90px;min-height:70vh;}
+  .stage{display:none;animation:fadeUp .45s ease both;}
+  .stage.active{display:block;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .stage-header{text-align:center;margin-bottom:18px;}
+  .stage-eyebrow{display:inline-flex;align-items:center;gap:6px;background:var(--green-2);color:var(--leaf-dark);font-weight:800;font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:8px;}
+  .stage-header h2{font-size:1.4rem;margin:0 0 4px;color:var(--leaf-dark);}
+  .stage-header p{margin:0;font-weight:700;color:#3d6b53;font-size:.9rem;}
+
+  .card{background:#fff;border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:22px;border:3px solid var(--green-2);}
+  .audio-btn{background:linear-gradient(135deg,var(--water),var(--water-dark));color:#fff;font-weight:800;font-size:.85rem;padding:10px 18px;border-radius:30px;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 14px rgba(47,127,196,.3);transition:transform .15s ease;}
+  .audio-btn:active{transform:scale(.94);}
+  .audio-btn.small{padding:7px 14px;font-size:.78rem;}
+  .row-center{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;}
+  .btn{font-weight:800;font-size:.95rem;padding:12px 26px;border-radius:30px;transition:transform .15s ease, box-shadow .15s ease;}
+  .btn:active{transform:scale(.96);}
+  .btn-primary{background:linear-gradient(135deg,var(--leaf-1),var(--leaf-2));color:#fff;box-shadow:0 8px 18px rgba(45,106,79,.3);}
+  .btn-primary[disabled]{opacity:.4;pointer-events:none;}
+  .center-btn-row{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  .feedback{text-align:center;font-weight:800;font-family:'Fredoka';font-size:1.02rem;min-height:1.6rem;margin-top:12px;}
+  .feedback.good{color:#1a8a63;}
+  .feedback.bad{color:#c2650e;}
+  .feedback.neutral{color:var(--leaf-dark);}
+  .q-progress{text-align:center;font-weight:800;color:#4d8a6a;font-size:.78rem;margin-bottom:6px;letter-spacing:.03em;text-transform:uppercase;}
+
+  /* options */
+  .options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:16px;}
+  .options.two{grid-template-columns:1fr 1fr;}
+  .opt-btn{background:#fff;border:2.5px solid var(--green-2);color:var(--ink);border-radius:14px;padding:14px 8px;font-family:'Fredoka';font-weight:600;font-size:1.02rem;text-align:center;}
+  .opt-btn:hover{border-color:var(--leaf-1);}
+  .opt-btn.correct{background:#e3fbf3;border-color:var(--mint);color:#1a8a63;}
+  .opt-btn.wrong{background:#fff0e6;border-color:#e0743f;color:#c2650e;}
+  .opt-btn.selected{background:var(--green-2);border-color:var(--leaf-1);color:var(--leaf-dark);}
+  .opt-btn[disabled]{pointer-events:none;}
+
+  /* Animal Detective silhouette */
+  .silhouette-display{text-align:center;font-size:4.4rem;margin:16px 0;filter:brightness(0) opacity(.82);transition:filter .5s ease;}
+  .silhouette-display.revealed{filter:none;}
+
+  /* Who Am I riddle */
+  .riddle-bubble{
+    background:var(--green-1);border:2.5px solid var(--green-2);border-radius:20px;padding:16px 20px;
+    font-family:'Fredoka';font-weight:700;font-size:1.15rem;color:var(--leaf-dark);text-align:center;margin:14px 0;
+  }
+
+  /* Land or Water baskets */
+  .creature-display{text-align:center;font-size:3.6rem;margin:14px 0;}
+  .basket-row{display:flex;justify-content:center;gap:18px;margin-top:14px;flex-wrap:wrap;}
+  .basket-btn{flex:1;min-width:140px;max-width:200px;padding:18px 12px;border-radius:18px;text-align:center;font-family:'Fredoka';font-weight:700;font-size:1.1rem;cursor:pointer;border:3px solid var(--green-2);background:#fbfff9;transition:transform .15s ease;}
+  .basket-btn:hover{transform:scale(1.03);}
+  .basket-btn .basket-icon{font-size:1.8rem;display:block;margin-bottom:4px;}
+  .basket-btn.land{color:var(--soil-dark);}
+  .basket-btn.water{color:var(--water-dark);}
+  .basket-btn.correct{background:#e3fbf3;border-color:var(--mint);}
+  .basket-btn.wrong{background:#fff0e6;border-color:#e0743f;}
+  .basket-btn[disabled]{pointer-events:none;}
+
+  /* Family match (tap-to-place) */
+  .match-zone-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin:16px 0;}
+  .match-zone{
+    width:120px;min-height:90px;border:2.5px dashed #a9d9c1;border-radius:16px;background:#fbfff9;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;
+    font-family:'Fredoka';font-weight:700;color:#7fae94;font-size:.85rem;transition:transform .15s ease, border-color .15s ease;padding:8px;
+  }
+  .match-zone:hover{transform:scale(1.03);border-color:var(--leaf-1);}
+  .match-zone.filled{border-style:solid;border-color:var(--mint);background:#e3fbf3;color:#1a8a63;}
+  .match-zone .zone-emoji{font-size:1.8rem;}
+  .match-bank{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:14px;}
+  .match-chip{
+    display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 14px;border-radius:16px;cursor:pointer;
+    background:#fbfff9;border:3px solid var(--green-2);color:var(--leaf-dark);transition:transform .15s ease, border-color .15s ease;
+  }
+  .match-chip:hover{transform:scale(1.05);border-color:var(--leaf-1);}
+  .match-chip.used{opacity:0;pointer-events:none;}
+  .match-chip.selecting{border-color:var(--water);background:#eaf7ff;}
+  .match-chip .chip-emoji{font-size:1.8rem;}
+  .match-chip .chip-label{font-family:'Fredoka';font-weight:700;font-size:.78rem;}
+
+  .stars-row{display:flex;justify-content:center;gap:4px;margin:6px 0;}
+  .star-icon{font-size:1.3rem;}
+  .reward-card{text-align:center;padding:36px 22px;background:linear-gradient(160deg,#fff,var(--green-1));}
+  .badge-circle{width:130px;height:130px;border-radius:50%;margin:0 auto 16px;background:linear-gradient(135deg,var(--sun),var(--sun-dark));display:flex;align-items:center;justify-content:center;font-size:3.4rem;box-shadow:0 14px 26px rgba(224,163,0,.4);border:6px solid #fff;}
+  .reward-card h2{color:var(--leaf-dark);font-size:1.7rem;margin:0 0 4px;}
+  .reward-card p{color:#3d6b53;font-weight:700;margin:0 0 10px;}
+  .next-lesson-card{margin-top:22px;background:#fff;border:2.5px solid var(--green-2);border-radius:18px;padding:16px;display:flex;align-items:center;gap:14px;text-align:left;}
+  .next-lesson-card .lock-icon{font-size:1.6rem;}
+  .next-lesson-card .txt small{display:block;color:#4d8a6a;font-weight:800;font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;}
+  .next-lesson-card .txt strong{font-family:'Fredoka';color:var(--leaf-dark);font-size:1.05rem;}
+
+  @media (max-width:480px){
+    .options{grid-template-columns:1fr 1fr;}
+    .match-zone{width:100px;}
+    .basket-btn{min-width:120px;}
+  }
+  @media (prefers-reduced-motion: reduce){ .stage{animation:none;} }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="back-btn" href="../lessons.html">&larr; Chapter</a>
+    <div class="lesson-title">
+      <small>Grade 2 · Science · Chapter 1: Living Things</small>
+      🐾 Lesson 2: Animals
+    </div>
+    <div class="stars-count"><span id="starTotal">0</span> ⭐</div>
+  </div>
+  <div class="progress-track" id="progressTrack"></div>
+</div>
+
+<div class="stage-wrap" id="stageWrap"></div>
+
+<script>
+/* ============================================================
+   SCIENCE — CHAPTER 1: LIVING THINGS — LESSON 2: ANIMALS
+   Self-contained, no shared engine.js. Continues the same
+   green/soil/sun palette as Lesson 1 (Plants) — same subject,
+   same chapter palette throughout, per the project's design
+   system (a palette is per-subject, not reset every lesson).
+
+   Progress saved via ../../../../../../assets/js/progress.js
+   (falls back to local localStorage if that file is unavailable)
+
+   Carries every fix learned across Math and Science Lesson 1:
+   - speakForStage() guard + stageEnterActions registry: a stage's
+     opening narration fires exactly once, only when it genuinely
+     becomes visible — not at page-load construction time. Every
+     multi-round stage also narrates each round internally (not
+     just the first), which was a gap caught and fixed in earlier
+     lessons.
+   - Retry-until-correct on every activity outside Practice.
+   - Quick Practice: intro alert screen, no live right/wrong
+     reveal per question, score + stars revealed only at the end.
+   - Tap-based interactions only — no hand-rolled drag.
+============================================================ */
+const TOPIC_ID = "grade2-science-ch1-lesson2-animals";
+let totalStars = 0;
+
+(function loadProgressHelper(){
+  try{
+    const s = document.createElement('script');
+    s.src = "../../../../../../assets/js/progress.js";
+    document.head.appendChild(s);
+  }catch(e){}
+})();
+function saveStepDone(step){
+  try{ if (typeof setStepDone === 'function'){ setStepDone(TOPIC_ID, step, true); return; } }catch(e){}
+  try{
+    const key = 'progress:' + TOPIC_ID;
+    const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data[step] = true;
+    localStorage.setItem(key, JSON.stringify(data));
+  }catch(e){}
+}
+
+let enVoice = null;
+function pickVoice(){
+  const voices = speechSynthesis.getVoices();
+  enVoice = voices.find(v => v.lang === 'en-IN') || voices.find(v => v.lang && v.lang.startsWith('en')) || null;
+}
+if ('speechSynthesis' in window){ pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(text){
+  try{
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    if (enVoice) u.voice = enVoice;
+    u.rate = 0.88; u.lang = 'en-IN';
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function isStageActive(stageId){ const el = document.getElementById(stageId); return !!(el && el.classList.contains('active')); }
+function speakForStage(stageId, text){ if (isStageActive(stageId)) speak(text); }
+
+function addStar(n=1){ totalStars += n; document.getElementById('starTotal').textContent = totalStars; }
+function shuffled(arr){ return [...arr].sort(() => Math.random() - 0.5); }
+
+const STAGES = [
+  {id:'s1'},{id:'s2'},{id:'s3'},{id:'s4'},{id:'s5'},{id:'s6'},{id:'s7'},{id:'reward'},
+];
+let currentStageIndex = 0;
+function renderProgressTrack(){
+  const track = document.getElementById('progressTrack');
+  track.innerHTML = '';
+  STAGES.forEach((st, i) => {
+    const d = document.createElement('div');
+    d.className = 'progress-dot' + (i < currentStageIndex ? ' done' : '') + (i === currentStageIndex ? ' active' : '');
+    track.appendChild(d);
+  });
+}
+const stageEnterActions = {};
+function goToStage(index){
+  currentStageIndex = index;
+  document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(STAGES[index].id);
+  if (target) target.classList.add('active');
+  renderProgressTrack();
+  saveStepDone(STAGES[index].id);
+  window.scrollTo({top:0, behavior:'smooth'});
+  const action = stageEnterActions[STAGES[index].id];
+  if (action) action();
+}
+function completeStage(){ if (currentStageIndex < STAGES.length - 1) goToStage(currentStageIndex + 1); }
+
+const wrap = document.getElementById('stageWrap');
+
+function renderRetryOptions(container, options, answer, onCorrect, cls){
+  container.innerHTML = '';
+  shuffled(options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = cls || 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      if (String(opt) === String(answer)){
+        container.querySelectorAll('button').forEach(x => x.disabled = true);
+        b.classList.add('correct');
+        onCorrect(b);
+      } else {
+        b.classList.add('wrong');
+        b.disabled = true;
+      }
+    };
+    container.appendChild(b);
+  });
+}
+function wireRetryFeedback(containerId, feedbackId){
+  document.querySelectorAll(`#${containerId} button`).forEach(b => {
+    const orig = b.onclick;
+    b.onclick = (e) => {
+      orig(e);
+      if (b.classList.contains('wrong')){
+        const fb = document.getElementById(feedbackId);
+        fb.textContent = 'Try again, you are very close!';
+        fb.className = 'feedback bad';
+        speak('Try again, you are very close!');
+      }
+    };
+  });
+}
+
+/* ============================================================
+   ACTIVITY 1 — Animal Detective (silhouette reveal)
+============================================================ */
+const s1Rounds = [
+  {emoji:'🐘', name:'Elephant', options:['Elephant','Lion','Giraffe']},
+  {emoji:'🦁', name:'Lion', options:['Lion','Tiger','Bear']},
+  {emoji:'🐟', name:'Fish', options:['Fish','Frog','Duck']},
+];
+let s1Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s1">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 1 · Animal Detective</div>
+    <h2>🔎 Guess the Animal</h2>
+    <p>Can you guess who is hiding in the shadow?</p>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s1Progress"></div>
+    <div class="silhouette-display" id="s1Display"></div>
+    <div class="options" id="s1Options"></div>
+    <div class="feedback" id="s1Feedback"></div>
+  </div>
+</section>`);
+function renderS1(){
+  const r = s1Rounds[s1Idx];
+  document.getElementById('s1Progress').textContent = `Question ${s1Idx+1} of ${s1Rounds.length}`;
+  document.getElementById('s1Feedback').textContent = '';
+  const display = document.getElementById('s1Display');
+  display.textContent = r.emoji;
+  display.className = 'silhouette-display';
+  renderRetryOptions(document.getElementById('s1Options'), r.options, r.name, () => {
+    display.classList.add('revealed');
+    const fb = document.getElementById('s1Feedback');
+    fb.textContent = `It's a ${r.name}! 🎉`;
+    fb.className = 'feedback good';
+    addStar(1);
+    speak(`It's a ${r.name}!`);
+    setTimeout(() => { s1Idx++; if (s1Idx >= s1Rounds.length) completeStage(); else renderS1(); }, 1500);
+  });
+  wireRetryFeedback('s1Options', 's1Feedback');
+  speakForStage('s1', 'Who is hiding in the shadow?');
+}
+renderS1();
+stageEnterActions.s1 = () => speak('Who is hiding in the shadow?');
+
+/* ============================================================
+   ACTIVITY 2 — Who Am I? (riddle clues)
+============================================================ */
+const s2Rounds = [
+  {clue:'I have a long trunk.', name:'Elephant', options:['Elephant','Giraffe','Rhino']},
+  {clue:'I have a very long neck.', name:'Giraffe', options:['Giraffe','Zebra','Camel']},
+  {clue:'I have black and white stripes.', name:'Zebra', options:['Zebra','Panda','Tiger']},
+];
+let s2Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s2">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 2 · Who Am I?</div>
+    <h2>🐘 Solve the Riddle</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s2Progress"></div>
+    <div class="riddle-bubble" id="s2Riddle"></div>
+    <div class="row-center"><button class="audio-btn small" id="s2Play"><span>🔊</span> Hear It Again</button></div>
+    <div class="options" id="s2Options"></div>
+    <div class="feedback" id="s2Feedback"></div>
+  </div>
+</section>`);
+function renderS2(){
+  const r = s2Rounds[s2Idx];
+  document.getElementById('s2Progress').textContent = `Question ${s2Idx+1} of ${s2Rounds.length}`;
+  document.getElementById('s2Riddle').textContent = `"${r.clue}"`;
+  document.getElementById('s2Feedback').textContent = '';
+  document.getElementById('s2Play').onclick = () => speak(r.clue);
+  renderRetryOptions(document.getElementById('s2Options'), r.options, r.name, () => {
+    const fb = document.getElementById('s2Feedback');
+    const article = /^[AEIOU]/i.test(r.name) ? 'an' : 'a';
+    fb.textContent = `Correct! I am ${article} ${r.name}! 🎉`;
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! ' + r.name + '!');
+    setTimeout(() => { s2Idx++; if (s2Idx >= s2Rounds.length) completeStage(); else renderS2(); }, 1500);
+  });
+  wireRetryFeedback('s2Options', 's2Feedback');
+  speakForStage('s2', r.clue);
+}
+renderS2();
+stageEnterActions.s2 = () => speak(s2Rounds[s2Idx].clue);
+
+/* ============================================================
+   ACTIVITY 3 — Animal Sounds
+============================================================ */
+const s3Rounds = [
+  {sound:'Moo! Moo!', name:'Cow', options:['Cow','Dog','Cat']},
+  {sound:'Roar!', name:'Lion', options:['Lion','Duck','Sheep']},
+  {sound:'Woof! Woof!', name:'Dog', options:['Dog','Cow','Bird']},
+];
+let s3Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s3">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 3 · Animal Sounds</div>
+    <h2>🔊 Which Animal Says This?</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s3Progress"></div>
+    <div class="row-center"><button class="audio-btn" id="s3Play"><span>🔊</span> Play the Sound</button></div>
+    <div class="options" id="s3Options"></div>
+    <div class="feedback" id="s3Feedback"></div>
+  </div>
+</section>`);
+function renderS3(){
+  const r = s3Rounds[s3Idx];
+  document.getElementById('s3Progress').textContent = `Question ${s3Idx+1} of ${s3Rounds.length}`;
+  document.getElementById('s3Feedback').textContent = '';
+  document.getElementById('s3Play').onclick = () => speak(r.sound);
+  renderRetryOptions(document.getElementById('s3Options'), r.options, r.name, () => {
+    const fb = document.getElementById('s3Feedback');
+    fb.textContent = `Correct! That's a ${r.name}! 🎉`;
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! A ' + r.name + '!');
+    setTimeout(() => { s3Idx++; if (s3Idx >= s3Rounds.length) completeStage(); else renderS3(); }, 1500);
+  });
+  wireRetryFeedback('s3Options', 's3Feedback');
+  speakForStage('s3', r.sound);
+}
+renderS3();
+stageEnterActions.s3 = () => speak(s3Rounds[s3Idx].sound);
+
+/* ============================================================
+   ACTIVITY 4 — Land or Water?
+============================================================ */
+const s4Animals = [
+  {emoji:'🐟', name:'Fish', isWater:true},
+  {emoji:'🐘', name:'Elephant', isWater:false},
+  {emoji:'🐳', name:'Whale', isWater:true},
+  {emoji:'🦁', name:'Lion', isWater:false},
+  {emoji:'🐙', name:'Octopus', isWater:true},
+  {emoji:'🐶', name:'Dog', isWater:false},
+];
+let s4Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s4">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 4 · Land or Water?</div>
+    <h2>🌍🌊 Where Does It Live?</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s4Progress"></div>
+    <div class="creature-display" id="s4Display"></div>
+    <div class="object-label" id="s4Label" style="text-align:center;font-family:'Fredoka';font-weight:700;color:var(--leaf-dark);"></div>
+    <div class="basket-row">
+      <div class="basket-btn land" id="s4Land"><span class="basket-icon">🏞️</span>LAND</div>
+      <div class="basket-btn water" id="s4Water"><span class="basket-icon">🌊</span>WATER</div>
+    </div>
+    <div class="feedback" id="s4Feedback"></div>
+  </div>
+</section>`);
+function renderS4(){
+  const a = s4Animals[s4Idx];
+  document.getElementById('s4Progress').textContent = `Question ${s4Idx+1} of ${s4Animals.length}`;
+  document.getElementById('s4Display').textContent = a.emoji;
+  document.getElementById('s4Label').textContent = a.name;
+  document.getElementById('s4Feedback').textContent = '';
+  const landBtn = document.getElementById('s4Land');
+  const waterBtn = document.getElementById('s4Water');
+  landBtn.className = 'basket-btn land'; waterBtn.className = 'basket-btn water';
+  landBtn.disabled = false; waterBtn.disabled = false;
+  landBtn.onclick = () => handleS4(false);
+  waterBtn.onclick = () => handleS4(true);
+  speakForStage('s4', `Does a ${a.name} live on land or in water?`);
+}
+function handleS4(pickWater){
+  const a = s4Animals[s4Idx];
+  const fb = document.getElementById('s4Feedback');
+  const landBtn = document.getElementById('s4Land');
+  const waterBtn = document.getElementById('s4Water');
+  if (pickWater === a.isWater){
+    landBtn.disabled = true; waterBtn.disabled = true;
+    (pickWater ? waterBtn : landBtn).classList.add('correct');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct!');
+    setTimeout(() => { s4Idx++; if (s4Idx >= s4Animals.length) completeStage(); else renderS4(); }, 1300);
+  } else {
+    (pickWater ? waterBtn : landBtn).classList.add('wrong');
+    fb.textContent = 'Try again, you are very close!';
+    fb.className = 'feedback bad';
+    speak('Try again, you are very close!');
+    setTimeout(() => (pickWater ? waterBtn : landBtn).classList.remove('wrong'), 600);
+  }
+}
+renderS4();
+stageEnterActions.s4 = () => speak(`Does a ${s4Animals[s4Idx].name} live on land or in water?`);
+
+/* ============================================================
+   ACTIVITY 5 — Move Like an Animal
+============================================================ */
+const s5Rounds = [
+  {emoji:'🐸', name:'Frog', answer:'Jump'},
+  {emoji:'🐘', name:'Elephant', answer:'Walk'},
+  {emoji:'🐟', name:'Fish', answer:'Swim'},
+  {emoji:'🐦', name:'Bird', answer:'Fly'},
+];
+const s5MoveOptions = ['Jump','Walk','Swim','Fly'];
+let s5Idx = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s5">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 5 · Move Like an Animal</div>
+    <h2>🐸 How Does It Move?</h2>
+  </div>
+  <div class="card">
+    <div class="q-progress" id="s5Progress"></div>
+    <div class="creature-display" id="s5Display"></div>
+    <div class="object-label" id="s5Label" style="text-align:center;font-family:'Fredoka';font-weight:700;color:var(--leaf-dark);"></div>
+    <div class="options" id="s5Options"></div>
+    <div class="feedback" id="s5Feedback"></div>
+  </div>
+</section>`);
+function renderS5(){
+  const r = s5Rounds[s5Idx];
+  document.getElementById('s5Progress').textContent = `Question ${s5Idx+1} of ${s5Rounds.length}`;
+  document.getElementById('s5Display').textContent = r.emoji;
+  document.getElementById('s5Label').textContent = r.name;
+  document.getElementById('s5Feedback').textContent = '';
+  renderRetryOptions(document.getElementById('s5Options'), s5MoveOptions, r.answer, () => {
+    const fb = document.getElementById('s5Feedback');
+    fb.textContent = 'Correct! 🎉';
+    fb.className = 'feedback good';
+    addStar(1);
+    speak('Correct! ' + r.answer + '!');
+    setTimeout(() => { s5Idx++; if (s5Idx >= s5Rounds.length) completeStage(); else renderS5(); }, 1400);
+  });
+  wireRetryFeedback('s5Options', 's5Feedback');
+  speakForStage('s5', `How does a ${r.name} move?`);
+}
+renderS5();
+stageEnterActions.s5 = () => speak(`How does a ${s5Rounds[s5Idx].name} move?`);
+
+/* ============================================================
+   ACTIVITY 6 — Animal Family Match (baby → adult)
+============================================================ */
+const s6Pairs = [
+  {id:'dog', baby:'🐶', babyLabel:'Puppy', adult:'🐕', adultLabel:'Dog'},
+  {id:'cat', baby:'🐱', babyLabel:'Kitten', adult:'🐈', adultLabel:'Cat'},
+  {id:'chicken', baby:'🐤', babyLabel:'Chick', adult:'🐔', adultLabel:'Hen'},
+  {id:'sheep', baby:'🐑', babyLabel:'Lamb', adult:'🐏', adultLabel:'Sheep'},
+];
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s6">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 6 · Animal Family Match</div>
+    <h2>👶🐘 Match the Baby to Its Parent</h2>
+    <p>Tap a baby animal, then tap its grown-up match.</p>
+  </div>
+  <div class="card">
+    <div class="match-zone-row" id="s6Zones"></div>
+    <div class="match-bank" id="s6Bank"></div>
+    <div class="feedback" id="s6Feedback"></div>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s6Next" disabled>Next ➜</button></div>
+  </div>
+</section>`);
+(function setupS6(){
+  const zonesWrap = document.getElementById('s6Zones');
+  const zoneEls = {};
+  shuffled(s6Pairs).forEach(pair => {
+    const zone = document.createElement('div');
+    zone.className = 'match-zone';
+    zone.dataset.id = pair.id;
+    zone.innerHTML = `<span class="zone-emoji">${pair.adult}</span><span>${pair.adultLabel}</span>`;
+    zonesWrap.appendChild(zone);
+    zoneEls[pair.id] = zone;
+  });
+  const bank = document.getElementById('s6Bank');
+  let selectedChip = null;
+  let filledCount = 0;
+  shuffled(s6Pairs).forEach(pair => {
+    const chip = document.createElement('div');
+    chip.className = 'match-chip';
+    chip.dataset.id = pair.id;
+    chip.innerHTML = `<span class="chip-emoji">${pair.baby}</span><span class="chip-label">${pair.babyLabel}</span>`;
+    chip.onclick = () => {
+      if (chip.classList.contains('used')) return;
+      if (selectedChip) selectedChip.classList.remove('selecting');
+      selectedChip = chip;
+      chip.classList.add('selecting');
+    };
+    bank.appendChild(chip);
+  });
+  Object.keys(zoneEls).forEach(id => {
+    zoneEls[id].onclick = () => {
+      if (zoneEls[id].classList.contains('filled') || !selectedChip) return;
+      const fb = document.getElementById('s6Feedback');
+      if (selectedChip.dataset.id === id){
+        zoneEls[id].classList.add('filled');
+        selectedChip.classList.add('used');
+        selectedChip = null;
+        filledCount++;
+        fb.textContent = 'Great match!';
+        fb.className = 'feedback good';
+        speak('Great match!');
+        if (filledCount === s6Pairs.length){
+          addStar(1);
+          fb.textContent = 'You matched every family! 🎉';
+          speak('You matched every family!');
+          document.getElementById('s6Next').disabled = false;
+        }
+      } else {
+        fb.textContent = 'Not that family — try again!';
+        fb.className = 'feedback bad';
+        speak('Not that family. Try again!');
+        selectedChip.classList.remove('selecting');
+        selectedChip = null;
+      }
+    };
+  });
+})();
+document.getElementById('s6Next').onclick = () => completeStage();
+stageEnterActions.s6 = () => speak('Tap a baby animal, then tap its grown-up match.');
+
+/* ============================================================
+   ACTIVITY 7 — Quick Practice (3 questions, intro + silent scoring)
+============================================================ */
+const s7Questions = [
+  {prompt:'Which animal lives in water?', options:['Fish','Lion'], answer:'Fish'},
+  {prompt:'How does a bird move?', options:['Fly','Walk'], answer:'Fly'},
+  {prompt:'What sound does a cow make?', options:['Moo','Woof'], answer:'Moo'},
+];
+let s7Index = 0;
+let s7CorrectCount = 0;
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="s7">
+  <div class="stage-header">
+    <div class="stage-eyebrow">Activity 7 · Practice</div>
+    <h2>Quick Practice</h2>
+    <p>Three short questions.</p>
+  </div>
+  <div class="card" id="s7Intro">
+    <p style="text-align:center;font-weight:700;color:#3d6b53;">You're going to answer 3 questions on your own now. Take your time and do your best!</p>
+    <div class="center-btn-row"><button class="btn btn-primary" id="s7Start">Start Practice ▶</button></div>
+  </div>
+  <div class="card" id="s7Quiz" style="display:none;">
+    <div class="q-progress" id="s7Progress"></div>
+    <div style="text-align:center;font-family:'Fredoka';font-weight:700;font-size:1.1rem;color:var(--leaf-dark);margin-bottom:6px;" id="s7Prompt"></div>
+    <div class="options two" id="s7Options"></div>
+    <div class="feedback" id="s7Feedback"></div>
+  </div>
+</section>`);
+document.getElementById('s7Start').onclick = () => {
+  document.getElementById('s7Intro').style.display = 'none';
+  document.getElementById('s7Quiz').style.display = 'block';
+  speak("Now you're going to answer some questions on your own. Let's begin!");
+  renderS7();
+};
+function renderS7(){
+  const q = s7Questions[s7Index];
+  document.getElementById('s7Progress').textContent = `Question ${s7Index+1} of ${s7Questions.length}`;
+  document.getElementById('s7Prompt').textContent = q.prompt;
+  document.getElementById('s7Feedback').textContent = '';
+  const optsWrap = document.getElementById('s7Options');
+  optsWrap.innerHTML = '';
+  shuffled(q.options).forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt;
+    b.onclick = () => {
+      if (b.disabled) return;
+      document.querySelectorAll('#s7Options .opt-btn').forEach(x => x.disabled = true);
+      b.classList.add('selected');
+      if (opt === q.answer) s7CorrectCount++;
+      const fb = document.getElementById('s7Feedback');
+      fb.textContent = 'Got it! Next question…';
+      fb.className = 'feedback neutral';
+      speak('Got it. Next question.');
+      setTimeout(() => { s7Index++; if (s7Index >= s7Questions.length) showS7Summary(); else renderS7(); }, 1100);
+    };
+    optsWrap.appendChild(b);
+  });
+  speakForStage('s7', q.prompt);
+}
+function showS7Summary(){
+  document.getElementById('s7Progress').textContent = 'Practice Complete!';
+  document.getElementById('s7Prompt').textContent = `You got ${s7CorrectCount} out of ${s7Questions.length} correct!`;
+  const optsWrap = document.getElementById('s7Options');
+  optsWrap.innerHTML = '';
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-primary';
+  btn.textContent = 'Continue ➜';
+  btn.style.gridColumn = '1 / -1';
+  btn.onclick = () => showReward();
+  optsWrap.appendChild(btn);
+  addStar(s7CorrectCount);
+  const fb = document.getElementById('s7Feedback');
+  fb.textContent = s7CorrectCount === s7Questions.length ? 'Perfect score! 🌟' : 'Great effort! 🎉';
+  fb.className = 'feedback good';
+  speak(`You got ${s7CorrectCount} out of ${s7Questions.length} correct!`);
+}
+
+/* ============================================================
+   REWARD
+============================================================ */
+wrap.insertAdjacentHTML('beforeend', `
+<section class="stage" id="reward">
+  <div class="card reward-card">
+    <div class="badge-circle">🔎</div>
+    <h2>ANIMAL DETECTIVE</h2>
+    <p>You can identify animals and where they live!</p>
+    <div class="stars-row" id="rewardStars"></div>
+    <div class="next-lesson-card">
+      <div class="lock-icon">🔓</div>
+      <div class="txt">
+        <small>Next Lesson</small>
+        <strong>Habitats</strong>
+      </div>
+    </div>
+  </div>
+</section>`);
+function showReward(){
+  goToStage(STAGES.length - 1);
+  const starsRow = document.getElementById('rewardStars');
+  starsRow.innerHTML = '';
+  for (let i=0;i<5;i++){
+    const s = document.createElement('span');
+    s.className = 'star-icon';
+    s.textContent = '⭐';
+    starsRow.appendChild(s);
+  }
+  saveStepDone('lesson2-complete');
+  speak('Great job! You are an Animal Detective!');
+}
+
+/* ---------------- init ---------------- */
+renderProgressTrack();
+goToStage(0);
+</script>
+</body>
+</html>
